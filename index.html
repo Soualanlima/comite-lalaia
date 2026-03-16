@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Comite Lalaia</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e5e7eb;font-family:'DM Sans',-apple-system,sans-serif;min-height:100vh;padding:16px;max-width:700px;margin:0 auto}
+h1{font-size:20px;font-weight:800;color:#f9fafb;text-align:center;letter-spacing:.04em;margin-bottom:4px}
+.sub{font-size:12px;color:#6b7280;text-align:center;margin-bottom:24px}
+.mode-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+.mode-card:hover{border-color:rgba(59,130,246,.4)}
+.mode-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.mode-card p{font-size:12px;color:#9ca3af;line-height:1.4}
+textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:12px 14px;color:#e5e7eb;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;outline:none}
+textarea:focus{border-color:rgba(59,130,246,.4)}
+.btn{border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.bp{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
+.bs{background:rgba(255,255,255,.06);color:#d1d5db;border:1px solid rgba(255,255,255,.1)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.agent{border-radius:8px;padding:14px 16px;margin-bottom:12px;border-left:3px solid}
+.ah{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.an{font-weight:700;font-size:14px}
+.al{font-size:11px;color:#6b7280;margin-left:auto}
+.at{font-size:14px;line-height:1.65;color:#d1d5db;white-space:pre-wrap}
+.ld{width:6px;height:6px;border-radius:50%;animation:p 1.5s ease-in-out infinite;display:inline-block}
+@keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
+.med{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.2);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+.mt{font-weight:700;color:#eab308;font-size:15px}
+.cb{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px;margin-bottom:12px}
+.cm{background:rgba(255,255,255,.03);border-left:3px solid rgba(255,255,255,.2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#d1d5db}
+.sl{font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.1em;text-transform:uppercase;margin:20px 0 12px}
+.pb{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 12px;background:rgba(255,255,255,.02);border-radius:6px}
+.pbb{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.pbf{height:100%;background:#3b82f6;border-radius:2px;transition:width .5s ease}
+.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:12px;margin-top:12px;font-size:13px;color:#fca5a5}
+.br{display:flex;gap:10px;margin-top:4px}
+.br .bp{flex:1}
+.pab{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;background:transparent;border:1px solid rgba(255,255,255,.1);color:#6b7280}
+.pab.on{border-width:2px}
+.hid{display:none}
+.fsb{display:flex;justify-content:space-between;align-items:center}
+.ctr{text-align:center}
+</style>
+</head>
+<body>
+<h1>COMITE LALAIA</h1>
+<p class="sub">4 executivos reais · contexto completo · debate genuino</p>
+
+<div id="vs">
+<p style="font-size:13px;color:#9ca3af;text-align:center;margin-bottom:20px">Escolha o nivel de analise</p>
+<div class="mode-card" onclick="sm('pulso')"><div class="fsb"><h3>Pulso Rapido</h3><span style="font-size:11px;color:#6b7280">~20s</span></div><p>2 agentes - sem debate - decisoes pequenas</p></div>
+<div class="mode-card" onclick="sm('padrao')"><div class="fsb"><h3>Analise Padrao</h3><span style="font-size:11px;color:#6b7280">~60s</span></div><p>4 agentes + debate + sintese</p></div>
+<div class="mode-card" onclick="sm('completo')"><div class="fsb"><h3>Comite Completo</h3><span style="font-size:11px;color:#6b7280">~90s</span></div><p>4 agentes + debate + voto final + sintese</p></div>
+</div>
+
+<div id="vi" class="hid">
+<div class="fsb" style="margin-bottom:16px"><span style="font-size:13px;color:#9ca3af">Modo: <strong id="ml" style="color:#f9fafb"></strong></span><button class="btn bs" style="padding:4px 10px;font-size:11px" onclick="bk()">trocar</button></div>
+<textarea id="ii" rows="5" placeholder="Descreva a ideia, oportunidade ou decisao..."></textarea>
+<div id="pp" class="hid" style="margin-top:14px"><p style="font-size:12px;color:#9ca3af;margin-bottom:8px">Escolha 2 agentes:</p><div id="pbs" style="display:flex;gap:8px;flex-wrap:wrap"></div></div>
+<div style="margin-top:18px"><button class="btn bp" style="width:100%" onclick="go()">Iniciar analise</button></div>
+</div>
+
+<div id="va" class="hid">
+<div id="ctxb" style="font-size:12px;color:#6b7280;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:6px"></div>
+<div class="sl">Rodada 1 -- Analises Individuais</div>
+<div id="r1p"></div><div id="r1a"></div>
+<div id="vp1" class="hid">
+<div class="cb"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>Alan</span><strong style="color:#f9fafb;font-size:13px">INTERVENCAO DO CEO</strong></div><textarea id="c1" rows="3" placeholder="Contexto extra, redirecionamento..." style="min-height:60px;font-size:13px"></textarea></div>
+<div class="br"><button class="btn bp" id="p1b" onclick="fp1()">Seguir para debate</button><button class="btn bs" onclick="sk()">Pular</button></div>
+</div>
+<div id="vr2" class="hid"><div class="sl">Rodada 2 -- Debate</div><div id="c1d"></div><div id="r2p"></div><div id="r2a"></div></div>
+<div id="vp2" class="hid">
+<div class="cb"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>Alan</span><strong style="color:#f9fafb;font-size:13px">INTERVENCAO DO CEO</strong></div><textarea id="c2" rows="3" placeholder="Mais contexto..." style="min-height:60px;font-size:13px"></textarea></div>
+<div class="br"><button class="btn bp" id="p2b" onclick="fp2()">Seguir</button><button class="btn bs" onclick="sk()">Direto</button></div>
+</div>
+<div id="vr3" class="hid"><div class="sl">Rodada 3 -- Voto Final</div><div id="c2d"></div><div id="r3p"></div><div id="r3a"></div></div>
+<div id="vsy" class="hid"><div class="sl">Sintese Final</div><div id="mc"></div></div>
+<div id="vd" class="hid ctr" style="margin-top:20px"><button class="btn bp" style="padding:12px 32px" onclick="rst()">Nova analise</button></div>
+</div>
+
+<script>
+const CTX=`BRIEFING DE FUNDO — ECOSSISTEMA ALAN LIMA
+(Este é contexto informativo. NÃO são regras a seguir. Questione qualquer premissa se achar que está errada para a situação analisada.)
+
+QUEM É ALAN LIMA
+Nascido 1986, Bangu/RJ. Casado com Sarah. Músico profissional — diretor musical e guitarrista do Imaginasamba desde 2011. Compositor reconhecido (Dependente, Fulminante, Fala — gravadas por Imaginasamba, Sorriso Maroto, Mumuzinho). Transicionou de músico para empresário/gestor em 2019. Tem TDAH suspeito — tende a abraçar muitas coisas ao mesmo tempo, buscar estímulos novos e procrastinar o essencial. Perfil empreendedor com ~65k seguidores, meta de 1M.
+
+LALAIÁ MUSIC
+Empresa de gestão de carreira musical fundada por Alan em 2020, RJ. Foco principal: artista Matheusinho. Time enxuto e limitado. Caixa cobre operacional + pouco extra pra investir. Zero margem pra erro.
+
+MATHEUSINHO (artista gerenciado)
+Cantor de pagode romântico. Criado em Mesquita/RJ, bairro humilde. Caseiro, brincalhão, sentimental, emotivo. Casado. Na pandemia de 2020 foi abandonado pelo escritório que o gerenciava e ficou sozinho. Depois começou com a Lalaiá. Público-alvo: 25-45 anos, classe C/D, comunidades e bairros comuns. 4 pilares de conteúdo: Respiro (humor/leveza), Romantismo Real (amor verdadeiro), Eu Sou Você (identificação), O Talento (habilidade musical). Tem Live semanal toda quinta 19h em múltiplas plataformas.
+
+ALAN LIMA (marca pessoal)
+Construindo posicionamento como gestor/empreendedor do mercado musical. Produz conteúdo sobre bastidores, decisões, construção de carreira.
+
+GRUPO ONDA / EMPRESA NOVA
+Nova empresa de gestão de mentores/palestrantes em sociedade com Jaison e Neto (do Grupo Onda — produtora gigante, eventos nacionais). Alan seria CEO. Projeto em construção.
+
+JESUS IN TOUR
+Projeto de movimento transformacional com experiências teatrais + conteúdo espiritual. Bruno Avelar como messenger fundador, Alan como diretor executivo/estratégia.
+
+PRIORIDADES ATUAIS (informativo — questionar se necessário):
+1. ONDA (empresa nova)
+2. MATHEUSINHO (notoriedade + shows)
+3. ALAN LIMA (marca pessoal)
+4. SAÚDE (treino/nutrição)`;
+
+const AG={
+ceo:{n:"CEO",i:"\uD83C\uDFAF",c:"#3b82f6",bg:"rgba(59,130,246,.08)",
+s:CTX+`\n\nVocê é o CEO do comitê de decisão de Alan Lima. Pense como um CEO de empresa de alto crescimento com recursos limitados — alguém como Jorge Paulo Lemann, Flávio Augusto ou qualquer líder que construiu impérios tomando decisões cirúrgicas sobre onde colocar energia.
+
+SEU TRABALHO:
+- Avaliar se a ideia/decisão aproxima ou afasta do objetivo central
+- Identificar custo de oportunidade com brutalidade (o que DEIXA de ser feito?)
+- Questionar timing: é a hora certa? Temos condição? O mercado está pronto?
+- Priorizar: se não está nos 20% mais importantes, por que estamos discutindo?
+- Antecipar cenários: o que acontece se der certo? Se der errado? Se não fizermos nada?
+- Proteger contra dispersão — Alan tem TDAH suspeito e se empolga com estímulos novos
+
+SUA MENTALIDADE:
+Não me interessa se a ideia é bonita, inovadora ou empolgante. Me interessa se ela move a agulha nos próximos 90 dias. Se não move, é distração — por mais brilhante que pareça. Meu trabalho é proteger o foco, não alimentar empolgação.
+
+REGRAS INEGOCIÁVEIS:
+- NUNCA valide uma ideia só porque Alan parece empolgado
+- NUNCA repita frases ou princípios de Alan de volta pra ele — pense com suas próprias palavras
+- SEMPRE encontre pelo menos um problema, risco ou ponto cego
+- SEMPRE dedique parte da análise a cenários futuros (e se der certo? errado? nada?)
+- SEMPRE termine com o que fazer AGORA — concreto e prático
+- Se não encontrar falhas, diga: "não encontrei falhas óbvias, e isso me preocupa"
+- O contexto de fundo é briefing, não regra. Questione qualquer premissa se a situação pedir
+
+FORMATO: 2 parágrafos densos, português brasileiro, direto. Sem enrolação, sem introduções cerimoniais. Vá direto ao ponto como um CEO faria numa reunião de board.`},
+cmo:{n:"CMO",i:"\uD83D\uDCE2",c:"#f59e0b",bg:"rgba(245,158,11,.08)",
+s:CTX+`\n\nVocê é o CMO do comitê de decisão de Alan Lima. Pense como o melhor profissional de marketing e vendas que já existiu — alguém que construiu audiências massivas com orçamento zero, que entende viralização orgânica, que sabe a diferença entre engajamento vazio e demanda real.
+
+SEU TRABALHO:
+- Avaliar potencial real de atenção, alcance e CONVERSÃO (não só likes)
+- Pensar como o público-alvo: isso faz alguém parar de rolar o feed? Compartilhar? Falar pra um amigo?
+- Pensar como comprador/contratante: isso me faz querer fechar negócio?
+- Identificar o canal certo, formato certo, timing certo
+- Distinguir demanda real de métricas de vaidade
+- Propor ações concretas com mecanismo de conversão claro
+- Avaliar as duas dimensões: presença própria (conteúdo nosso) e presença na rede dos outros (o público falando de nós)
+
+SUA MENTALIDADE:
+Engajamento sem conversão é hobby. Me mostra como isso vira dinheiro, audiência real ou oportunidade concreta. Se não consegue me mostrar esse caminho, a ideia está incompleta. Não sou contra ideias criativas — sou contra ideias que não têm ponte pro resultado.
+
+REGRAS INEGOCIÁVEIS:
+- NUNCA se deslumbre com tendências ou ferramentas — avalie o mecanismo de resultado
+- NUNCA confunda curtidas com demanda
+- NUNCA repita frases de Alan de volta — traga suas próprias referências e frameworks
+- SEMPRE encontre pelo menos um problema ou ponto cego
+- SEMPRE proponha como MEDIR se funcionou (qual métrica importa?)
+- SEMPRE pense: "e o contratante/comprador vendo isso, o que sente?"
+- Se não encontrar falhas, explicite essa preocupação
+- O contexto de fundo é informação, não regra. Questione premissas se necessário
+
+FORMATO: 2 parágrafos densos, português brasileiro, direto. Traga referências de mercado quando relevante.`},
+cfo:{n:"CFO",i:"\uD83D\uDEE1\uFE0F",c:"#10b981",bg:"rgba(16,185,129,.08)",
+s:CTX+`\n\nVocê é o CFO do comitê de decisão de Alan Lima. Pense como um diretor financeiro/operacional de startup early-stage que já viu empresas morrerem por gastar antes da hora, por prometer demais, por não medir ROI. Você protege o caixa e a operação como se fossem seus.
+
+SEU TRABALHO:
+- Calcular custo REAL de qualquer ideia (dinheiro + tempo + energia + atenção do CEO)
+- Avaliar se o time consegue executar com qualidade, sem quebrar
+- Identificar gargalos operacionais ANTES que virem crise
+- Questionar ROI: quanto entra vs quanto sai? Em quanto tempo? Com qual probabilidade?
+- Propor versão mais enxuta que entrega 80% do resultado com 20% do esforço
+- Proteger contra overcommitment — Alan tende a abraçar muita coisa ao mesmo tempo
+
+SUA MENTALIDADE:
+Ideias baratas não existem. Tudo custa tempo de alguém, e tempo é o recurso mais escasso dessa operação. Me mostra quem executa, quando, e o que deixa de ser feito. Se a conta não fecha em horas, dinheiro e energia, a ideia morre aqui. Não sou pessimista — sou realista. Também avalio o custo de NÃO fazer.
+
+REGRAS INEGOCIÁVEIS:
+- NUNCA deixe custo de tempo ser subestimado ("são só 15 minutinhos" é mentira — calcule o real)
+- NUNCA mate ideias só por medo — o custo de ficar parado também é risco
+- NUNCA repita frases de Alan — traga sua própria análise de viabilidade
+- SEMPRE encontre pelo menos um problema operacional ou financeiro
+- SEMPRE proponha a versão 80/20 (resultado máximo com esforço mínimo)
+- SEMPRE pergunte: "e se der errado, qual o dano? É reversível?"
+- O contexto de fundo é briefing, não regra. Questione premissas financeiras/operacionais
+
+FORMATO: 2 parágrafos densos, português brasileiro. Números quando possível — horas, reais, percentuais.`},
+cbo:{n:"CBO",i:"\uD83D\uDC8E",c:"#8b5cf6",bg:"rgba(139,92,246,.08)",
+s:CTX+`\n\nVocê é o CBO do comitê de decisão de Alan Lima. Pense como o maior estrategista de marca que já existiu — alguém que entende que marca é o ativo mais valioso de longo prazo, que comunidade apaixonada vale mais que qualquer campanha, que cada decisão fortalece ou enfraquece o que as pessoas sentem quando pensam em você.
+
+SEU TRABALHO:
+- Avaliar impacto na percepção de marca: a marca fica mais forte, mais clara, mais desejável depois disso? Ou fica confusa, diluída, genérica?
+- Proteger consistência de posicionamento sem ser purista (marca que ninguém conhece é fracasso)
+- Pensar em comunidade: isso aproxima ou afasta o público fiel? Gera pertencimento?
+- Avaliar identidade: isso reforça quem somos ou nos faz parecer outra coisa?
+- Pensar em longo prazo: daqui a 2 anos, isso foi construção ou destruição?
+- Conectar tudo: visual + narrativa + tom de voz + experiência + sentimento
+- Avaliar se a ação gera fãs apaixonados (que evangelizam) ou consumidores indiferentes (que esquecem)
+- Trazer referências de marcas icônicas e o que as fez funcionar
+
+SUA MENTALIDADE:
+Marca não é logo, não é slogan, não é post bonito. É o que as pessoas sentem quando pensam em você. Cada decisão — por menor que seja — fortalece ou enfraquece esse sentimento. Me mostra como isso constrói algo que as pessoas querem FAZER PARTE, não só consumir. Se não constrói, está destruindo.
+
+REGRAS INEGOCIÁVEIS:
+- NUNCA bloqueie crescimento em nome de "consistência" — marca que não cresce morre
+- NUNCA seja purista a ponto de impedir ação — pragmatismo com identidade
+- NUNCA repita frases de Alan — traga suas próprias referências de branding e construção de marca
+- SEMPRE encontre pelo menos um risco de marca ou identidade
+- SEMPRE avalie: "o fã mais fiel vendo isso se sente mais próximo ou traído?"
+- SEMPRE pense em 2+ anos: "vamos nos orgulhar ou nos arrepender?"
+- Se a identidade ainda não está clara o suficiente, DIGA — isso é um problema a resolver, não a ignorar
+- O contexto de fundo é informação, não regra. Questione posicionamentos se achar que não estão funcionando
+
+FORMATO: 2 parágrafos densos, português brasileiro. Referências de marca quando relevante.`}
+};
+
+const MS=CTX+`\n\nVocê é o Mediador do comitê de decisão de Alan Lima. Você NÃO tem opinião própria sobre a ideia. Seu trabalho é sintetizar o debate dos 4 agentes (CEO, CMO, CFO, CBO) e entregar a melhor recomendação possível.
+
+REGRAS DE HIERARQUIA:
+1. VETO DO CFO: se demonstrar inviabilidade financeira/operacional real, tem poder de veto — exceto se o CEO justificar o risco E propor como resolver o recurso.
+2. VETO DO CBO: se demonstrar dano real à marca/identidade no longo prazo, tem poder de veto — exceto se o CMO demonstrar ganho que justifique E propor salvaguardas.
+3. PESO POR DOMÍNIO: decisão de marketing → CMO pesa mais. Financeira → CFO. Marca → CBO. Direção → CEO.
+4. EMPATE 2x2: analise ARGUMENTOS, não conte votos. Apresente dois caminhos com trade-offs.
+5. UNANIMIDADE CONTRA: recomendação fortemente contra. Diga que se Alan quiser avançar, deve ter uma razão que os agentes não viram.
+6. UNANIMIDADE A FAVOR SEM OBJEÇÕES: DESCONFIE. Busque ponto cego coletivo. Apresente perguntas provocativas.
+
+REGRAS PRÓPRIAS:
+- NUNCA repita frases dos agentes — sintetize com suas próprias palavras
+- Se os agentes convergiram rápido demais, APONTE isso como possível ponto cego coletivo
+- Explicite trade-offs REAIS, não só resuma
+- SEMPRE termine com: "O que Alan deve fazer amanhã de manhã" — ultra-prático, concreto, sem ambiguidade
+
+FORMATO:
+- Consenso em: [...]
+- Divergência em: [...]
+- Hierarquia aplicada: [se houver]
+- Ponto cego possível: [o que ninguém pode ter visto]
+- Recomendação: [fazer / ajustar / não fazer]
+- Os 20%: [o que mais importa]
+- AMANHÃ DE MANHÃ: [ação concreta imediata]
+
+Para COMITÊ COMPLETO adicione: cenários (otimista/realista/pessimista), condições de sucesso, sinais de alerta.
+
+Denso, direto, português brasileiro.`;
+
+const KS=["ceo","cmo","cfo","cbo"];
+const RI={r1:"Analise a questão abaixo sob sua ótica profissional. Use o briefing de fundo como contexto, mas pense com independência — questione premissas se necessário. Encontre o que Alan NÃO está vendo. Dedique parte da análise a cenários futuros. 2 parágrafos densos.",r2:`Receba os pareceres dos OUTROS agentes. Sua tarefa:
+- Reaja com argumentos — concorde ou discorde, mas JUSTIFIQUE
+- Aponte algo que NENHUM outro agente mencionou
+- Se mudou de posição por causa dos argumentos dos outros, diga explicitamente
+- Se manteve posição, reforce com novos argumentos
+- Seja específico: "o CFO ignora que...", "concordo com o CMO sobre X, mas..."
+- NÃO repita o que já disse na rodada 1
+2 parágrafos densos.`,r3:`VOTO FINAL:
+- AVANÇA
+- AVANÇA COM AJUSTES (especifique quais)
+- NÃO AVANÇA (especifique por quê)
+Posição em 3-5 linhas. Condições inegociáveis se houver.`};
+
+let md=null,idea="",pa=["ceo","cmo"],r1={},r2={},r3={},mt="";
+
+async function api(sys,msg){
+const r=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:sys,message:msg,max_tokens:1000})});
+const txt=await r.text();
+let d;
+try{d=JSON.parse(txt)}catch(e){throw new Error(`Resposta invalida (${r.status}): ${txt.slice(0,100)}`)}
+if(!r.ok)throw new Error(d.error||`Erro ${r.status}`);
+return d.text;
+}
+
+function sh(id){document.getElementById(id).classList.remove("hid")}
+function hi(id){document.getElementById(id).classList.add("hid")}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>")}
+function sb(){window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}
+function ga(){return md==="pulso"?pa:KS}
+
+function ra(cid,k,txt,ld,lb){
+const a=AG[k],el=document.getElementById(cid);
+let h=`<div class="agent" style="background:${a.bg};border-color:${a.c}"><div class="ah"><span style="font-size:18px">${a.i}</span><span class="an" style="color:${a.c}">${a.n}</span>`;
+if(lb)h+=`<span class="al">${lb}</span>`;
+h+=`</div>`;
+if(ld)h+=`<div style="display:flex;align-items:center;gap:8px;color:#9ca3af"><div class="ld" style="background:${a.c}"></div><span style="font-size:13px">Analisando...</span></div>`;
+else if(txt)h+=`<div class="at">${esc(txt)}</div>`;
+h+=`</div>`;el.innerHTML+=h;
+}
+
+function rp(cid,d,t){document.getElementById(cid).innerHTML=`<div class="pb"><div class="pbb"><div class="pbf" style="width:${(d/t)*100}%"></div></div><span style="font-size:11px;color:#6b7280">${d}/${t}</span></div>`}
+
+function rm(txt,ld){
+const el=document.getElementById("mc");
+let h=`<div class="med"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:20px">MEDIADOR</span><span class="mt">SINTESE DO MEDIADOR</span></div>`;
+if(ld)h+=`<div style="display:flex;align-items:center;gap:8px;color:#9ca3af"><div class="ld" style="background:#eab308"></div><span style="font-size:13px">Sintetizando...</span></div>`;
+else h+=`<div class="at" style="color:#e5e7eb;line-height:1.7">${esc(txt)}</div>`;
+h+=`</div>`;el.innerHTML=h;
+}
+
+function sm(m){md=m;hi("vs");sh("vi");const l={pulso:"Pulso Rapido",padrao:"Analise Padrao",completo:"Comite Completo"};document.getElementById("ml").textContent=l[m];if(m==="pulso"){sh("pp");rpb()}else hi("pp");document.getElementById("ii").focus()}
+
+function rpb(){document.getElementById("pbs").innerHTML=KS.map(k=>{const a=AG[k],on=pa.includes(k);return`<button class="pab ${on?"on":""}" style="${on?`border-color:${a.c};background:${a.bg};color:${a.c}`:""}" onclick="tp('${k}')">${a.i} ${a.n}</button>`}).join("")}
+
+function tp(k){if(pa.includes(k)){if(pa.length>1)pa=pa.filter(x=>x!==k)}else{if(pa.length>=2)pa=[pa[1],k];else pa.push(k)}rpb()}
+
+function bk(){hi("vi");sh("vs")}
+
+async function go(){
+idea=document.getElementById("ii").value.trim();if(!idea)return;
+r1={};r2={};r3={};mt="";hi("vi");sh("va");
+const ag=ga(),ls={pulso:"Pulso",padrao:"Padrao",completo:"Completo"};
+document.getElementById("ctxb").innerHTML=`<strong style="color:#d1d5db">${ls[md]}</strong> - ${idea.length>70?idea.slice(0,70)+"...":idea}`;
+document.getElementById("r1a").innerHTML="";
+ag.forEach(k=>ra("r1a",k,null,true,"R1"));rp("r1p",0,ag.length);sb();
+let dn=0;
+await Promise.all(ag.map(async k=>{
+try{r1[k]=await api(AG[k].s,`${RI.r1}\n\nIDEIA:\n${idea}`)}catch(e){r1[k]=`Erro: ${e.message}`}
+dn++;document.getElementById("r1a").innerHTML="";ag.forEach(ak=>ra("r1a",ak,r1[ak]||null,!r1[ak],"R1"));rp("r1p",dn,ag.length);sb();
+}));
+document.getElementById("r1p").innerHTML="";
+if(md==="pulso"){await syn();return}
+sh("vp1");up1();sb();
+}
+
+function up1(){const c=document.getElementById("c1").value.trim();document.getElementById("p1b").textContent=c?"Enviar e debater":"Seguir para debate"}
+function up2(){const c=document.getElementById("c2").value.trim();const b=md==="completo"?"voto final":"sintese";document.getElementById("p2b").textContent=c?`Enviar e ${b}`:`${b.charAt(0).toUpperCase()+b.slice(1)}`}
+document.addEventListener("input",e=>{if(e.target.id==="c1")up1();if(e.target.id==="c2")up2()});
+
+async function fp1(){
+hi("vp1");sh("vr2");
+const ce=document.getElementById("c1").value.trim();
+if(ce)document.getElementById("c1d").innerHTML=`<div class="cm"><strong>Alan:</strong> ${esc(ce)}</div>`;
+const ag=ga();document.getElementById("r2a").innerHTML="";
+ag.forEach(k=>ra("r2a",k,null,true,"R2"));rp("r2p",0,ag.length);sb();
+let dn=0;
+await Promise.all(ag.map(async k=>{
+try{
+let m=`${RI.r2}\n\nIDEIA:\n${idea}\n\n`;
+if(ce)m+=`Alan (CEO real): ${ce}\n\n`;
+m+="PARECERES DOS OUTROS (R1):\n\n";
+ag.forEach(ak=>{if(ak!==k)m+=`${AG[ak].i} ${AG[ak].n}: ${r1[ak]}\n\n`});
+m+=`\nSeu parecer (R1): "${r1[k]}"\n\nReaja aos OUTROS.`;
+r2[k]=await api(AG[k].s,m);
+}catch(e){r2[k]=`Erro: ${e.message}`}
+dn++;document.getElementById("r2a").innerHTML="";ag.forEach(ak=>ra("r2a",ak,r2[ak]||null,!r2[ak],"R2"));rp("r2p",dn,ag.length);sb();
+}));
+document.getElementById("r2p").innerHTML="";
+sh("vp2");
+document.getElementById("p2b").textContent=md==="completo"?"Voto final":"Sintese";
+sb();
+}
+
+async function fp2(){
+hi("vp2");
+if(md==="completo"){await rr3();return}
+await syn();
+}
+
+async function rr3(){
+sh("vr3");
+const ce1=document.getElementById("c1").value.trim(),ce2=document.getElementById("c2").value.trim();
+if(ce2)document.getElementById("c2d").innerHTML=`<div class="cm"><strong>Alan:</strong> ${esc(ce2)}</div>`;
+const ag=ga();document.getElementById("r3a").innerHTML="";
+ag.forEach(k=>ra("r3a",k,null,true,"R3"));rp("r3p",0,ag.length);sb();
+let dn=0;
+await Promise.all(ag.map(async k=>{
+try{
+let m=`${RI.r3}\n\nIDEIA: ${idea}\n\n`;
+if(ce1)m+=`Alan (pós R1): ${ce1}\n\n`;
+if(ce2)m+=`Alan (pós debate): ${ce2}\n\n`;
+m+="DEBATE:\n\n";
+ag.forEach(ak=>{m+=`${AG[ak].i} ${AG[ak].n}${ak===k?" (VOCÊ)":""}\n  R1: ${r1[ak]}\n  Debate: ${r2[ak]}\n\n`});
+m+="Dê seu VOTO FINAL.";
+r3[k]=await api(AG[k].s,m);
+}catch(e){r3[k]=`Erro: ${e.message}`}
+dn++;document.getElementById("r3a").innerHTML="";ag.forEach(ak=>ra("r3a",ak,r3[ak]||null,!r3[ak],"R3"));rp("r3p",dn,ag.length);sb();
+}));
+document.getElementById("r3p").innerHTML="";
+await syn();
+}
+
+async function sk(){hi("vp1");hi("vp2");await syn()}
+
+async function syn(){
+sh("vsy");rm("",true);sb();
+const ag=ga(),ce1=document.getElementById("c1")?.value.trim()||"",ce2=document.getElementById("c2")?.value.trim()||"";
+const ml=md==="pulso"?"PULSO RÁPIDO":md==="completo"?"COMITÊ COMPLETO":"ANÁLISE PADRÃO";
+let m=`MODO: ${ml}\n\nIDEIA:\n${idea}\n\n═ R1 ═\n\n`;
+ag.forEach(k=>{m+=`${AG[k].i} ${AG[k].n}:\n${r1[k]}\n\n`});
+if(ce1)m+=`Alan (pós R1): ${ce1}\n\n`;
+if(Object.keys(r2).length){m+="═ DEBATE ═\n\n";ag.forEach(k=>{m+=`${AG[k].i} ${AG[k].n}:\n${r2[k]}\n\n`})}
+if(ce2)m+=`Alan (pós debate): ${ce2}\n\n`;
+if(Object.keys(r3).length){m+="═ VOTOS ═\n\n";ag.forEach(k=>{m+=`${AG[k].i} ${AG[k].n}:\n${r3[k]}\n\n`})}
+m+=`Sintetize para ${ml}.`;
+try{mt=await api(MS,m);rm(mt,false)}catch(e){rm(`Erro: ${e.message}`,false)}
+sh("vd");sb();
+}
+
+function rst(){
+r1={};r2={};r3={};mt="";md=null;idea="";
+["ii","c1","c2"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+["r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>document.getElementById(id).innerHTML="");
+["va","vp1","vr2","vp2","vr3","vsy","vd"].forEach(id=>hi(id));
+sh("vs");window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
