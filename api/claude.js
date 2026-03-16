@@ -29,7 +29,7 @@ function callClaude(apiKey, payload) {
       }
     );
     req.on("error", (e) => reject(new Error("Erro de conexão: " + e.message)));
-    req.setTimeout(55000, () => {
+    req.setTimeout(59000, () => {
       req.destroy();
       reject(new Error("Timeout na chamada à API"));
     });
