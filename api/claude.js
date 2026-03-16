@@ -12,6 +12,7 @@ function callClaude(apiKey, payload) {
           "Content-Type": "application/json",
           "x-api-key": apiKey,
           "anthropic-version": "2023-06-01",
+          "anthropic-beta": "prompt-caching-2024-07-31",
           "Content-Length": Buffer.byteLength(body)
         }
       },
@@ -23,15 +24,15 @@ function callClaude(apiKey, payload) {
           try {
             resolve({ status: res.statusCode, data: JSON.parse(raw) });
           } catch (e) {
-            reject(new Error("API retornou resposta inválida: " + raw.slice(0, 200)));
+            reject(new Error("API retornou resposta invalida: " + raw.slice(0, 200)));
           }
         });
       }
     );
-    req.on("error", (e) => reject(new Error("Erro de conexão: " + e.message)));
+    req.on("error", (e) => reject(new Error("Erro de conexao: " + e.message)));
     req.setTimeout(59000, () => {
       req.destroy();
-      reject(new Error("Timeout na chamada à API"));
+      reject(new Error("Timeout na chamada a API"));
     });
     req.write(body);
     req.end();
@@ -57,20 +58,55 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
   }
 
-  const { system, message, max_tokens } = req.body || {};
+  const { shared_context, agent_prompt, message, debate_context, max_tokens } = req.body || {};
 
   if (!message) {
     return res.status(400).json({ error: "Missing 'message' field" });
   }
 
+  // Build system array with cache_control on shared context
+  const systemArr = [];
+  if (shared_context) {
+    systemArr.push({
+      type: "text",
+      text: shared_context,
+      cache_control: { type: "ephemeral" }
+    });
+  }
+  if (agent_prompt) {
+    systemArr.push({
+      type: "text",
+      text: agent_prompt
+    });
+  }
+
+  // Build messages with optional debate_context caching
+  let messages;
+  if (debate_context) {
+    messages = [{
+      role: "user",
+      content: [
+        {
+          type: "text",
+          text: debate_context,
+          cache_control: { type: "ephemeral" }
+        },
+        {
+          type: "text",
+          text: message
+        }
+      ]
+    }];
+  } else {
+    messages = [{ role: "user", content: message }];
+  }
+
   const payload = {
     model: "claude-opus-4-20250514",
     max_tokens: max_tokens || 1000,
-    messages: [{ role: "user", content: message }]
+    system: systemArr.length > 0 ? systemArr : undefined,
+    messages: messages
   };
-  if (system) {
-    payload.system = system;
-  }
 
   try {
     const result = await callClaude(API_KEY, payload);
