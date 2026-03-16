@@ -388,7 +388,7 @@ if(Object.keys(r2).length){m+="═ DEBATE ═\n\n";ag.forEach(k=>{m+=`${AG[k].i}
 if(ce2)m+=`Alan (pós debate): ${ce2}\n\n`;
 if(Object.keys(r3).length){m+="═ VOTOS ═\n\n";ag.forEach(k=>{m+=`${AG[k].i} ${AG[k].n}:\n${r3[k]}\n\n`})}
 m+=`Sintetize para ${ml}.`;
-try{mt=await api(MS,m);rm(mt,false)}catch(e){rm(`Erro: ${e.message}`,false)}
+try{mt=await api(MS,m,800);rm(mt,false)}catch(e){rm(`Erro: ${e.message}`,false)}
 sh("vd");sb();
 }
 
