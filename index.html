@@ -243,23 +243,23 @@ Para COMITÊ COMPLETO adicione: cenários (otimista/realista/pessimista), condi�
 Denso, direto, português brasileiro.`;
 
 const KS=["ceo","cmo","cfo","cbo"];
-const RI={r1:"Analise a questão abaixo sob sua ótica profissional. Use o briefing de fundo como contexto, mas pense com independência — questione premissas se necessário. Encontre o que Alan NÃO está vendo. Dedique parte da análise a cenários futuros. 2 parágrafos densos.",r2:`Receba os pareceres dos OUTROS agentes. Sua tarefa:
+const RI={r1:"Analise a questão abaixo sob sua ótica profissional. Use o briefing de fundo como contexto, mas pense com independência — questione premissas se necessário. Encontre o que Alan NÃO está vendo. Dedique parte da análise a cenários futuros. Seja cirúrgico: cada frase deve carregar um insight. Máximo 1 parágrafo denso. Corte qualquer frase que não mude a análise. Prefira uma bala certeira a um discurso.",r2:`Receba os pareceres dos OUTROS agentes. Sua tarefa:
 - Reaja com argumentos — concorde ou discorde, mas JUSTIFIQUE
 - Aponte algo que NENHUM outro agente mencionou
 - Se mudou de posição por causa dos argumentos dos outros, diga explicitamente
 - Se manteve posição, reforce com novos argumentos
 - Seja específico: "o CFO ignora que...", "concordo com o CMO sobre X, mas..."
 - NÃO repita o que já disse na rodada 1
-2 parágrafos densos.`,r3:`VOTO FINAL:
+Seja cirúrgico: cada frase deve carregar um insight. Máximo 1 parágrafo denso. Corte qualquer frase que não mude a análise. Prefira uma bala certeira a um discurso.`,r3:`VOTO FINAL:
 - AVANÇA
 - AVANÇA COM AJUSTES (especifique quais)
 - NÃO AVANÇA (especifique por quê)
-Posição em 3-5 linhas. Condições inegociáveis se houver.`};
+Voto + 3 linhas máximo + condições inegociáveis se houver. Nada mais.`};
 
 let md=null,idea="",pa=["ceo","cmo"],r1={},r2={},r3={},mt="";
 
-async function api(sys,msg){
-const r=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:sys,message:msg,max_tokens:1000})});
+async function api(sys,msg,tk){
+const r=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({system:sys,message:msg,max_tokens:tk||1000})});
 const txt=await r.text();
 let d;
 try{d=JSON.parse(txt)}catch(e){throw new Error(`Resposta invalida (${r.status}): ${txt.slice(0,100)}`)}
@@ -310,7 +310,7 @@ document.getElementById("r1a").innerHTML="";
 ag.forEach(k=>ra("r1a",k,null,true,"R1"));rp("r1p",0,ag.length);sb();
 let dn=0;
 await Promise.all(ag.map(async k=>{
-try{r1[k]=await api(AG[k].s,`${RI.r1}\n\nIDEIA:\n${idea}`)}catch(e){r1[k]=`Erro: ${e.message}`}
+try{r1[k]=await api(AG[k].s,`${RI.r1}\n\nIDEIA:\n${idea}`,400)}catch(e){r1[k]=`Erro: ${e.message}`}
 dn++;document.getElementById("r1a").innerHTML="";ag.forEach(ak=>ra("r1a",ak,r1[ak]||null,!r1[ak],"R1"));rp("r1p",dn,ag.length);sb();
 }));
 document.getElementById("r1p").innerHTML="";
@@ -336,7 +336,7 @@ if(ce)m+=`Alan (CEO real): ${ce}\n\n`;
 m+="PARECERES DOS OUTROS (R1):\n\n";
 ag.forEach(ak=>{if(ak!==k)m+=`${AG[ak].i} ${AG[ak].n}: ${r1[ak]}\n\n`});
 m+=`\nSeu parecer (R1): "${r1[k]}"\n\nReaja aos OUTROS.`;
-r2[k]=await api(AG[k].s,m);
+r2[k]=await api(AG[k].s,m,400);
 }catch(e){r2[k]=`Erro: ${e.message}`}
 dn++;document.getElementById("r2a").innerHTML="";ag.forEach(ak=>ra("r2a",ak,r2[ak]||null,!r2[ak],"R2"));rp("r2p",dn,ag.length);sb();
 }));
@@ -367,7 +367,7 @@ if(ce2)m+=`Alan (pós debate): ${ce2}\n\n`;
 m+="DEBATE:\n\n";
 ag.forEach(ak=>{m+=`${AG[ak].i} ${AG[ak].n}${ak===k?" (VOCÊ)":""}\n  R1: ${r1[ak]}\n  Debate: ${r2[ak]}\n\n`});
 m+="Dê seu VOTO FINAL.";
-r3[k]=await api(AG[k].s,m);
+r3[k]=await api(AG[k].s,m,400);
 }catch(e){r3[k]=`Erro: ${e.message}`}
 dn++;document.getElementById("r3a").innerHTML="";ag.forEach(ak=>ra("r3a",ak,r3[ak]||null,!r3[ak],"R3"));rp("r3p",dn,ag.length);sb();
 }));
