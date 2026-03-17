@@ -13,28 +13,25 @@ color:#1D1D1F;font-family:'Inter',-apple-system,sans-serif;min-height:100vh}
 
 /* Header */
 .header{background:#FFFFFF;border-bottom:1px solid #E5E5EA;padding:14px 0;margin-bottom:28px}
-.header-inner{max-width:840px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
+.header-inner{max-width:840px;margin:0 auto;padding:0 28px}
 .header h1{font-size:18px;font-weight:700;color:#1D1D1F;letter-spacing:-0.02em}
 .header .subtitle{font-size:11px;color:#AEAEB2;margin-top:1px;font-weight:400}
-.nav-toggle{display:flex;gap:2px;background:#F2F2F7;border-radius:8px;padding:2px}
-.nav-btn{padding:5px 14px;font-size:11px;font-weight:500;background:transparent;color:#AEAEB2;border:none;border-radius:6px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
-.nav-btn.on{background:#FFFFFF;color:#1D1D1F;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
 
 /* Container */
 .container{max-width:840px;margin:0 auto;padding:0 28px 48px}
 
 /* Agent grid */
 .ag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.ag-card{background:#F8F9FA;border:1.5px solid #EBEBEB;border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .25s ease;opacity:.45;position:relative}
+.ag-card{background:#F8F9FA;border:1.5px solid #EBEBEB;border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .25s ease;opacity:.65;position:relative}
 .ag-card.on{opacity:1;background:#FFFFFF;box-shadow:0 1px 8px rgba(0,0,0,0.04)}
 .ag-card .top-bar{position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;opacity:.6;display:none}
 .ag-card.on .top-bar{display:block}
 .ag-name{font-size:14px;font-weight:600;color:#1D1D1F}
-.ag-card:not(.on) .ag-name{color:#C7C7CC}
+.ag-card:not(.on) .ag-name{color:#A0A0A5}
 .ag-tag{font-size:10px;font-weight:500;color:#86868B}
-.ag-card:not(.on) .ag-tag{color:#D1D1D6}
+.ag-card:not(.on) .ag-tag{color:#B0B0B5}
 .ag-desc{font-size:11px;color:#86868B;font-weight:400;line-height:1.3;margin-top:5px}
-.ag-card:not(.on) .ag-desc{color:#D1D1D6}
+.ag-card:not(.on) .ag-desc{color:#B0B0B5}
 
 /* Pub filter */
 .pub-tog{display:flex;gap:6px;margin-top:10px;align-items:center}
@@ -46,12 +43,12 @@ color:#1D1D1F;font-family:'Inter',-apple-system,sans-serif;min-height:100vh}
 .cfg-label{font-size:11px;font-weight:600;color:#86868B;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
 .cfg-label span{font-weight:400;color:#AEAEB2}
 .controls-row{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
-.control-group{flex:1 1 180px}
+.control-group{flex:1 1 auto}
 .control-group-sm{flex:0 0 auto}
 .seg-ctrl{display:flex;gap:2px;background:#F2F2F7;border-radius:10px;padding:3px}
-.seg-btn{flex:1;padding:8px;font-size:13px;font-weight:500;background:transparent;color:#AEAEB2;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.seg-btn{flex:1;padding:6px 12px;font-size:12px;font-weight:500;background:transparent;color:#AEAEB2;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .seg-btn.on{background:#FFFFFF;color:#1D1D1F;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
-.rod-btn{width:42px;padding:8px;font-size:14px;font-weight:600}
+.rod-btn{width:38px;padding:6px;font-size:13px;font-weight:600}
 
 /* Input + buttons */
 textarea{width:100%;min-height:80px;padding:14px 16px;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:10px;font-size:14px;font-family:'Inter',-apple-system,sans-serif;color:#1D1D1F;resize:vertical;outline:none}
@@ -155,14 +152,8 @@ textarea::placeholder{color:#AEAEB2}
 <!-- HEADER -->
 <div class="header">
 <div class="header-inner">
-<div>
 <h1>Conselho</h1>
 <p class="subtitle">debate genuino &middot; decisao superior</p>
-</div>
-<div class="nav-toggle">
-<button class="nav-btn on" id="navConfig" onclick="switchView('config')">Configurar</button>
-<button class="nav-btn" id="navDebate" onclick="switchView('debate')">Debate</button>
-</div>
 </div>
 </div>
 
@@ -673,7 +664,6 @@ let pubFilter=null; // null=geral, "AB"=A/B+, "CD"=C/D
 let idea="",r0={},r0resp="",r1={},r2={},r3={},mt="";
 let er1={},er2={},er3={},emt="";
 let debateHistory=[],debateNum=1,continueText="";
-let currentView="config";
 
 /* ===== API ===== */
 async function apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx){
@@ -712,16 +702,11 @@ return{n:a.n,tag:a.tag,c:a.c,d:a.d};
 }
 
 /* ===== NAV ===== */
-function switchView(v){
-currentView=v;
-document.getElementById("navConfig").className="nav-btn"+(v==="config"?" on":"");
-document.getElementById("navDebate").className="nav-btn"+(v==="debate"?" on":"");
-if(v==="config"){
-sh("vs");hi("va");hi("vexCfg");hi("vex");
-}else{
-hi("vs");
-// Show whatever debate state is active
+function showConfig(){
+hi("va");hi("vexCfg");hi("vex");sh("vs");
 }
+function showDebate(){
+hi("vs");sh("va");
 }
 
 /* ===== CONFIG ===== */
@@ -819,9 +804,7 @@ async function go(cont){
 if(!cont){
 idea=document.getElementById("ii").value.trim();if(!idea)return;
 debateHistory=[];debateNum=1;continueText="";
-hi("vs");sh("va");
-// Switch nav to Debate
-switchView("debate");sh("va");
+showDebate();
 }else{debateNum++}
 r0={};r0resp="";r1={};r2={};r3={};mt="";
 const ag=selAg,tk=TK[prof],ri=RI[prof];
@@ -1108,7 +1091,7 @@ selAg=["cvo","cmo","cfo","cbo"];prof="obj";rod=3;escOn=true;eprof="obj";erod=3;p
 ["r0a","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 ["va","vr0","vr1","vp1","vr2","vp2","vr3","vsy","vd","vcd","vexCfg","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved","r0resp","r0skip"].forEach(id=>hi(id));
 renderAgToggles();setProf("obj");setRod(3);setEsc(true);
-switchView("config");
+showConfig();
 window.scrollTo(0,0);
 }
 </script>
