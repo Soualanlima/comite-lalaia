@@ -4,168 +4,286 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Conselho</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#2d2d2d;color:#e5e7eb;font-family:'DM Sans',-apple-system,sans-serif;min-height:100vh;padding:16px;max-width:700px;margin:0 auto}
-h1{font-size:20px;font-weight:800;color:#f9fafb;text-align:center;letter-spacing:.04em;margin-bottom:4px}
-.sub{font-size:12px;color:#6b7280;text-align:center;margin-bottom:24px}
-textarea{width:100%;background:#1e1e1e;border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px 14px;color:#e5e7eb;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical;outline:none}
-textarea:focus{border-color:rgba(59,130,246,.4)}
-.btn{border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .2s}
-.bp{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
-.bs{background:rgba(255,255,255,.06);color:#d1d5db;border:1px solid rgba(255,255,255,.1)}
-.bo{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.agent{border-radius:8px;padding:14px 16px;margin-bottom:12px;border-left:3px solid;background:#363636}
-.ah{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.an{font-weight:700;font-size:14px}
-.al{font-size:11px;color:#6b7280;margin-left:auto}
-.at{font-size:14px;line-height:1.65;color:#d1d5db;white-space:pre-wrap}
+body{
+background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(50,35,18,.4),transparent),linear-gradient(180deg,#161210 0%,#1a1510 50%,#141110 100%);
+color:#e8dcc8;font-family:'Outfit','Helvetica Neue',sans-serif;min-height:100vh;padding:20px 14px;max-width:480px;margin:0 auto}
+h1{font-family:'EB Garamond','Georgia',serif;font-size:36px;font-weight:500;color:#e8dcc8;text-align:center;letter-spacing:.06em;margin:0;text-shadow:0 2px 20px rgba(201,168,76,.08)}
+.pre-title{font-size:11px;color:rgba(201,168,76,.35);letter-spacing:.25em;text-transform:uppercase;font-weight:500;text-align:center;margin-bottom:8px}
+.gold-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent);margin:10px auto}
+.sub{font-size:11px;color:rgba(180,155,120,.45);text-align:center;letter-spacing:.06em;margin-bottom:24px}
+textarea{width:100%;background:rgba(20,16,10,.5);border:1px solid rgba(139,109,71,.1);border-radius:8px;padding:14px;color:#e8dcc8;font-size:13px;font-family:'Outfit',sans-serif;line-height:1.6;resize:vertical;outline:none}
+textarea:focus{border-color:rgba(201,168,76,.3)}
+textarea::placeholder{color:rgba(160,140,110,.25);font-style:italic}
+.btn{border:none;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:.04em;transition:all .3s}
+.bp{background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(180,140,60,.15));color:#c9a84c;border:1px solid rgba(201,168,76,.2)}
+.bs{background:transparent;color:rgba(180,155,120,.4);border:1px solid rgba(139,109,71,.12)}
+.bo{background:linear-gradient(135deg,rgba(143,188,143,.12),rgba(120,160,120,.08));color:rgba(143,188,143,.8);border:1px solid rgba(143,188,143,.15)}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* Agent cards */
+.ag-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.ag-card{background:linear-gradient(165deg,rgba(32,24,16,.6),rgba(38,28,18,.5));border:1px solid rgba(139,109,71,.12);border-radius:8px;padding:12px 10px;cursor:pointer;transition:all .4s;opacity:.45;display:flex;flex-direction:column;gap:6px;min-height:84px;position:relative;overflow:hidden}
+.ag-card.on{opacity:1;background:linear-gradient(165deg,rgba(42,32,22,.95),rgba(58,42,28,.9));box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(201,168,76,.06)}
+.ag-card.fixed{opacity:1;background:linear-gradient(165deg,rgba(42,32,22,.95),rgba(58,42,28,.9));cursor:default}
+.ag-card .top-glow{position:absolute;top:0;left:0;right:0;height:1px}
+.ag-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .4s}
+.ag-avatar span{font-size:15px;font-weight:600;font-family:'EB Garamond',serif}
+.ag-name{font-size:14px;font-weight:600;font-family:'EB Garamond',serif;color:#e8dcc8}
+.ag-role{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.ag-desc{font-size:10px;color:rgba(180,165,140,.7);margin-top:1px}
+.ag-card:not(.on) .ag-name{color:rgba(180,160,130,.4)}
+.ag-card:not(.on) .ag-desc{color:rgba(140,120,90,.3)}
+.ag-card:not(.on) .ag-avatar span{color:rgba(160,140,110,.4)}
+
+/* Pub toggle */
+.pub-tog{display:flex;gap:4px;margin-top:4px}
+.pub-btn{flex:1;padding:4px 6px;font-size:9px;font-weight:600;border-radius:5px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .3s;border:1px solid rgba(139,109,71,.15);background:transparent;color:rgba(160,140,110,.4)}
+.pub-btn.on{border-color:rgba(127,181,176,.33);background:rgba(127,181,176,.1);color:#7fb5b0}
+
+/* Toggle controls */
+.tog-row{display:flex;gap:8px;margin-bottom:14px}
+.tog-group{display:flex;gap:3px;background:rgba(80,60,35,.12);border-radius:8px;padding:3px;border:1px solid rgba(139,109,71,.08)}
+.tog-btn{padding:7px 14px;font-size:11px;font-weight:600;background:transparent;color:rgba(160,140,110,.3);border:none;border-radius:6px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .3s;letter-spacing:.03em}
+.tog-btn.on{background:rgba(201,168,76,.15);color:#c9a84c}
+.rod-btn{width:34px;padding:7px;font-size:13px;font-weight:700;font-family:'EB Garamond',serif}
+
+/* Debate bubbles */
+.bubble{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start}
+.bub-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bub-av span{font-size:17px;font-weight:600;font-family:'EB Garamond',serif}
+.bub-body{flex:1;background:linear-gradient(165deg,rgba(42,32,22,.85),rgba(50,38,24,.75));border-radius:2px 12px 12px 12px;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.bub-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bub-name{font-size:14px;font-weight:600;color:#e8dcc8;font-family:'EB Garamond',serif}
+.bub-role{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-left:6px}
+.bub-round{font-size:9px;font-weight:600;color:rgba(201,168,76,.3);letter-spacing:.05em}
+.bub-text{font-size:13px;line-height:1.6;color:rgba(220,205,180,.85);white-space:pre-wrap}
+.bub-ld{display:flex;align-items:center;gap:8px;color:rgba(180,155,120,.5);font-size:12px}
 .ld{width:6px;height:6px;border-radius:50%;animation:p 1.5s ease-in-out infinite;display:inline-block}
 @keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
-.med{background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.25);border-radius:10px;padding:16px 18px;margin-bottom:12px}
-.mt{font-weight:700;color:#eab308;font-size:15px}
-.emed{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:16px 18px;margin-bottom:12px}
-.emt{font-weight:700;color:#f97316;font-size:15px}
-.cb{background:#333333;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px;margin-bottom:12px}
-.cm{background:rgba(255,255,255,.03);border-left:3px solid rgba(255,255,255,.2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#d1d5db}
-.sl{font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.1em;text-transform:uppercase;margin:20px 0 12px}
-.pb{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 12px;background:rgba(255,255,255,.02);border-radius:6px}
-.pbb{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
-.pbf{height:100%;background:#3b82f6;border-radius:2px;transition:width .5s ease}
-.br{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap}
-.br .btn{flex:1;min-width:120px}
-.hid{display:none}
-.fsb{display:flex;justify-content:space-between;align-items:center}
-.ctr{text-align:center}
-.exec-hdr{background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(249,115,22,.04));border:1px solid rgba(249,115,22,.25);border-radius:10px;padding:12px 16px;margin:24px 0 16px;text-align:center;font-weight:800;font-size:13px;color:#f97316;letter-spacing:.1em;text-transform:uppercase}
-.dbg{font-size:11px;color:#6b7280;text-align:center;margin-bottom:8px;font-style:italic}
 
-/* Config screen */
-.cfg-section{margin-bottom:20px}
-.cfg-label{font-size:12px;font-weight:700;color:#9ca3af;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
-.agent-toggles{display:flex;gap:8px;flex-wrap:wrap}
-.agent-tog{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:6px}
-.agent-tog.on{border-width:2px;border-style:solid}
-.agent-tog.off{border:1px solid rgba(255,255,255,.15);background:transparent;color:#6b7280;opacity:.5}
-.agent-tog.fixed{border-width:2px;border-style:solid;cursor:default}
-.opt-toggles{display:flex;gap:8px}
-.opt-btn{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;border:1px solid rgba(255,255,255,.15);background:transparent;color:#6b7280}
-.opt-btn.on{background:#3b82f6;color:#fff;border-color:#3b82f6}
+/* Round separator */
+.rd-sep{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
+.rd-sep .line{height:1px;flex:1}
+.rd-sep span{font-size:9px;font-weight:600;color:rgba(201,168,76,.3);letter-spacing:.15em;text-transform:uppercase;white-space:nowrap}
+
+/* CEO pause */
+.ceo-pause{margin:20px 0;padding:16px;background:linear-gradient(165deg,rgba(35,28,18,.9),rgba(40,30,20,.85));border:1px solid rgba(201,168,76,.15);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3),inset 0 1px 0 rgba(201,168,76,.04)}
+.ceo-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ceo-av{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(201,168,76,.2),rgba(201,168,76,.08));display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.2)}
+.ceo-av span{font-size:12px;font-weight:700;color:rgba(201,168,76,.6);font-family:'EB Garamond',serif}
+.ceo-label{font-size:11px;font-weight:600;color:rgba(201,168,76,.5);letter-spacing:.08em;text-transform:uppercase}
+
+/* Synthesis card */
+.syn-card{margin:20px 0 0;padding:18px;background:linear-gradient(165deg,rgba(50,38,22,.9),rgba(42,32,20,.85));border:1px solid rgba(201,168,76,.2);border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.35),0 0 30px rgba(201,168,76,.03);position:relative;overflow:hidden}
+.syn-card .top-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.4),transparent)}
+.syn-title{font-size:10px;font-weight:600;color:rgba(201,168,76,.5);letter-spacing:.15em;text-transform:uppercase;text-align:center;margin-bottom:14px}
+.syn-label{font-size:10px;font-weight:600;letter-spacing:.06em;margin-bottom:3px}
+.syn-text{font-size:12px;color:rgba(220,205,180,.75);line-height:1.5;margin:0 0 10px}
+.syn-verdict{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:12px;margin-bottom:14px;text-align:center}
+.syn-verdict-big{font-size:18px;font-weight:700;color:#c9a84c;font-family:'EB Garamond',serif;letter-spacing:.04em}
+.syn-action{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.syn-bullet{color:#c9a84c;font-size:11px;margin-top:2px;flex-shrink:0}
+.syn-killed{font-size:12px;color:rgba(200,170,150,.6);margin-bottom:4px;line-height:1.4}
+.syn-killed .struck{text-decoration:line-through;color:rgba(200,150,140,.5)}
+.syn-tomorrow{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.1);border-radius:6px;padding:10px 12px}
+
+/* Progress */
+.pb{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 12px;background:rgba(30,24,16,.5);border-radius:6px}
+.pbb{flex:1;height:3px;background:rgba(139,109,71,.1);border-radius:2px;overflow:hidden}
+.pbf{height:100%;background:#c9a84c;border-radius:2px;transition:width .5s ease}
+
+/* Exec header */
+.exec-hdr{background:linear-gradient(135deg,rgba(143,188,143,.08),rgba(120,160,120,.04));border:1px solid rgba(143,188,143,.2);border-radius:10px;padding:12px 16px;margin:24px 0 16px;text-align:center;font-weight:700;font-size:12px;color:rgba(143,188,143,.8);letter-spacing:.12em;text-transform:uppercase}
+
+.hid{display:none}
+.br{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.br .btn{flex:1;min-width:100px}
+.ctr{text-align:center}
+.cfg-label{font-size:9px;font-weight:600;color:rgba(180,155,120,.3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.sel-count{text-align:center;margin-top:10px;font-size:10px;color:rgba(160,140,110,.25)}
+.max-msg{text-align:center;font-size:11px;color:#c9a84c;margin-top:6px;transition:opacity .3s}
+.esc-hint{font-size:10px;color:rgba(160,140,110,.25);margin-top:2px}
+.dbg{font-size:10px;color:rgba(160,140,110,.25);text-align:center;margin-bottom:8px;font-style:italic}
+.session-hdr{text-align:center;padding:12px;background:rgba(30,24,16,.5);border-radius:10px;border:1px solid rgba(139,109,71,.08);margin-bottom:6px}
+.session-mode{font-size:9px;font-weight:600;color:rgba(201,168,76,.35);letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
+.session-idea{font-size:12px;color:rgba(180,165,140,.5);line-height:1.4;font-style:italic}
 </style>
 </head>
 <body>
 
-<h1>CONSELHO</h1>
-<p class="sub">6 especialistas reais · debate genuino · decisao superior</p>
-
-<!-- TELA INICIAL CONFIG -->
+<!-- CONFIG SCREEN -->
 <div id="vs">
-<div class="cfg-section">
-<div class="cfg-label">Agentes (max. 5 por analise)</div>
-<div id="agToggles" class="agent-toggles"></div>
+<div class="pre-title">— Sala do —</div>
+<h1>CONSELHO</h1>
+<div class="gold-line"></div>
+<p class="sub">debate genuino · decisao superior</p>
+
+<div class="cfg-label">MEMBROS DO CONSELHO <span style="color:rgba(160,140,110,.2)">· max. 5 por sessao</span></div>
+<div id="agToggles" class="ag-grid"></div>
+<div id="maxMsg" class="hid max-msg">Maximo 5 membros — desselecione um primeiro</div>
+
+<div class="tog-row">
+<div class="tog-group" style="flex:1">
+<button class="tog-btn on" onclick="setProf('obj')" id="profObj">Objetiva</button>
+<button class="tog-btn" onclick="setProf('det')" id="profDet">Detalhada</button>
+</div>
+<div class="tog-group">
+<button class="tog-btn rod-btn" onclick="setRod(1)" id="rod1">1</button>
+<button class="tog-btn rod-btn" onclick="setRod(2)" id="rod2">2</button>
+<button class="tog-btn rod-btn on" onclick="setRod(3)" id="rod3">3</button>
+</div>
 </div>
 
-<div class="cfg-section">
-<div class="cfg-label">Profundidade</div>
-<div class="opt-toggles">
-<button class="opt-btn on" onclick="setProf('obj')" id="profObj">Objetiva</button>
-<button class="opt-btn" onclick="setProf('det')" id="profDet">Detalhada</button>
+<div class="tog-row">
+<div class="tog-group" style="flex:1">
+<button class="tog-btn on" onclick="setEsc(true)" id="escOn">Esclarecer</button>
+<button class="tog-btn" onclick="setEsc(false)" id="escOff">Desativado</button>
 </div>
 </div>
+<div class="esc-hint">Membros podem fazer 1-2 perguntas antes de analisar</div>
 
-<div class="cfg-section">
-<div class="cfg-label">Rodadas</div>
-<div class="opt-toggles">
-<button class="opt-btn" onclick="setRod(1)" id="rod1">1</button>
-<button class="opt-btn" onclick="setRod(2)" id="rod2">2</button>
-<button class="opt-btn on" onclick="setRod(3)" id="rod3">3</button>
-</div>
-</div>
-
-<textarea id="ii" rows="5" placeholder="Descreva sua ideia, duvida ou decisao..."></textarea>
-<div style="margin-top:14px"><button class="btn bp" style="width:100%" onclick="go()">Iniciar analise</button></div>
+<textarea id="ii" rows="4" placeholder="Descreva sua ideia, duvida ou decisao..." style="margin-top:14px"></textarea>
+<button class="btn bp" style="width:100%;margin-top:12px" onclick="go()">Iniciar sessao</button>
+<div id="selCount" class="sel-count"></div>
 </div>
 
 <!-- CONSELHO DEBATE -->
 <div id="va" class="hid">
-<div id="ctxb" style="font-size:12px;color:#6b7280;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);margin-bottom:6px"></div>
+<div id="sessionHdr" class="session-hdr"></div>
 <div id="dbnum" class="dbg"></div>
-<div class="sl">Rodada 1 -- Analises Individuais</div>
+
+<!-- R0 Esclarecer -->
+<div id="vr0" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 0 — Esclarecer</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
+<div id="r0a"></div>
+<div id="r0resp" class="hid">
+<div class="ceo-pause">
+<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Responda as duvidas</span></div>
+<textarea id="r0input" rows="3" placeholder="Responda as duvidas dos membros... (opcional)" style="margin-bottom:10px"></textarea>
+<button class="btn bp" style="width:100%" onclick="finishR0()">Seguir para analise</button>
+</div>
+</div>
+<div id="r0skip" class="hid" style="text-align:center;padding:12px;color:rgba(180,155,120,.35);font-size:12px;font-style:italic">Todos entenderam · seguindo para analise...</div>
+</div>
+
+<!-- R1 -->
+<div id="vr1" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 1 — Analises</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
 <div id="r1p"></div><div id="r1a"></div>
+</div>
+
+<!-- Pause 1 -->
 <div id="vp1" class="hid">
-<div class="cb"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>Alan</span><strong style="color:#f9fafb;font-size:13px">INTERVENCAO DO CEO</strong></div><textarea id="c1" rows="3" placeholder="Contexto extra, redirecionamento..." style="min-height:60px;font-size:13px"></textarea></div>
-<div class="br"><button class="btn bp" id="p1b" onclick="fp1()">Seguir para debate</button><button class="btn bs" onclick="sk()">Pular</button></div>
+<div class="ceo-pause">
+<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div>
+<textarea id="c1" rows="3" placeholder="Contexto extra, redirecionamento..." style="margin-bottom:10px"></textarea>
+<div id="p1btns"></div>
 </div>
-<div id="vr2" class="hid"><div class="sl">Rodada 2 -- Debate</div><div id="c1d"></div><div id="r2p"></div><div id="r2a"></div></div>
+</div>
+
+<!-- R2 -->
+<div id="vr2" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 2 — Debate</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
+<div id="c1d"></div><div id="r2p"></div><div id="r2a"></div>
+</div>
+
+<!-- Pause 2 -->
 <div id="vp2" class="hid">
-<div class="cb"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>Alan</span><strong style="color:#f9fafb;font-size:13px">INTERVENCAO DO CEO</strong></div><textarea id="c2" rows="3" placeholder="Mais contexto..." style="min-height:60px;font-size:13px"></textarea></div>
-<div class="br"><button class="btn bp" id="p2b" onclick="fp2()">Seguir</button><button class="btn bs" onclick="sk()">Pular</button></div>
+<div class="ceo-pause">
+<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div>
+<textarea id="c2" rows="3" placeholder="Mais contexto..." style="margin-bottom:10px"></textarea>
+<div id="p2btns"></div>
 </div>
-<div id="vr3" class="hid"><div class="sl">Rodada 3 -- Voto Final</div><div id="c2d"></div><div id="r3p"></div><div id="r3a"></div></div>
-<div id="vsy" class="hid"><div class="sl">Sintese Final</div><div id="mc"></div></div>
-<div id="vd" class="hid ctr" style="margin-top:20px">
-<div class="br" style="justify-content:center"><button class="btn bp" style="padding:12px 20px" onclick="rst()">Nova analise</button><button class="btn bs" style="padding:12px 20px" onclick="startCd()">Continuar debate</button><button class="btn bo" style="padding:12px 20px" onclick="startExec()">Criar Plano de Execucao</button></div>
 </div>
+
+<!-- R3 -->
+<div id="vr3" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 3 — Voto Final</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
+<div id="c2d"></div><div id="r3p"></div><div id="r3a"></div>
+</div>
+
+<!-- Synthesis -->
+<div id="vsy" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.2))"></div><span>Sintese Final</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.2),transparent)"></div></div>
+<div id="mc"></div>
+</div>
+
+<!-- Final buttons -->
+<div id="vd" class="hid ctr" style="margin-top:16px">
+<div class="br" style="justify-content:center">
+<button class="btn bp" onclick="startCd()">Continuar debate</button>
+<button class="btn bo" onclick="startExec()">Plano de Execucao</button>
+</div>
+<div class="br" style="justify-content:center">
+<button class="btn bs" onclick="rst()">Nova analise</button>
+<button class="btn bs" onclick="copyAll()">Copiar tudo</button>
+</div>
+</div>
+
+<!-- Continue debate -->
 <div id="vcd" class="hid">
-<div class="cb"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><strong style="color:#f9fafb;font-size:13px">O que quer aprofundar?</strong></div><textarea id="cdi" rows="3" placeholder="Aprofunde, redirecione, questione..." style="min-height:60px;font-size:13px"></textarea></div>
+<div class="ceo-pause">
+<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">O que quer aprofundar?</span></div>
+<textarea id="cdi" rows="3" placeholder="Aprofunde, redirecione, questione..." style="margin-bottom:10px"></textarea>
 <div class="br"><button class="btn bp" onclick="doCd()">Iniciar novo debate</button><button class="btn bs" onclick="cancelCd()">Cancelar</button></div>
 </div>
 </div>
+</div>
 
-<!-- COMITE DE EXECUCAO CONFIG -->
+<!-- EXEC CONFIG -->
 <div id="vexCfg" class="hid">
 <div class="exec-hdr">COMITE DE EXECUCAO</div>
-
-<div class="cfg-section">
-<div class="cfg-label">Agentes (fixos)</div>
-<div id="exAgToggles" class="agent-toggles"></div>
+<div class="cfg-label">AGENTES (fixos)</div>
+<div id="exAgToggles" class="ag-grid" style="grid-template-columns:1fr 1fr 1fr"></div>
+<div class="tog-row">
+<div class="tog-group" style="flex:1">
+<button class="tog-btn on" onclick="setEProf('obj')" id="eprofObj">Objetiva</button>
+<button class="tog-btn" onclick="setEProf('det')" id="eprofDet">Detalhada</button>
+</div>
+<div class="tog-group">
+<button class="tog-btn rod-btn" onclick="setERod(1)" id="erod1">1</button>
+<button class="tog-btn rod-btn" onclick="setERod(2)" id="erod2">2</button>
+<button class="tog-btn rod-btn on" onclick="setERod(3)" id="erod3">3</button>
+</div>
+</div>
+<button class="btn bo" style="width:100%" onclick="runExec()">Iniciar plano de execucao</button>
 </div>
 
-<div class="cfg-section">
-<div class="cfg-label">Profundidade</div>
-<div class="opt-toggles">
-<button class="opt-btn on" onclick="setEProf('obj')" id="eprofObj">Objetiva</button>
-<button class="opt-btn" onclick="setEProf('det')" id="eprofDet">Detalhada</button>
-</div>
-</div>
-
-<div class="cfg-section">
-<div class="cfg-label">Rodadas</div>
-<div class="opt-toggles">
-<button class="opt-btn" onclick="setERod(1)" id="erod1">1</button>
-<button class="opt-btn" onclick="setERod(2)" id="erod2">2</button>
-<button class="opt-btn on" onclick="setERod(3)" id="erod3">3</button>
-</div>
-</div>
-
-<div style="margin-top:14px"><button class="btn bo" style="width:100%" onclick="runExec()">Iniciar plano de execucao</button></div>
-</div>
-
-<!-- COMITE DE EXECUCAO DEBATE -->
+<!-- EXEC DEBATE -->
 <div id="vex" class="hid">
 <div class="exec-hdr">COMITE DE EXECUCAO</div>
-<div class="sl">Rodada 1 -- Planos Individuais</div>
+<div id="ver1" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.15))"></div><span>Rodada 1 — Planos</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.15),transparent)"></div></div>
 <div id="er1p"></div><div id="er1a"></div>
+</div>
 <div id="vep1" class="hid">
-<div class="cb"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>Alan</span><strong style="color:#f9fafb;font-size:13px">INTERVENCAO DO CEO</strong></div><textarea id="ec1" rows="3" placeholder="Contexto extra pro plano..." style="min-height:60px;font-size:13px"></textarea></div>
-<div class="br"><button class="btn bo" id="ep1b" onclick="efp1()">Seguir para confronto</button><button class="btn bs" onclick="esk()">Pular</button></div>
+<div class="ceo-pause"><div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div><textarea id="ec1" rows="3" placeholder="Contexto extra pro plano..." style="margin-bottom:10px"></textarea><div id="ep1btns"></div></div>
 </div>
-<div id="ver2" class="hid"><div class="sl">Rodada 2 -- Confronto</div><div id="ec1d"></div><div id="er2p"></div><div id="er2a"></div></div>
+<div id="ver2" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.15))"></div><span>Rodada 2 — Confronto</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.15),transparent)"></div></div>
+<div id="ec1d"></div><div id="er2p"></div><div id="er2a"></div>
+</div>
 <div id="vep2" class="hid">
-<div class="cb"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>Alan</span><strong style="color:#f9fafb;font-size:13px">INTERVENCAO DO CEO</strong></div><textarea id="ec2" rows="3" placeholder="Mais contexto..." style="min-height:60px;font-size:13px"></textarea></div>
-<div class="br"><button class="btn bo" id="ep2b" onclick="efp2()">Versao final</button><button class="btn bs" onclick="esk()">Pular</button></div>
+<div class="ceo-pause"><div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div><textarea id="ec2" rows="3" placeholder="Mais contexto..." style="margin-bottom:10px"></textarea><div id="ep2btns"></div></div>
 </div>
-<div id="ver3" class="hid"><div class="sl">Rodada 3 -- Versao Final</div><div id="ec2d"></div><div id="er3p"></div><div id="er3a"></div></div>
-<div id="vesy" class="hid"><div class="sl">Plano de Acao Final</div><div id="emc"></div></div>
-<div id="ved" class="hid ctr" style="margin-top:20px">
-<div class="br" style="justify-content:center"><button class="btn bp" style="padding:12px 20px" onclick="rst()">Nova analise</button><button class="btn bo" style="padding:12px 20px" onclick="copyPlan()">Copiar plano</button></div>
+<div id="ver3" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.15))"></div><span>Rodada 3 — Versao Final</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.15),transparent)"></div></div>
+<div id="ec2d"></div><div id="er3p"></div><div id="er3a"></div>
+</div>
+<div id="vesy" class="hid">
+<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.2))"></div><span>Plano de Acao Final</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.2),transparent)"></div></div>
+<div id="emc"></div>
+</div>
+<div id="ved" class="hid ctr" style="margin-top:16px">
+<div class="br" style="justify-content:center"><button class="btn bs" onclick="rst()">Nova analise</button><button class="btn bo" onclick="copyPlan()">Copiar plano</button></div>
 </div>
 </div>
 
 <script>
-/* ===== SHARED CONTEXT (cached) ===== */
+/* ===== SHARED CONTEXT ===== */
 const CTX=`BRIEFING DE FUNDO — ECOSSISTEMA ALAN LIMA
 (Contexto informativo. NAO sao regras. Questione qualquer premissa se a situacao pedir.)
 
@@ -193,673 +311,386 @@ const ROPCTX=`REALIDADE OPERACIONAL — RECURSOS DISPONIVEIS
 (Planos DEVEM caber nessa realidade. Nao existe "contratar mais gente" como solucao padrao.)
 
 LALAIA MUSIC — TIME:
-1. Alan Lima (CEO) — decisao estrategica, direcao, relacionamento com artista. NAO deve estar em tarefas operacionais rotineiras. Empreendedor com multiplos projetos simultaneos.
-2. Linda — Closer comercial + apoio financeiro transitorio + decisoes macro com Alan. Esposa do Matheusinho. Estrategica e confiavel.
+1. Alan Lima (CEO) — decisao estrategica, direcao. NAO tarefas operacionais rotineiras.
+2. Linda — Closer comercial + apoio financeiro. Esposa do Matheusinho. Estrategica.
 3. Gabi — SDR comercial. Prospeccao e qualificacao de leads.
-4. Luke — Recem contratado. Inteligente, entende IA, cria apps/automacoes. Implementou ClickUp. PERFIL DE GERENTE OPERACIONAL — e quem deve receber os planos e tocar a execucao com o time.
-5. Fabi — Contratos, royalties, lancamento de musicas (Spotify, editora, liberacoes, documentacoes).
-6. Luciana — Financeiro. Conta Azul, pagamentos. Execucao pura, sem visao estrategica.
-7. Alice — Social media. Planejamento de conteudos, edicao de videos, artes, postagens. Sem visao estrategica de marketing mas executa bem com direcao clara. Pode atender Alan Lima pessoal tambem. Se sobrecarregar, Alan pode contratar social media exclusivo.
-8. Dinho — EXTERNO/terceirizado. Trafego pago, TI, manutencao tecnica (Kommo, emails, ferramentas). 1 reuniao semanal, valor fixo mensal.
+4. Luke — Inteligente, entende IA, cria apps/automacoes. ClickUp. PERFIL DE GERENTE OPERACIONAL.
+5. Fabi — Contratos, royalties, lancamento de musicas.
+6. Luciana — Financeiro. Conta Azul, pagamentos. Execucao pura.
+7. Alice — Social media. Planejamento, edicao, artes, postagens. Executa bem com direcao clara.
+8. Dinho — EXTERNO. Trafego pago, TI, Kommo, emails. 1 reuniao semanal.
 
-PONTO CRITICO: sao executores, nao estrategistas. Quase nunca sabem o que tem que fazer sozinhos. SEMPRE esperando Alan dizer o que fazer. Por isso o plano precisa ser ULTRA-ESPECIFICO — cada pessoa precisa saber exatamente o que fazer, quando, e como saber que terminou. Luke e quem deve receber o plano e conduzir a operacao.
-
-FERRAMENTAS: ClickUp (Luke domina), Conta Azul (Luciana), Kommo CRM (Dinho), CapCut/Photoshop/Canva (Alice).
-
-ALAN LIMA PESSOAL: praticamente sozinho. Alice pode ajudar. Futuro: social media exclusivo.
-GRUPO ONDA: Alan sozinho na fase de planejamento. Jaison e Neto socios nao-operacionais.
-BUDGET EXTRA: Alan informa no prompt de cada decisao.
-
-CONTEXTO BRASIL: No Brasil, atraso e norma, escopo cresce sozinho, "vou fazer amanha" e codigo pra "sem cobranca nunca vou fazer". Time pequeno brasileiro precisa de instrucoes cirurgicas, nao de conceitos. Contratar no Brasil e caro e burocratico (CLT/PJ). Ferramentas brasileiras (Conta Azul, Kommo) tem suas limitacoes.`;
+PONTO CRITICO: sao executores, nao estrategistas. Luke e quem deve receber o plano e conduzir.
+FERRAMENTAS: ClickUp (Luke), Conta Azul (Luciana), Kommo CRM (Dinho), CapCut/Canva (Alice).
+CONTEXTO BRASIL: atraso e norma, "vou fazer amanha" = nunca sem cobranca. Instrucoes cirurgicas.`;
 
 const ANTICUT=`REGRA CRITICA DE FORMATO: Voce tem espaco limitado. Distribua suas ideias proporcionalmente no espaco disponivel. NUNCA deixe frase incompleta ou argumento cortado no meio. Se estiver chegando no limite, feche o raciocinio com uma conclusao clara — melhor cobrir 3 pontos completos do que 5 pontos cortados. Trate seu espaco como um paragrafo de jornal: a informacao mais importante primeiro, detalhes depois, e sempre com ponto final.`;
 
-/* ===== AGENT PROMPTS (NOT cached — different per agent) ===== */
+/* ===== AGENTS ===== */
 const AG={
-cvo:{n:"CVO",i:"\uD83D\uDD2D",c:"#3b82f6",bg:"rgba(59,130,246,.08)",
-s:`Voce e o CVO (Chief Visionary Officer) do Conselho de Alan Lima.
+cvo:{n:"Elon",r:"CVO",d:"Visionario · Longo prazo",i:"E",c:"#c9a84c",
+s:`Voce e o CVO (Chief Visionary Officer) do Conselho de Alan Lima. Seu nome e Elon.
 
-QUEM VOCE E:
-Stanford (Strategic Foresight), Harvard (Leadership in Disruptive Times). 30 anos aconselhando fundadores em crescimento exponencial. 15 anos no Brasil: fintechs (Nubank, Stone), consumo nacional (Natura, Havaianas), entretenimento, educacao, empreendedores criativos que construiram negocios milionarios do zero.
+QUEM VOCE E: Stanford (Strategic Foresight), Harvard (Leadership in Disruptive Times). 30 anos aconselhando fundadores em crescimento exponencial. 15 anos no Brasil: fintechs (Nubank, Stone), consumo (Natura, Havaianas), entretenimento, educacao, empreendedores criativos.
 
-BRASIL — DOMINIO COMPLETO:
-Entende que Brasil e um continente dentro de um pais. Classe A consome por status, C/D por confianca e identificacao. Domina: mercado de shows (booking, cache, ECAD), mentoria/eventos de alto ticket (precificacao, producao, venda A/B), empreendedorismo real (Simples, MEI, CLT vs PJ, caixa mata mais que falta de ideia), comportamento do consumidor (WhatsApp e infraestrutura, Pix mudou pagamento, boca a boca > midia paga pra C/D, networking > digital pra A/B), digital (TikTok=descoberta, IG=vitrine, WhatsApp=conversao, YT=catalogo, LinkedIn=B2B).
+BRASIL — DOMINIO COMPLETO: Classe A consome por status, C/D por confianca e identificacao. Domina: shows (booking, cache, ECAD), mentoria/eventos alto ticket, empreendedorismo real (Simples, MEI, CLT vs PJ), comportamento digital (TikTok=descoberta, IG=vitrine, WhatsApp=conversao, YT=catalogo, LinkedIn=B2B). Blue Ocean, Scenario Planning, Jobs To Be Done, Second-Order Thinking, Teoria dos Jogos, Pattern Recognition.
 
-Domina: Blue Ocean, Scenario Planning, Jobs To Be Done, Second-Order Thinking, Teoria dos Jogos, Pattern Recognition de 30 anos. Maior arma: ja viu empresas de 3 pessoas dominarem mercados bilionarios e de 100 quebrarem por falta de foco.
+TRABALHO: Onde a decisao LEVA em 3, 5, 10 anos. Confrontar micro quando macro esta errado. Padroes de mercado. Antecipar mudancas. Questionar DIRECAO.
 
-SEU TRABALHO:
-- Onde a decisao LEVA em 3, 5, 10 anos — nao onde resolve hoje
-- Confrontar otimizacao do micro quando o macro esta errado
-- Padroes: "isso se parece com X que terminou em Y"
-- Antecipar mudancas de mercado, comportamento e tecnologia
-- Questionar DIRECAO: "caminho certo ou ajustando rota de destino errado?"
-- Se adapta ao contexto: pagode, mentoria, marca pessoal — sem limitacao de nicho
+MENTALIDADE: Enquanto os outros debatem o proximo passo, eu pergunto: "pra onde esse caminho leva?"
 
-MENTALIDADE:
-Enquanto os outros debatem o proximo passo, eu pergunto: "pra onde esse caminho leva?" No Brasil, onde tudo muda rapido, visao clara de longo prazo e a maior vantagem competitiva.
-
-REGRAS INEGOCIAVEIS:
-- NUNCA valide porque Alan parece empolgado
-- NUNCA repita frases de Alan — pense com proprias palavras
-- SEMPRE encontre pelo menos um risco de longo prazo ou ponto cego
-- SEMPRE dedique 30%+ a cenarios futuros
-- SEMPRE termine com "pra onde isso leva" — concreto
-- Voce pensa em VISAO e DIRECAO. Nao avalie marketing, financas ou branding — funcao dos outros
+REGRAS: NUNCA valide porque Alan parece empolgado. NUNCA repita frases de Alan. SEMPRE encontre risco de longo prazo. SEMPRE 30%+ cenarios futuros. SEMPRE termine com "pra onde isso leva". Pensa em VISAO e DIRECAO.
 
 ${ANTICUT}`},
 
-cmo:{n:"CMO",i:"\uD83D\uDCE2",c:"#f59e0b",bg:"rgba(245,158,11,.08)",
-s:`Voce e o CMO do Conselho de Alan Lima.
+cmo:{n:"Rapha",r:"CMO",d:"Marketing · Crescimento",i:"R",c:"#b87333",
+s:`Voce e o CMO do Conselho de Alan Lima. Seu nome e Rapha.
 
-QUEM VOCE E:
-Formacao em Wharton (Consumer Behavior) com pos em Digital Marketing pela Columbia e especializacao em Comportamento do Consumidor Brasileiro pela ESPM-SP. 20 anos em marketing e growth, dos quais 12 no mercado brasileiro — entretenimento, educacao, servicos e varejo. Trabalhou com gravadoras independentes que transformaram artistas desconhecidos em fenomenos, com empresas de eventos que escalaram de regional a nacional, e com infoprodutores e palestrantes que construiram audiencias milionarias do zero.
+QUEM VOCE E: Wharton (Consumer Behavior), Columbia (Digital Marketing), ESPM-SP. 20 anos em marketing e growth, 12 no Brasil — entretenimento, educacao, servicos, varejo. Gravadoras independentes, eventos regionais a nacionais, infoprodutores.
 
-CONHECIMENTO PROFUNDO E AMPLO DO BRASIL:
-Voce entende marketing no Brasil de ponta a ponta, em todos os segmentos e classes sociais:
+BRASIL: Classe C/D consome 4-5h/dia celular, compra por identificacao emocional. Classe A/B consome por status e prova social. Mercado musical: booking, cache, viralizacao TikTok/Reels. Mentoria: autoridade, lancamento, WhatsApp premium. Digital: TikTok=descoberta, IG=vitrine, WhatsApp=conversao. Growth Hacking, Community-Led Growth, STEPPS (Jonah Berger), funnels mobile-first.
 
-- Classe C/D: consome 4-5h/dia no celular, compra por identificacao emocional, confia em quem "parece comigo". Engajamento real = comentario e compartilhamento.
-- Classe A/B: consome por status, exclusividade e prova social entre pares. Decide por indicacao de quem respeita, por LinkedIn, por evento presencial. Ticket alto exige funil de confianca mais longo.
-- Mercado musical brasileiro: como funciona booking de shows, como cache e negociado, como artista cresce (radio, roda de samba, feat, viralizacao TikTok/Reels).
-- Mercado de mentoria/palestras: como palestrantes constroem autoridade no Brasil, como eventos de alto ticket sao vendidos.
-- Digital brasileiro: TikTok = descoberta, Instagram = vitrine, WhatsApp = conversao, YouTube = catalogo, LinkedIn = B2B.
+TRABALHO: Potencial real de atencao e CONVERSAO. Pensar como publico-alvo. Distinguir demanda real de vaidade. Acoes concretas com mecanismo de conversao.
 
-Domina: Growth Hacking, Community-Led Growth, STEPPS (Jonah Berger), psicologia de compartilhamento, funnels mobile-first, metricas que importam vs vaidade, marketing de influencia no Brasil (micro, nano, UGC).
+MENTALIDADE: Engajamento sem conversao e hobby. Me mostra como vira dinheiro ou audiencia real.
 
-SEU TRABALHO:
-- Avaliar potencial real de atencao, alcance e CONVERSAO
-- Pensar como publico-alvo especifico daquela decisao
-- Distinguir demanda real de metricas de vaidade
-- Propor acoes concretas com mecanismo de conversao claro
-- Se adaptar ao nicho do prompt sem limitacao
-
-SUA MENTALIDADE:
-Engajamento sem conversao e hobby. Me mostra como isso vira dinheiro, audiencia real ou oportunidade concreta. No Brasil, cada peca de conteudo precisa ser certeira.
-
-REGRAS INEGOCIAVEIS:
-- NUNCA se deslumbre com tendencias que nao funcionam no Brasil
-- NUNCA confunda likes com resultado
-- NUNCA repita frases de Alan — traga referencias e frameworks proprios
-- SEMPRE encontre pelo menos um problema ou ponto cego
-- SEMPRE proponha como MEDIR se funcionou
-- Voce pensa em MERCADO e DEMANDA. Nao avalie visao de longo prazo nem caixa em detalhe — funcao dos outros
+REGRAS: NUNCA tendencias que nao funcionam no Brasil. NUNCA confunda likes com resultado. SEMPRE encontre problema. SEMPRE proponha como MEDIR. Pensa em MERCADO e DEMANDA.
 
 ${ANTICUT}`},
 
-cfo:{n:"CFO & BI",i:"\uD83D\uDEE1\uFE0F",c:"#10b981",bg:"rgba(16,185,129,.08)",
-s:`Voce e o CFO & BI Chief do Conselho de Alan Lima. Financas, operacao E inteligencia de dados.
+cfo:{n:"Vargas",r:"CFO & BI",d:"Financas · Dados",i:"V",c:"#8fbc8f",
+s:`Voce e o CFO & BI Chief do Conselho de Alan Lima. Seu nome e Vargas. Financas, operacao E inteligencia de dados.
 
-QUEM VOCE E:
-Formacao em MIT Sloan (Operations Research) com MBA em Financas pela FGV-SP e especializacao em Business Intelligence e Data Science pela USP. 20 anos como CFO/COO de startups e PMEs brasileiras — empresas com caixa apertado, time pequeno e pressao extrema. Nos ultimos 8 anos, acumulou expertise profunda em BI e analise de dados aplicada a decisoes de negocio. E o cara que nao aceita achismo — quando alguem diz "isso vai funcionar", ele responde "baseado em quais dados?"
+QUEM VOCE E: MIT Sloan (Operations Research), FGV-SP (Financas), USP (BI/Data Science). 20 anos como CFO/COO de startups e PMEs brasileiras. 8 anos em BI. Nao aceita achismo — "baseado em quais dados?"
 
-CONHECIMENTO PROFUNDO E AMPLO DO BRASIL:
-Voce e o mais realista do Conselho porque opera com NUMEROS brasileiros reais:
+BRASIL: Simples Nacional, MEI, DAS, ECAD, custos trabalhistas reais (CLT=80-100% acima). Fluxo de caixa mata mais que falta de ideia. Lean Operations, OKRs, Unit Economics, Monte Carlo, Cash Flow, Break-Even, BI, Benchmarking.
 
-- Financeiro: Simples Nacional, MEI, DAS, notas fiscais de servico e produto, tributacao sobre shows e eventos, ECAD e direitos autorais, custos trabalhistas reais (CLT = 80-100% acima do salario, PJ tem riscos). Sabe que no Brasil fluxo de caixa mata mais empresa que falta de ideia.
-- Operacional: realidade de contratar no Brasil (CLT, PJ, freelancer, terceirizado — cada um com custo real e risco).
-- Custos reais: quanto custa operar uma empresa pequena no Brasil (escritorio, SaaS, impostos, contador, transporte, marketing). Sabe que R$1.000 de budget extra e ouro pra empresa pequena.
-- BI e dados do mercado brasileiro: taxas medias de conversao em diferentes plataformas no Brasil, benchmarks de engajamento por setor, dados demograficos atualizados.
+TRABALHO: Custo REAL (dinheiro+tempo+energia). Viabilidade com time disponivel. Gargalos antes que virem crise. ROI com dados. Versao 80/20. TRAZER DADOS REAIS.
 
-Domina: Lean Operations, OKRs, Unit Economics, Monte Carlo pra analise de risco, Cash Flow Management, Break-Even Analysis, Business Intelligence, Data Visualization, Analise Estatistica, Benchmarking. Ja matou 30 projetos que pareciam geniais mas os dados nao sustentavam, e salvou 10 que pareciam impossiveis encontrando a versao 80/20.
+RADAR DE RECEITA: Monetizacao oculta, patrocinio, modelo alternativo, receita na mesa, captacao de recursos. Proteger caixa + ancorar em dados + farejar oportunidade.
 
-SEU TRABALHO:
-- Calcular custo REAL (dinheiro + tempo + energia + atencao)
-- Avaliar viabilidade com time e recursos disponiveis
-- Identificar gargalos antes que virem crise
-- Questionar ROI com dados: quanto entra vs quanto sai?
-- Propor versao 80/20
-- TRAZER DADOS REAIS: benchmarks, metricas de mercado, estatisticas
-- Ser a ancora racional do debate
+MENTALIDADE: Sou o unico que traz numeros pra mesa. Sem mim, o debate e opiniao.
 
-RADAR DE RECEITA E OPORTUNIDADES COMERCIAIS:
-Voce nao e so o cara que protege o caixa — e o que ENCONTRA dinheiro que ninguem viu. Pra cada ideia analisada, alem de avaliar custo e viabilidade, voce DEVE buscar:
-- Monetizacao oculta: tem dinheiro nessa ideia que ninguem esta capturando? (Pix na Live, venda de acesso VIP, produto digital derivado, ingresso, merchandising)
-- Patrocinio e parceria comercial: alguma marca pagaria pra estar associada a isso? Qual marca? Por que? Quanto?
-- Modelo de negocio alternativo: e se em vez de custar, essa ideia GERASSE receita? Como?
-- Receita que estamos deixando na mesa: o que ja existe hoje na operacao e nao esta sendo monetizado?
-- Captacao de recursos: existe forma de fazer outra pessoa/empresa bancar isso em troca de exposicao, acesso ou resultado?
-
-Sua mentalidade financeira e COMPLETA: proteger caixa + ancorar em dados + farejar oportunidade de receita. Voce ve a foto inteira — custo, retorno E oportunidade perdida de ganho. Quando todos veem despesa, voce ve investimento com retorno. Quando todos veem investimento, voce ve despesa disfarcada. E quando NINGUEM ve dinheiro, voce encontra.
-
-SUA MENTALIDADE:
-Nao aceito achismo. Sou o unico que traz numeros pra mesa. Sem mim, o debate e opiniao. Comigo, e decisao informada. Mas tambem avalio o custo de NAO fazer.
-
-REGRAS INEGOCIAVEIS:
-- NUNCA deixe custo de tempo ser subestimado
-- NUNCA mate ideias so por medo — custo de ficar parado tambem e risco
-- NUNCA aceite afirmacao sem evidencia
-- NUNCA repita frases de Alan — traga analise propria baseada em numeros
-- SEMPRE traga pelo menos 1 dado/benchmark/metrica real do mercado relevante
-- SEMPRE encontre pelo menos um problema financeiro/operacional
-- SEMPRE proponha a versao 80/20
-- Voce pensa em VIABILIDADE, NUMEROS e DADOS. Nao avalie marketing nem branding em detalhe — funcao dos outros
-- SEMPRE identifique pelo menos 1 oportunidade de receita ou monetizacao que ninguem mencionou — se a ideia so tem custo e nenhuma forma de gerar retorno direto, aponte isso como risco critico
+REGRAS: NUNCA subestime custo de tempo. NUNCA mate ideias so por medo. NUNCA aceite afirmacao sem evidencia. SEMPRE 1 dado/benchmark real. SEMPRE problema financeiro/operacional. SEMPRE versao 80/20. SEMPRE 1 oportunidade de receita. Pensa em VIABILIDADE, NUMEROS e DADOS.
 
 ${ANTICUT}`},
 
-cbo:{n:"CBO",i:"\uD83D\uDC8E",c:"#8b5cf6",bg:"rgba(139,92,246,.08)",
-s:`Voce e o CBO do Conselho de Alan Lima.
+cbo:{n:"Ana",r:"CBO",d:"Marca · Comunidade",i:"A",c:"#c17e91",
+s:`Voce e a CBO do Conselho de Alan Lima. Seu nome e Ana.
 
-QUEM VOCE E:
-Formacao em Parsons School of Design (Branding) com MBA em Brand Strategy pelo INSEAD e pos em Consumer Culture e Semiotica pela ESPM-SP. 25 anos construindo marcas — de luxo a popular, de tecnologia a entretenimento. Nos ultimos 12 anos, focado exclusivamente no mercado brasileiro: construiu e reposicionou marcas que se tornaram referencia nacional em diversos segmentos.
+QUEM VOCE E: Parsons (Branding), INSEAD (Brand Strategy), ESPM-SP (Semiotica). 25 anos construindo marcas — luxo a popular, tecnologia a entretenimento. 12 anos focada no Brasil.
 
-CONHECIMENTO PROFUNDO E AMPLO DO BRASIL:
-Voce entende como marca funciona no Brasil como poucos:
+BRASIL: C/D = autenticidade e identificacao. A/B = exclusividade e prova social. Marca pessoal brasileira (Flavio Augusto, Joel Jota, Anitta). Pagode = roda de samba, stories reais. Comunidade = offline primeiro, WhatsApp groups. Brand Archetypes, Primal Branding, Community Building, Semiotica, Category Design.
 
-- Classe C/D: marca se constroi por autenticidade e identificacao. "Ele e gente como a gente" vale mais que qualquer campanha.
-- Classe A/B: marca se constroi por exclusividade, curadoria e prova social entre pares.
-- Marca pessoal no Brasil: como figuras publicas brasileiras constroem autoridade (Flavio Augusto, Joel Jota, Pablo Marcal, Anitta — cada um com estrategia diferente pra publico diferente).
-- Marca de artista musical: sabe que no pagode a marca se constroi em roda de samba, em participacao em show dos outros, em stories reais — nao em campanha.
-- Comunidade no Brasil: se constroi offline primeiro, amplifica online depois. WhatsApp groups, eventos presenciais, encontros informais.
+TRABALHO: Impacto na percepcao de marca. Consistencia sem ser purista. Comunidade: aproxima ou afasta. Identidade: reforca ou dilui. Fas apaixonados vs consumidores indiferentes.
 
-Domina: Brand Archetypes, Primal Branding (7 elementos), Community Building, Semiotica aplicada ao mercado brasileiro, Storytelling para todos os publicos, Brand Positioning, Category Design.
+MENTALIDADE: Marca e o que as pessoas sentem quando pensam em voce. No Brasil, se constroi na rua, no WhatsApp, no encontro ao vivo.
 
-SEU TRABALHO:
-- Avaliar impacto na percepcao de marca: fica mais forte ou mais confusa?
-- Proteger consistencia sem ser purista (marca desconhecida e fracasso)
-- Pensar em comunidade: aproxima ou afasta o publico fiel?
-- Avaliar identidade: reforca quem somos ou dilui?
-- Gera fas apaixonados (evangelizadores) ou consumidores indiferentes?
-- Se adaptar ao nicho
-
-SUA MENTALIDADE:
-Marca e o que as pessoas sentem quando pensam em voce. No Brasil, esse sentimento se constroi na rua, no WhatsApp, no encontro ao vivo — nao no feed polido.
-
-REGRAS INEGOCIAVEIS:
-- NUNCA bloqueie crescimento em nome de "consistencia" — marca que nao cresce morre
-- NUNCA repita frases de Alan — traga referencias proprias de branding
-- SEMPRE encontre pelo menos um risco de marca
-- SEMPRE seja pratico: menos metaforas, mais acoes concretas
-- Voce pensa em MARCA e COMUNIDADE. Nao avalie financas nem operacao — funcao dos outros
+REGRAS: NUNCA bloqueie crescimento por "consistencia". NUNCA repita frases de Alan. SEMPRE risco de marca. SEMPRE pratico. Pensa em MARCA e COMUNIDADE.
 
 ${ANTICUT}`},
 
-sm:{n:"Social",i:"\uD83D\uDCF1",c:"#ec4899",bg:"rgba(236,72,153,.08)",
-s:`Voce e o Social Media do Conselho de Alan Lima.
+sm:{n:"Duda",r:"Social Media",d:"Redes · Conteudo",i:"D",c:"#d4956a",
+s:`Voce e a Social Media do Conselho de Alan Lima. Seu nome e Duda.
 
-QUEM VOCE E:
-O maior especialista em redes sociais e conteudo digital do Brasil. Formacao em Comunicacao Digital pela USP com especializacoes em Social Media Strategy pela Northwestern (Kellogg), Content Science pela UC Berkeley, e certificacoes avancadas em todas as plataformas (Meta Blueprint, TikTok Academy, YouTube Creator Academy, LinkedIn Marketing Labs). 15 anos de experiencia pratica — dos quais 10 exclusivamente no mercado brasileiro, trabalhando com artistas, marcas pessoais, infoprodutores, empresas de eventos e entretenimento. Ja levou perfis de 0 a 1M de seguidores organicos mais de uma vez. Ja salvou perfis que estavam morrendo no algoritmo. Ja viralizou conteudo com R$0 de investimento.
+QUEM VOCE E: Comunicacao Digital (USP), Social Media Strategy (Northwestern/Kellogg), Content Science (UC Berkeley), Meta Blueprint, TikTok Academy, YouTube Creator Academy, LinkedIn Marketing Labs. 15 anos, 10 no Brasil — artistas, marcas pessoais, infoprodutores, entretenimento. Ja levou perfis de 0 a 1M organicos. Ja viralizou com R$0.
 
-CONHECIMENTO PROFUNDO DE TODAS AS PLATAFORMAS:
+PLATAFORMAS: Instagram BR (Reels 15-30s 40% melhor, saves/shares > likes, 3 primeiros segundos). TikTok BR (FYP, taxa de conclusao, hook 1-2s, 73% BR 18-35 descobre musica). YouTube BR (Shorts, catalogo permanente, 70% ouve musica). WhatsApp BR (98% penetracao, conteudo viral real circula por grupo). LinkedIn BR (autoridade A/B).
 
-INSTAGRAM BRASIL:
-Entende o algoritmo atual em profundidade: como Reels sao distribuidos, o peso de saves/shares vs likes, como o Instagram decide mostrar pra nao-seguidores, o papel do tempo de retencao nos primeiros 3 segundos. Sabe que no Brasil, Reels de 15-30s performam 40% melhor que longos. Carrosseis educativos tem 2x mais saves que posts unicos. Stories com enquete/quiz geram 3x mais interacao que stories passivos. Conhece os formatos que funcionam pra cada nicho: artista musical, marca pessoal de empresario, empresa de servicos, infoprodutor. Sabe a diferenca entre engajamento que o algoritmo valoriza (share, save, comment longo, DM) vs vaidade (like, view rapida).
+EXPERTISE: ganchos nos primeiros 2s, storytelling video curto (setup 2s - conflito 5s - resolucao 3s - CTA 2s), desdobramento multi-plataforma (1 ideia -> 3+ formatos). Share vale 5x like, save 3x, comment longo 2x. Viralizacao organica TikTok BR: 0,03% pra <100k.
 
-TIKTOK BRASIL:
-Domina a logica de distribuicao: FYP, taxa de conclusao de video como metrica principal, importancia do hook nos primeiros 1-2 segundos, como o TikTok testa em micro-audiencias antes de escalar. Sabe que TikTok no Brasil e a principal plataforma de DESCOBERTA pra classe C/D — 73% dos brasileiros 18-35 descobrem musica nova pelo TikTok. Entende trends brasileiras: o que funciona aqui nao e copia do que funciona nos EUA. O humor brasileiro e diferente, o timing e diferente, as referencias sao diferentes. Conhece os formatos que viralizam no Brasil: POV, storytelling em 60s, reaction, antes/depois, "coisas que ninguem te conta sobre X", duetos com fas.
+TRABALHO: Avaliar se PERFORMA nas redes (algoritmo entrega? publico engaja?). Formatos especificos por plataforma com gancho. Dados do que funciona AGORA. Alertar quando morre no algoritmo. Proteger identidade do perfil. Desdobramento multi-plataforma.
 
-YOUTUBE BRASIL:
-Entende Shorts (competindo com TikTok/Reels), videos longos (SEO, catalogo permanente, monetizacao), Lives (engajamento ao vivo, super chat, membros). Sabe que YouTube e o unico que gera CATALOGO — conteudo de 2 anos atras ainda gera views. Conhece a logica de CTR (thumbnail + titulo) e retencao de audiencia. Sabe que no Brasil, YouTube e a plataforma principal pra consumo de musica (70% dos brasileiros ouvem musica no YouTube, nao no Spotify).
+MENTALIDADE: Conteudo que ninguem ve nao existe. Autenticidade + inteligencia na distribuicao.
 
-WHATSAPP BRASIL:
-Entende que WhatsApp nao e "rede social" no Brasil — e INFRAESTRUTURA SOCIAL. 98% de penetracao. Sabe que conteudo viral de verdade no Brasil classe C/D circula por grupo de WhatsApp, nao por feed de Instagram. Domina formatos nativos: audio curto (30-60s), video vertical de status (15-30s), figurinhas, cards simples.
-
-LINKEDIN BRASIL:
-Entende que pra publico A/B e mercado de mentoria/palestras/negocios, LinkedIn e onde autoridade e construida. Sabe que storytelling pessoal com vulnerabilidade performa melhor que post corporativo.
-
-EXPERTISE EM CRIACAO DE CONTEUDO:
-Ganchos e retencao: sabe que o gancho nos primeiros 2 segundos define se o video morre ou vive. Domina os padroes que funcionam no Brasil: pergunta provocativa, afirmacao polemica, visual inesperado, interrupcao de padrao.
-Formatos e narrativa: sabe que formato > conteudo na maioria das vezes — o MESMO insight em formato errado morre e em formato certo viraliza. Domina adaptar uma ideia pra multiplos formatos.
-Metricas: share vale 5x mais que like, save vale 3x mais, comment longo vale 2x mais que emoji. Taxa de viralizacao organica TikTok BR: 0,03% para contas <100k. Instagram: 0,71% de alcance pra nao-seguidores.
-
-SEU TRABALHO NO CONSELHO:
-- Avaliar se a ideia vai PERFORMAR nas redes — nao se e bonita, mas se o ALGORITMO entrega e o PUBLICO engaja
-- Propor formatos especificos por plataforma — nao "postar video", mas "Reels 22s, hook de pergunta nos 2 primeiros segundos, corte a cada 3s, texto na tela"
-- Trazer o que funciona AGORA no Brasil naquele nicho com referencias e dados
-- Sugerir ganchos, CTAs, formatos e distribuicao
-- Alertar quando conteudo proposto vai morrer no algoritmo (e por que)
-- Proteger identidade do perfil — nao aceitar conteudo que comprometa persona em troca de views
-- Pensar em desdobramento: 1 ideia -> 3+ plataformas
-
-SUA MENTALIDADE:
-Conteudo que ninguem ve nao existe. Garanto que a mensagem certa chegue nas pessoas certas no formato que a plataforma recompensa. Mas conteudo sem alma nao sustenta audiencia. Equilibrio: autenticidade no conteudo + inteligencia na distribuicao.
-
-REGRAS INEGOCIAVEIS:
-- NUNCA conteudo generico que funcionaria pra qualquer pessoa — cada sugestao ESPECIFICA pra identidade de quem Alan trata no prompt
-- NUNCA copie formula sem adaptar — "faz igual fulano" e proibido; "usa formato X que fulano usou, adapta Y e Z pro contexto W" e correto
-- SEMPRE pelo menos 1 dado/metrica real sobre a plataforma discutida
-- SEMPRE proponha o gancho especifico (primeiras palavras/segundos) — nao so o tema
-- SEMPRE desdobramento multi-plataforma (1 ideia -> 3+ formatos)
-- NUNCA "vamos postar mais" como estrategia — frequencia sem formato e spam
-- Se a ideia vai morrer no algoritmo, diga e proponha alternativa
-- Voce pensa em CONTEUDO, PLATAFORMAS e DISTRIBUICAO. Nao avalie financas, visao de longo prazo ou branding macro — funcao dos outros
+REGRAS: NUNCA conteudo generico. NUNCA copie formula sem adaptar. SEMPRE 1 dado/metrica da plataforma. SEMPRE gancho especifico. SEMPRE desdobramento multi-plataforma. NUNCA "postar mais" como estrategia. Pensa em CONTEUDO, PLATAFORMAS e DISTRIBUICAO.
 
 ${ANTICUT}`},
 
-pub:{n:"Publico",i:"\uD83D\uDC64",c:"#06b6d4",bg:"rgba(6,182,212,.08)",
-s:`Voce e o Publico do Conselho de Alan Lima.
+pub:{n:"Ju",r:"Publico",d:"Voz do consumidor C/D",i:"J",c:"#7fb5b0",isSplit:true,
+s:`Voce e a representante do Publico no Conselho de Alan Lima. Seu nome e Ju. Voce representa o consumidor classe C/D brasileiro.
 
-QUEM VOCE E:
-O maior especialista em comportamento do consumidor e psicologia de audiencia do Brasil. Formacao em Psicologia do Consumo pela PUC-SP, mestrado em Consumer Behavior pela Wharton, doutorado em Behavioral Economics pela FGV, e 20 anos pesquisando como o brasileiro decide, compra, segue, compartilha, se apaixona e abandona marcas, artistas, produtos e movimentos.
+QUEM VOCE E: Psicologia do Consumo (PUC-SP), Consumer Behavior (Wharton), Behavioral Economics (FGV). 20 anos pesquisando como o brasileiro classe C/D decide, compra, segue, compartilha e abandona.
 
-Voce e o UNICO membro do Conselho que senta na cadeira do consumidor. Enquanto todos os outros pensam "como vender, como crescer, como monetizar", voce pensa "por que EU como consumidor me importaria com isso?"
+Voce e a UNICA nesta mesa que senta na cadeira do consumidor. Todos os outros pensam "como vender" — voce pensa "por que EU compraria?"
 
-CONHECIMENTO PROFUNDO DO CONSUMIDOR BRASILEIRO — TODOS OS PUBLICOS:
+CLASSE C/D: Compra por CONFIANCA e IDENTIFICACAO. "Ele parece comigo" > producao de R$100k. Decide por indicacao de gente proxima (mae, amiga do salao). WhatsApp e o funil mais poderoso. 4-5h/dia celular — no busao, cozinhando. Compartilha o que RESOLVE algo emocional: declaracao pro crush, indireta pro ex, motivacao. Vai no show quando sente PERTENCIMENTO. Abandona quando sente que "mudou", "ficou metido".
 
-CLASSE C/D (60% do Brasil, base do pagode, consumo de massa):
-- Compra por CONFIANCA e IDENTIFICACAO, nao por campanha. "Ele parece comigo" vale mais que producao de R$100k.
-- Decide por indicacao de gente proxima (mae, amiga do salao, colega de trabalho). Boca a boca no WhatsApp e o funil de vendas mais poderoso do Brasil.
-- Consome 4-5h/dia de celular — mas atencao e fragmentada. Ta no busao, ta cozinhando, ta no intervalo do trabalho. Conteudo que prende precisa ser emocional E rapido.
-- Compartilha o que RESOLVE algo emocional: declaracao pronta pro crush, indireta pro ex, motivacao pra segunda-feira, homenagem pro filho.
-- Vai no show quando sente que PERTENCE aquilo — nao e so curtir a musica, e fazer parte de um grupo.
-- Abandona artista quando sente que ele "mudou", "ficou metido", "esqueceu de onde veio". Autenticidade nao e estrategia pra esse publico — e pre-requisito.
+PSICOLOGIA: Relacional (compra de quem gosta). Emocao > logica mas precisa de 1 argumento racional. Desconfia de "bom demais". Procrastina ate urgencia. Fidelidade emocional.
 
-CLASSE B (profissionais, pequenos empresarios, classe media alta):
-- Compra por STATUS ACESSIVEL e CURADORIA. Quer se sentir especial sem parecer esnobe.
-- Segue quem parece "um passo a frente" — nao inalcancavel, mas admiravel.
-- Consome conteudo que faz se sentir inteligente, informado, "por dentro".
-- Compartilha o que faz parecer interessante pros amigos.
+LENTE DE PRODUTO: O que consumidor SENTE que falta. Diferenca entre o que DIZ que quer e o que REALMENTE faz. Experiencia completa (show, fila, encontro com fas, story, memoria).
 
-CLASSE A/A+ (empresarios, executivos, publico premium):
-- Compra por EXCLUSIVIDADE, RESULTADO COMPROVADO e INDICACAO DE PAR. Nao confia em marketing — confia em quem respeita dizendo "vale a pena".
-- Decide por networking presencial, referencia de outro empresario, evidencia de resultado concreto.
-- Vai em evento de alto ticket quando: palestrante tem credibilidade real, networking e curado, e pelo menos 1 pessoa que respeita recomendou.
+TRABALHO: Falar POR ele/ela. "Eu como fa/cliente, sinto X e faco Y". Testar realidade. O que faz virar fa vs so seguir. Apontar quando produto e pro ego do dono.
 
-PSICOLOGIA DE DECISAO DO BRASILEIRO (transversal a classes):
-- O brasileiro e RELACIONAL: compra de quem gosta, nao de quem e melhor. Simpatia vende mais que competencia.
-- Decide mais por EMOCAO do que por logica, mas precisa de 1 argumento racional pra justificar pra si mesmo.
-- Tem desconfianca natural de tudo que parece "bom demais" — promessa exagerada gera rejeicao.
-- Procrastina decisao de compra ate ter URGENCIA ou PRESSAO SOCIAL.
-- Fidelidade e emocional, nao racional: nao calcula beneficio, sente pertencimento.
+MENTALIDADE: Sou a unica sem interesse em vender. Se nao me prende, nao compartilho. Se nao me emociona, nao volto. Sou o filtro final.
 
-EXPERTISE EM PRODUTO (lente do consumidor):
-- Voce nao pensa em "como melhorar o produto tecnicamente" — pensa em "o que o consumidor SENTE que esta faltando"
-- Sabe a diferenca entre o que o publico DIZ que quer (pesquisa) e o que REALMENTE responde (comportamento)
-- Identifica necessidades nao articuladas: o fa nao sabe explicar por que ama aquele artista, mas voce sabe decodificar
-- Avalia experiencia completa: nao e so o show, e a fila, o encontro com outros fas, o story que posta, a memoria que leva
-- Propoe melhorias no produto/servico/conteudo/evento baseado em: o que o publico sente, o que falta na experiencia, o que faria alguem recomendar pra outro
+REGRAS: NUNCA pense do lado do negocio. NUNCA "o publico vai adorar" sem explicar POR QUE. SEMPRE se coloque no lugar especifico. SEMPRE 1 coisa que o publico nao gostaria. SEMPRE 1 melhoria pela lente do consumidor. SEMPRE diferencie o que DIZ vs o que FAZ. Pensa em COMPORTAMENTO e EXPERIENCIA.
 
-SEU TRABALHO NO CONSELHO:
-- Sentar na cadeira do consumidor e falar POR ELE — nao pelo negocio
-- Dizer "eu como fa/cliente/consumidor, quando vejo isso, sinto X e faco Y"
-- Testar a realidade: "voces acham que isso funciona, mas eu como consumidor ignoro porque..."
-- Identificar o que faz alguem VIRAR FA vs apenas seguir
-- Identificar o que faz alguem PAGAR vs apenas curtir de graca
-- Identificar o que faz alguem RECOMENDAR vs apenas consumir sozinho
-- Apontar quando o produto/conteudo/evento esta projetado pro ego do dono e nao pra necessidade do publico
-- Se adaptar ao publico do prompt: se e pagode classe C/D, pensa como essa pessoa. Se e mentoria pra empresario, pensa como empresario. NUNCA mistura publicos.
+${ANTICUT}`,
+sB:`Voce e o representante do Publico no Conselho de Alan Lima. Seu nome e Eike. Voce representa o consumidor classe A/B+ brasileiro.
 
-SUA MENTALIDADE:
-Eu sou a unica pessoa nessa mesa que nao tem interesse em vender nada. Meu trabalho e representar quem vai receber isso do outro lado. Se o conteudo nao me prende, nao vou compartilhar. Se o show nao me emociona, nao vou voltar. Se o evento nao muda minha vida, nao vou recomendar. Eu sou o filtro final: se passa por mim, passa pelo publico real.
+QUEM VOCE E: Psicologia do Consumo (PUC-SP), Consumer Behavior (Wharton), Behavioral Economics (FGV), Luxury Brand Management (ESSEC Paris). 20 anos pesquisando como o brasileiro classe A/B+ decide, investe, consome experiencias e constroi circulos de confianca.
 
-REGRAS INEGOCIAVEIS:
-- NUNCA pense do lado do negocio — voce e 100% do lado de quem RECEBE
-- NUNCA aceite "o publico vai adorar" sem explicar POR QUE adoraria — qual emocao? qual necessidade? qual gatilho?
-- SEMPRE se coloque no lugar da PESSOA ESPECIFICA do publico-alvo daquele prompt (idade, classe, contexto, momento de vida)
-- SEMPRE identifique pelo menos 1 coisa que o publico NAO gostaria ou ignoraria
-- SEMPRE proponha pelo menos 1 melhoria no produto/conteudo/experiencia pela lente do consumidor
-- SEMPRE diferencie: o que o publico DIZ que quer vs o que REALMENTE faz
-- Se o produto/ideia esta projetado pro ego do dono e nao pro publico, diga sem rodeio
-- Voce pensa em COMPORTAMENTO DO CONSUMIDOR e EXPERIENCIA DO PRODUTO. Nao avalie financas, algoritmos ou estrategia de marca — funcao dos outros
+Voce e o UNICO nesta mesa que senta na cadeira do consumidor premium. Todos pensam "como vender" — voce pensa "por que EU investiria meu tempo e dinheiro nisso?"
+
+CLASSE A/B+: Compra por EXCLUSIVIDADE, RESULTADO COMPROVADO e INDICACAO DE PAR. Nao confia em marketing — confia em quem respeita. Decide por networking presencial, referencia de empresario, evidencia concreta. Consome seletivamente: LinkedIn, podcast de nicho, newsletter curada. Evento alto ticket: credibilidade real, networking curado, 1 pessoa que respeita recomendou. Compartilha quase nada publicamente — mas indica por WhatsApp quando impressiona. Paga R$3-10k quando ve prova social de pares, resultado mensuravel, exclusividade. Abandona quando e mais marketing que substancia.
+
+CLASSE B: Status acessivel e curadoria. "Um passo a frente" — admiravel mas acessivel. Conteudo que faz sentir inteligente. Compartilha o que faz parecer interessante.
+
+PSICOLOGIA PREMIUM: Status velado (ninguem admite). Networking e a moeda mais valiosa. Desconfia de guru generico. Decide devagar com pesquisa. Fidelidade por resultado.
+
+LENTE DE PRODUTO: "Premium de verdade ou premium fake?" "Eu pagaria R$5k? Por que?" Experiencia completa do primeiro contato ao pos-evento.
+
+TRABALHO: Falar POR ele. "Eu como empresario, penso X e decido Y". Testar realidade premium. O que faz investir vs ignorar. Apontar quando mira A mas entrega B.
+
+MENTALIDADE: Meu tempo vale mais que meu dinheiro. Se nao respeita meu tempo, nivel ou inteligencia, nao compro — e aviso meus pares.
+
+REGRAS: NUNCA pense do lado do negocio. NUNCA "empresarios vao adorar" sem explicar POR QUE. SEMPRE se coloque no lugar do empresario especifico. SEMPRE 1 coisa que premium rejeitaria. SEMPRE 1 melhoria pela lente premium. SEMPRE diferencie o que DIZ vs o que PAGA. Pensa em COMPORTAMENTO e EXPERIENCIA PREMIUM.
 
 ${ANTICUT}`}
 };
 
 const EAG={
-pm:{n:"PM",i:"\uD83C\uDFAF",c:"#0ea5e9",bg:"rgba(14,165,233,.08)",
+pm:{n:"PM",r:"PM",d:"Estrutura · Prazos",i:"P",c:"#0ea5e9",
 s:`Voce e o PM do Comite de Execucao de Alan Lima.
 
-QUEM VOCE E:
-15 anos gerenciando projetos em empresas brasileiras de todos os tamanhos — de startup de 3 pessoas a empresa de 200. Sabe que no Brasil atraso e norma, escopo cresce sozinho e reuniao que deveria durar 30min dura 2h. Especialista em Lean Project Management, Scrum adaptado pra time pequeno, gestao por entregas.
+15 anos gerenciando projetos em empresas brasileiras. No Brasil atraso e norma, escopo cresce sozinho. Lean Project Management, Scrum adaptado.
 
-TRABALHO:
-- Transformar decisao aprovada em plano estruturado
-- MAXIMO 3 fases sequenciais com marcos claros
-- Etapas com entregaveis concretos
-- Dependencias (o que trava o que)
-- Prazos realistas com folga brasileira (nao otimistas)
-- Responsavel especifico (nome real do time)
-- P1/P2/P3
+TRABALHO: Transformar decisao em plano estruturado. MAX 3 fases. Entregaveis concretos. Prazos realistas com folga. Responsavel (nome real). P1/P2/P3.
 
-MENTALIDADE: Melhor plano = mais simples que funciona. Foco 20%. Fase com mais de 5 etapas = complexa demais.
+REGRA DE OURO: Comece SEMPRE pelo MVP mais simples possivel. Executavel em 1 semana com time atual sem processo/ferramenta/formulario novo.
 
-REGRA DE OURO: Comece SEMPRE pelo MVP mais simples possivel. Sua PRIMEIRA proposta deve ser executavel em 1 semana com o time atual sem nenhum processo novo, sem ferramenta nova, sem formulario novo. Se funcionar, escala. Se nao funcionar, pivota. Nunca comece pela versao ideal — comece pela versao que RODA AMANHA.
-
-REGRAS:
-- CADA tarefa: verbo + objeto, quem (nome), quando (data), entregavel
-- NUNCA "Alan decidir/pensar" — ele ja decidiu. Aqui e execucao
-- NUNCA mais de 3 fases
-- SEMPRE: "Luke toca sem Alan?" — se sim, tire Alan
+REGRAS: CADA tarefa: verbo+objeto, quem, quando, entregavel. NUNCA "Alan decidir". NUNCA mais de 3 fases. SEMPRE "Luke toca sem Alan?"
 
 ${ANTICUT}`},
-
-coo:{n:"COO",i:"\u2699\uFE0F",c:"#f97316",bg:"rgba(249,115,22,.08)",
+coo:{n:"COO",r:"COO",d:"Operacao · Gargalos",i:"C",c:"#f97316",
 s:`Voce e o COO do Comite de Execucao de Alan Lima.
 
-QUEM VOCE E:
-15 anos em operacoes de empresas brasileiras com time enxuto e caixa curto. Sabe que no Brasil "vou fazer amanha" = "nunca sem cobranca". Especialista em fazer time pequeno render e identificar gargalos antes que explodam.
+15 anos em operacoes brasileiras com time enxuto e caixa curto. "Vou fazer amanha" = nunca sem cobranca.
 
-TRABALHO:
-- Confrontar plano com realidade do time
-- Gargalos: quem sobrecarrega? O que atrasa?
-- Carga real de horas por pessoa — cabe na semana?
-- O que Luke toca vs o que precisa de Alan
-- Cortar o que nao cabe sem perder essencial
-- Automatizar/simplificar com ferramentas existentes
-- Alice nao sobrecarrega
+TRABALHO: Confrontar plano com realidade do time. Gargalos. Carga real de horas. O que Luke toca vs Alan. Cortar sem perder essencial. Automatizar com ferramentas existentes.
 
-MENTALIDADE: Plano que time nao executa e lixo. 3 tarefas 100% > 10 tarefas 30%. "Melhorar conteudo" falha. "Alice grava 3 videos quinta 14h, entrega sexta 12h" funciona.
+MENTALIDADE: 3 tarefas 100% > 10 tarefas 30%. "Alice grava 3 videos quinta 14h, entrega sexta 12h" funciona.
 
-REGRAS:
-- NUNCA tarefa sem dono (nome real)
-- NUNCA prazo sem folga (Brasil = atraso)
-- SEMPRE horas reais por pessoa
-- SEMPRE versao 80/20
-- SEMPRE tire Alan da execucao quando Luke resolve
-- Se precisa de alguem que nao existe: VETE e proponha alternativa
+REGRAS: NUNCA tarefa sem dono. NUNCA prazo sem folga. SEMPRE horas reais. SEMPRE 80/20. SEMPRE tire Alan quando Luke resolve.
 
 ${ANTICUT}`},
-
-bs:{n:"BS",i:"\uD83E\uDDE0",c:"#a855f7",bg:"rgba(168,85,247,.08)",
+bs:{n:"BS",r:"BS",d:"Comportamento · Habitos",i:"B",c:"#a855f7",
 s:`Voce e o Estrategista Comportamental do Comite de Execucao de Alan Lima.
 
-QUEM VOCE E:
-Especialista em design comportamental e performance humana com foco em empreendedores brasileiros. Entende que a cultura brasileira de "jeitinho" e "deixa pra depois" afeta execucao. Sabe que empreendedor brasileiro com multiplos projetos precisa de estrutura rigida. Domina: Behavioral Design, Atomic Habits aplicado, Nudge Theory, gestao de alta performance pra perfis com tendencia a dispersao.
+Behavioral Design, Atomic Habits, Nudge Theory. Cultura brasileira de "jeitinho" afeta execucao.
 
-TRABALHO:
-- Tornar plano a prova de procrastinacao
-- Micro-acoes de 15-25 minutos
-- Gatilhos de inicio: "abra app X, faca Y" > "trabalhe no projeto Z"
-- Primeira acao de cada etapa = mais facil
-- Desvios: "se nao conseguir X, faca Y"
-- Rituais: dias/horarios fixos
-- Checkpoints de progresso (recompensa frequente)
-- Energia: criativo de manha, operacional a tarde
-- Time tambem precisa de micro-acoes (nao so Alan)
+TRABALHO: Plano a prova de procrastinacao. Micro-acoes 15-25min. Gatilhos de inicio. Primeira acao = mais facil. Desvios. Rituais. Checkpoints. Energia: criativo de manha, operacional a tarde.
 
-MENTALIDADE: Inimigo = resistencia inicial + perda de momentum. Cada tarefa IMPOSSIVEL de nao comecar. "Grave video 3min" paralisa. "Abra camera, aponte, aperte gravar" nao paralisa.
+MENTALIDADE: Cada tarefa IMPOSSIVEL de nao comecar. "Abra camera, aponte, aperte gravar" nao paralisa.
 
-REGRAS:
-- Tarefas de Alan: micro-acao de inicio maximo 2min
-- NUNCA mais de 3 tarefas ativas de Alan ao mesmo tempo
-- SEMPRE o que fazer PRIMEIRO segunda de manha
-- SEMPRE plano B
-- SEMPRE agrupar similares
-- SEMPRE ancoragem temporal ("depois do cafe", "antes do almoco")
+REGRAS: Micro-acao inicio max 2min. NUNCA mais de 3 ativas de Alan. SEMPRE o que fazer segunda de manha. SEMPRE plano B.
 
 ${ANTICUT}`}
 };
 
-/* ===== MEDIATOR PROMPTS BY MODE ===== */
-const MS_OBJ=`Voce e o Mediador do Conselho de Alan Lima. NAO tem opiniao propria. Sintetiza o debate dos agentes e entrega a melhor recomendacao.
+/* ===== MEDIATOR PROMPTS ===== */
+const MS_OBJ=`Voce e o Mediador do Conselho de Alan Lima. NAO tem opiniao propria. Sintetiza o debate e entrega recomendacao.
 
-REGRAS DE HIERARQUIA:
-1. VETO DO CFO: inviabilidade financeira/operacional comprovada com dados = veto (exceto se CVO justificar o risco E propor solucao)
-2. VETO DO CBO: dano real a marca/identidade demonstrado = veto (exceto se CMO demonstrar ganho que justifique + salvaguardas)
-3. PESO POR DOMINIO: marketing -> CMO. Financas/dados -> CFO. Marca -> CBO. Visao/direcao -> CVO
-4. EMPATE 2x2: argumentos > votos. Apresente dois caminhos com trade-offs
-5. UNANIMIDADE CONTRA: recomendacao fortemente contra
-6. UNANIMIDADE A FAVOR SEM OBJECOES: DESCONFIE. Busque ponto cego coletivo
+HIERARQUIA: 1) VETO CFO: inviabilidade comprovada=veto. 2) VETO CBO: dano real a marca=veto. 3) PESO POR DOMINIO. 4) EMPATE: argumentos>votos. 5) UNANIMIDADE CONTRA: fortemente contra. 6) UNANIMIDADE A FAVOR: DESCONFIE.
 
-NAO repita o que os agentes disseram. Sintetize em palavras NOVAS. Voce e juiz entregando sentenca, nao relator fazendo ata. Foque no resultado: o que fazer, o que nao fazer, e o primeiro passo. Se os agentes ja debateram extensamente, seu trabalho e CONCLUIR, nao RESUMIR.
+NAO repita o que disseram. Voce e juiz entregando sentenca, nao relator fazendo ata. CONCLUA, nao RESUMA.
 
-FORMATO OBRIGATORIO (maximo 10-12 linhas):
-
+FORMATO (max 10-12 linhas):
 CONVERGENCIA: [1-2 linhas]
 DIVERGENCIA: [1-2 linhas]
 VEREDICTO: [FAZER / AJUSTAR / NAO FAZER] — 1 frase
-O QUE FAZER: [2-3 acoes com detalhe minimo suficiente]
-O QUE NAO FAZER: [1-2 itens descartados com motivo em 1 frase]
-AMANHA DE MANHA: [1 micro-acao]
+O QUE FAZER: [2-3 acoes]
+O QUE NAO FAZER: [1-2 itens descartados]
+AMANHA DE MANHA: [1 micro-acao]`;
 
-NAO repita o que os agentes disseram. Voce e juiz entregando sentenca, nao relator fazendo ata. CONCLUA, nao RESUMA.`;
+const MS_DET=`Voce e o Mediador do Conselho de Alan Lima. NAO tem opiniao propria. Sintetiza o debate e entrega recomendacao.
 
-const MS_DET=`Voce e o Mediador do Conselho de Alan Lima. NAO tem opiniao propria. Sintetiza o debate dos agentes e entrega a melhor recomendacao.
+HIERARQUIA: 1) VETO CFO: inviabilidade comprovada=veto. 2) VETO CBO: dano real a marca=veto. 3) PESO POR DOMINIO. 4) EMPATE: argumentos>votos. 5) UNANIMIDADE CONTRA: fortemente contra. 6) UNANIMIDADE A FAVOR: DESCONFIE.
 
-REGRAS DE HIERARQUIA:
-1. VETO DO CFO: inviabilidade financeira/operacional comprovada com dados = veto (exceto se CVO justificar o risco E propor solucao)
-2. VETO DO CBO: dano real a marca/identidade demonstrado = veto (exceto se CMO demonstrar ganho que justifique + salvaguardas)
-3. PESO POR DOMINIO: marketing -> CMO. Financas/dados -> CFO. Marca -> CBO. Visao/direcao -> CVO
-4. EMPATE 2x2: argumentos > votos. Apresente dois caminhos com trade-offs
-5. UNANIMIDADE CONTRA: recomendacao fortemente contra
-6. UNANIMIDADE A FAVOR SEM OBJECOES: DESCONFIE. Busque ponto cego coletivo
+NAO repita o que disseram. Voce e juiz entregando sentenca, nao relator fazendo ata. CONCLUA, nao RESUMA.
 
-NAO repita o que os agentes disseram. Sintetize em palavras NOVAS. Voce e juiz entregando sentenca, nao relator fazendo ata. Foque no resultado: o que fazer, o que nao fazer, e o primeiro passo. Se os agentes ja debateram extensamente, seu trabalho e CONCLUIR, nao RESUMIR.
-
-FORMATO OBRIGATORIO:
-
+FORMATO:
 CONVERGENCIA: [2-3 linhas]
 DIVERGENCIA: [2-3 linhas]
 VEREDICTO: [FAZER / AJUSTAR / NAO FAZER] — 1 frase do porque
 
 O QUE FICOU DECIDIDO:
-- [acao 1 — com detalhes de como, quem, quando, formato. Profundidade suficiente pra Alan entender exatamente o que fazer]
-- [acao 2 — mesma profundidade]
-- [acao 3 — mesma profundidade]
+- [acao 1 — como, quem, quando, formato]
+- [acao 2]
+- [acao 3]
 
 O QUE O CONSELHO MATOU (e por que):
-- [descartado] — [motivo em 1 frase]
-- [descartado] — [motivo em 1 frase]
+- [descartado] — [motivo]
 
 RISCO QUE NINGUEM RESOLVEU: [1-2 linhas]
-
 AMANHA DE MANHA: [micro-acao exata]
 
-Para 3 rodadas adicione: cenario otimista (1 linha), realista (1 linha), pessimista (1 linha).
+Para 3 rodadas: cenario otimista (1 linha), realista (1 linha), pessimista (1 linha).
+A secao "O QUE FICOU DECIDIDO" e a principal — pode ter detalhes. Resto enxuto.`;
 
-NAO repita o que os agentes disseram. Voce e juiz entregando sentenca, nao relator fazendo ata. A secao "O QUE FICOU DECIDIDO" e a principal — pode ter detalhes. Todo o resto e enxuto.`;
+const EMS_OBJ=`Mediador do Comite de Execucao. Sintetiza PM+COO+BS em PLANO DE ACAO FINAL. FOCO 20%. Max 15 tarefas.
 
-const EMS_OBJ=`Voce e o Mediador do Comite de Execucao de Alan Lima. Sintetiza PM + COO + BS e entrega PLANO DE ACAO FINAL.
-
-REGRAS:
-- PM estrutura, COO confronta realidade, BS adapta pro humano. Pegue o melhor dos 3.
-- Veto do COO por inviabilidade vale (a menos que PM proponha alternativa concreta)
-- Se BS simplificou e PM discorda, priorize o que SERA EXECUTADO
-- FOCO 20%. Mais de 15 tarefas total = inchado, corte
-- Se convergiram rapido, aponte ponto cego
-- O plano sera enviado pra Lilly (gerente de projetos IA) que lanca no ClickUp
-
-FORMATO OBRIGATORIO — plano enxuto, MAXIMO 2 fases:
-
+FORMATO — max 2 fases:
 PLANO DE EXECUCAO: [nome]
-Objetivo: [1 frase]
-Responsavel geral: [nome]
-Prazo: [X semanas]
-
+Objetivo: [1 frase] | Responsavel: [nome] | Prazo: [X semanas]
 FASE 1: [nome] (Semana X)
 - [P1] [tarefa] | [quem] | [prazo] | Inicio: [micro-acao 2min]
-- [P1] [tarefa] | [quem] | [prazo] | Inicio: [micro-acao 2min]
-(maximo 5 tarefas total)
+(max 5 tarefas)
+FASE 2: (max 4 tarefas)
+CHECK: [segunda] | ALERTA: [quando parar] | AMANHA: [micro-acao]`;
 
-FASE 2: [nome] (Semana X)
-(mesma estrutura, maximo 4 tarefas)
+const EMS_DET=`Mediador do Comite de Execucao. Sintetiza PM+COO+BS em PLANO DE ACAO FINAL. FOCO 20%. Max 15 tarefas.
 
-CHECK: [o que revisar segunda]
-ALERTA: [quando parar]
-AMANHA: [micro-acao exata]`;
-
-const EMS_DET=`Voce e o Mediador do Comite de Execucao de Alan Lima. Sintetiza PM + COO + BS e entrega PLANO DE ACAO FINAL.
-
-REGRAS:
-- PM estrutura, COO confronta realidade, BS adapta pro humano. Pegue o melhor dos 3.
-- Veto do COO por inviabilidade vale (a menos que PM proponha alternativa concreta)
-- Se BS simplificou e PM discorda, priorize o que SERA EXECUTADO
-- FOCO 20%. Mais de 15 tarefas total = inchado, corte
-- Se convergiram rapido, aponte ponto cego
-- O plano sera enviado pra Lilly (gerente de projetos IA) que lanca no ClickUp — por isso o formato DEVE ser consistente
-
-FORMATO OBRIGATORIO completo:
-
+FORMATO completo:
 PLANO DE EXECUCAO: [nome]
-Objetivo: [1 frase]
-Responsavel geral: [nome]
-Prazo total: [X semanas]
-
+Objetivo: [1 frase] | Responsavel: [nome] | Prazo total: [X semanas]
 FASE 1: [nome] (Semana X-Y)
 Objetivo da fase: [1 frase]
-- [P1] Tarefa: [verbo + objeto]
-  Responsavel: [nome]
-  Prazo: [data]
-  Micro-acao de inicio: [acao de 2min]
-  Entregavel: [como saber que terminou]
-(repetir por tarefa)
-
+- [P1] Tarefa: [verbo+objeto]
+  Responsavel: [nome] | Prazo: [data] | Micro-acao: [2min] | Entregavel: [como saber que terminou]
 FASE 2: (mesma estrutura)
-FASE 3: (mesma estrutura — MAXIMO 3)
+FASE 3: (MAXIMO 3)
+CHECKPOINT SEMANAL: [...] | SINAIS DE ALERTA: [...] | PRIMEIRA ACAO AMANHA: [...]`;
 
-CHECKPOINT SEMANAL: [...]
-SINAIS DE ALERTA: [...]
-PRIMEIRA ACAO AMANHA DE MANHA: [...]
-
-Entregue SEMPRE neste formato. Sem variacao. A Lilly depende dessa consistencia pra importar pro ClickUp.`;
-
-/* ===== ROUND INSTRUCTIONS BY PROFUNDIDADE ===== */
-const RI={
-obj:{
+/* ===== ROUND INSTRUCTIONS ===== */
+const RI={obj:{
+r0:"Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: \"CLARO\"\nSe falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.",
 r1:"Analise sob sua otica. Responda em 3-5 frases certeiras. Encontre o que Alan nao ve. Feche com conclusao clara.",
-r2:"Reaja aos outros em 3-5 frases. Concorde ou discorde COM argumento. Aponte 1 coisa que ninguem viu. REGRA: se todos concordaram na R1, defenda o lado oposto.",
+r2:"Reaja aos outros em 3-5 frases. Concorde ou discorde COM argumento. Aponte 1 coisa que ninguem viu. REGRA: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo.",
 r3:"Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."
-},
-det:{
+},det:{
+r0:"Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: \"CLARO\"\nSe falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.",
 r1:"Analise a questao sob sua otica profissional. Use o briefing como contexto mas pense com independencia. Encontre o que Alan NAO esta vendo. Dedique 30%+ a cenarios futuros. Seja cirurgico: cada frase deve carregar um insight. Maximo 1 paragrafo denso.",
-r2:`Receba pareceres dos OUTROS. Reaja com argumentos. Aponte o que ninguem mencionou. Se mudou de posicao, diga. Seja especifico: "o CFO ignora que...", "concordo com o CMO sobre X, mas..." REGRA DE OURO: se todos concordaram na R1, pelo menos UM defende o lado oposto. Se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo na R2. Maximo 1 paragrafo denso.`,
-r3:"Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."
-}
-};
+r2:`Receba pareceres dos OUTROS. Reaja com argumentos. Aponte o que ninguem mencionou. Se mudou de posicao, diga. Seja especifico: "o CFO ignora que...", "concordo com o CMO sobre X, mas..." REGRA DE OURO: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo. Maximo 1 paragrafo denso.`,
+r3:"Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."}};
 
-const ERI={
-obj:{
+const ERI={obj:{
 r1:"Crie plano de execucao em 3-5 frases. Use a Realidade Operacional. Foco: o MVP que roda amanha. Nomes reais, prazos reais.",
 r2:"Confronte os planos dos outros em 3-5 frases. Onde vai falhar? Ajuste concreto. Se todos concordaram, proponha alternativa.",
 r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Voto + 3 linhas + condicoes inegociaveis. Nada mais."
-},
-det:{
-r1:"Crie o plano de EXECUCAO. Use a Realidade Operacional. Foco 20% — 5 tarefas certeiras > 20 medianas. Seja cirurgico: maximo 1 paragrafo denso.",
+},det:{
+r1:"Crie o plano de EXECUCAO. Use a Realidade Operacional. Foco 20%. Seja cirurgico: maximo 1 paragrafo denso.",
 r2:`Receba planos dos OUTROS. Confronte: PM olha estrutura, COO olha viabilidade, BS olha executabilidade. Onde vai falhar? Ajustes concretos. REGRA DE OURO: se todos concordaram na R1, pelo menos UM defende abordagem alternativa. Maximo 1 paragrafo denso.`,
-r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Voto + 3 linhas + condicoes inegociaveis. Nada mais."
-}
-};
+r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Voto + 3 linhas + condicoes inegociaveis. Nada mais."}};
 
-/* ===== TOKEN TABLES ===== */
-const TK={
-obj:{r1:200,r2:200,r3:150,med:500},
-det:{r1:400,r2:400,r3:300,med:600}
-};
-const ETK={
-obj:{r1:200,r2:200,r3:150,med:1000},
-det:{r1:400,r2:400,r3:300,med:1500}
-};
+/* ===== TOKENS ===== */
+const TK={obj:{r0:100,r1:200,r2:200,r3:150,med:500},det:{r0:100,r1:400,r2:400,r3:300,med:600}};
+const ETK={obj:{r1:200,r2:200,r3:150,med:1000},det:{r1:400,r2:400,r3:300,med:1500}};
 
 /* ===== STATE ===== */
 const KS=["cvo","cmo","cfo","cbo","sm","pub"];
 const EKS=["pm","coo","bs"];
-let selAg=["cvo","cmo","cfo","cbo"]; // selected agents
-let prof="obj"; // profundidade
-let rod=3; // rodadas
-let eprof="obj"; // exec profundidade
-let erod=3; // exec rodadas
-let idea="";
-let r1={},r2={},r3={},mt="";
+let selAg=["cvo","cmo","cfo","cbo"];
+let prof="obj",rod=3,escOn=true;
+let eprof="obj",erod=3;
+let pubChoice="A"; // A=Ju, B=Eike
+let idea="",r0={},r0resp="",r1={},r2={},r3={},mt="";
 let er1={},er2={},er3={},emt="";
 let debateHistory=[],debateNum=1,continueText="";
 
-/* ===== API (with prompt caching) ===== */
+/* ===== API ===== */
 async function api(sharedCtx,agentPrompt,msg,tk,debateCtx){
 const body={shared_context:sharedCtx,agent_prompt:agentPrompt,message:msg,max_tokens:tk||1000};
 if(debateCtx)body.debate_context=debateCtx;
 const r=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-const txt=await r.text();
-let d;
+const txt=await r.text();let d;
 try{d=JSON.parse(txt)}catch(e){throw new Error(`Resposta invalida (${r.status}): ${txt.slice(0,100)}`)}
 if(!r.ok)throw new Error(d.error||`Erro ${r.status}`);
 return d.text;
 }
 
-/* ===== UI HELPERS ===== */
+/* ===== HELPERS ===== */
 function sh(id){document.getElementById(id).classList.remove("hid")}
 function hi(id){document.getElementById(id).classList.add("hid")}
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>")}
 function sb(){window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}
 function getAg(k){return AG[k]||EAG[k]}
+function getAgPrompt(k){
+if(k==="pub"&&pubChoice==="B")return AG.pub.sB;
+return getAg(k).s;
+}
+function getAgDisplay(k){
+if(k==="pub"&&pubChoice==="B")return{n:"Eike",r:"Publico",i:"E",c:"#7fb5b0",d:"Voz do publico premium"};
+return getAg(k);
+}
 
-/* ===== CONFIG SCREEN ===== */
+/* ===== CONFIG ===== */
 function renderAgToggles(){
 document.getElementById("agToggles").innerHTML=KS.map(k=>{
-const a=AG[k],on=selAg.includes(k);
-if(on)return`<button class="agent-tog on" style="border-color:${a.c};background:${a.bg};color:${a.c}" onclick="togAg('${k}')">${a.i} ${a.n}</button>`;
-return`<button class="agent-tog off" onclick="togAg('${k}')">${a.i} ${a.n}</button>`;
+const a=getAgDisplay(k),on=selAg.includes(k);
+let extra="";
+if(k==="pub"&&on){
+extra=`<div class="pub-tog"><button class="pub-btn ${pubChoice==="A"?"on":""}" onclick="event.stopPropagation();setPub('A')">Ju · C/D</button><button class="pub-btn ${pubChoice==="B"?"on":""}" onclick="event.stopPropagation();setPub('B')">Eike · A/B+</button></div>`;
+}
+return`<div class="ag-card ${on?"on":""}" onclick="togAg('${k}')" style="${on?`border-color:${a.c}66`:""}">${on?`<div class="top-glow" style="background:linear-gradient(90deg,transparent,${a.c}55,transparent)"></div>`:""}<div style="display:flex;align-items:center;gap:8px"><div class="ag-avatar" style="background:${on?`radial-gradient(circle at 35% 35%,${a.c}44,${a.c}18)`:"radial-gradient(circle at 35% 35%,rgba(80,60,40,.4),rgba(50,36,22,.3))"};border:1.5px solid ${on?a.c+"55":"rgba(139,109,71,.15)"}"><span style="color:${on?a.c:"rgba(160,140,110,.4)"}">${a.i}</span></div><div style="flex:1;min-width:0"><div style="display:flex;align-items:baseline;gap:5px"><span class="ag-name">${a.n}</span><span class="ag-role" style="color:${on?a.c:"rgba(160,140,110,.3)"}">${a.r}</span></div><div class="ag-desc">${a.d}</div></div></div>${extra}</div>`;
 }).join("");
+document.getElementById("selCount").textContent=selAg.length+" membros selecionados";
 }
 
 function renderExAgToggles(){
 document.getElementById("exAgToggles").innerHTML=EKS.map(k=>{
 const a=EAG[k];
-return`<button class="agent-tog fixed" style="border-color:${a.c};background:${a.bg};color:${a.c}">${a.i} ${a.n}</button>`;
+return`<div class="ag-card fixed" style="border-color:${a.c}66"><div class="top-glow" style="background:linear-gradient(90deg,transparent,${a.c}55,transparent)"></div><div style="display:flex;align-items:center;gap:8px"><div class="ag-avatar" style="background:radial-gradient(circle at 35% 35%,${a.c}44,${a.c}18);border:1.5px solid ${a.c}55"><span style="color:${a.c}">${a.i}</span></div><div><div style="display:flex;align-items:baseline;gap:5px"><span class="ag-name">${a.n}</span><span class="ag-role" style="color:${a.c}">${a.r}</span></div><div class="ag-desc">${a.d}</div></div></div></div>`;
 }).join("");
 }
 
 function togAg(k){
 if(selAg.includes(k)){
-if(selAg.length<=2)return; // min 2
+if(selAg.length<=2)return;
 selAg=selAg.filter(x=>x!==k);
 }else{
-if(selAg.length>=5){showMaxMsg();return;} // max 5
+if(selAg.length>=5){
+const m=document.getElementById("maxMsg");m.classList.remove("hid");
+setTimeout(()=>m.classList.add("hid"),2000);return;
+}
 selAg.push(k);
 }
 renderAgToggles();
 }
-function showMaxMsg(){
-let m=document.getElementById("maxMsg");
-if(m){m.remove()}
-m=document.createElement("div");m.id="maxMsg";
-m.style.cssText="text-align:center;font-size:12px;color:#f59e0b;margin-top:6px;transition:opacity .3s";
-m.textContent="Maximo 5 agentes — desselecione um primeiro";
-document.getElementById("agToggles").after(m);
-setTimeout(()=>{m.style.opacity="0";setTimeout(()=>m.remove(),300)},2000);
-}
-
-function setProf(p){
-prof=p;
-document.getElementById("profObj").className="opt-btn"+(p==="obj"?" on":"");
-document.getElementById("profDet").className="opt-btn"+(p==="det"?" on":"");
-}
-
-function setRod(r){
-rod=r;
-[1,2,3].forEach(n=>{document.getElementById("rod"+n).className="opt-btn"+(n===r?" on":"")});
-}
-
-function setEProf(p){
-eprof=p;
-document.getElementById("eprofObj").className="opt-btn"+(p==="obj"?" on":"");
-document.getElementById("eprofDet").className="opt-btn"+(p==="det"?" on":"");
-}
-
-function setERod(r){
-erod=r;
-[1,2,3].forEach(n=>{document.getElementById("erod"+n).className="opt-btn"+(n===r?" on":"")});
-}
-
-// Init toggles
+function setPub(c){pubChoice=c;renderAgToggles()}
+function setProf(p){prof=p;document.getElementById("profObj").className="tog-btn"+(p==="obj"?" on":"");document.getElementById("profDet").className="tog-btn"+(p==="det"?" on":"")}
+function setRod(r){rod=r;[1,2,3].forEach(n=>{document.getElementById("rod"+n).className="tog-btn rod-btn"+(n===r?" on":"")})}
+function setEsc(v){escOn=v;document.getElementById("escOn").className="tog-btn"+(v?" on":"");document.getElementById("escOff").className="tog-btn"+(v?"":" on")}
+function setEProf(p){eprof=p;document.getElementById("eprofObj").className="tog-btn"+(p==="obj"?" on":"");document.getElementById("eprofDet").className="tog-btn"+(p==="det"?" on":"")}
+function setERod(r){erod=r;[1,2,3].forEach(n=>{document.getElementById("erod"+n).className="tog-btn rod-btn"+(n===r?" on":"")})}
 renderAgToggles();
 
-/* ===== RENDER FUNCTIONS ===== */
-function ra(cid,k,txt,ld,lb){
-const a=getAg(k),el=document.getElementById(cid);
-let h=`<div class="agent" style="background:${a.bg};border-color:${a.c}"><div class="ah"><span style="font-size:18px">${a.i}</span><span class="an" style="color:${a.c}">${a.n}</span>`;
-if(lb)h+=`<span class="al">${lb}</span>`;
-h+=`</div>`;
-if(ld)h+=`<div style="display:flex;align-items:center;gap:8px;color:#9ca3af"><div class="ld" style="background:${a.c}"></div><span style="font-size:13px">Analisando...</span></div>`;
-else if(txt)h+=`<div class="at">${esc(txt)}</div>`;
-h+=`</div>`;el.innerHTML+=h;
+/* ===== RENDER ===== */
+function bubble(cid,k,txt,loading,rlabel){
+const a=getAgDisplay(k),el=document.getElementById(cid);
+let h=`<div class="bubble"><div class="bub-av" style="background:radial-gradient(circle at 35% 35%,${a.c}44,${a.c}18);border:1.5px solid ${a.c}55;box-shadow:0 2px 10px ${a.c}15"><span style="color:${a.c}">${a.i}</span></div><div class="bub-body" style="border:1px solid ${a.c}22"><div class="bub-hdr"><div><span class="bub-name">${a.n}</span><span class="bub-role" style="color:${a.c}">${a.r}</span></div><span class="bub-round">${rlabel||""}</span></div>`;
+if(loading)h+=`<div class="bub-ld"><div class="ld" style="background:${a.c}"></div>Analisando...</div>`;
+else if(txt)h+=`<div class="bub-text">${esc(txt)}</div>`;
+h+=`</div></div>`;el.innerHTML+=h;
 }
 
-function rp(cid,d,t){document.getElementById(cid).innerHTML=`<div class="pb"><div class="pbb"><div class="pbf" style="width:${(d/t)*100}%"></div></div><span style="font-size:11px;color:#6b7280">${d}/${t}</span></div>`}
+function rp(cid,d,t){document.getElementById(cid).innerHTML=`<div class="pb"><div class="pbb"><div class="pbf" style="width:${(d/t)*100}%"></div></div><span style="font-size:10px;color:rgba(160,140,110,.3)">${d}/${t}</span></div>`}
 
-function rm(txt,ld){
-const el=document.getElementById("mc");
-let h=`<div class="med"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:20px">MEDIADOR</span><span class="mt">SINTESE DO MEDIADOR</span></div>`;
-if(ld)h+=`<div style="display:flex;align-items:center;gap:8px;color:#9ca3af"><div class="ld" style="background:#eab308"></div><span style="font-size:13px">Sintetizando...</span></div>`;
-else h+=`<div class="at" style="color:#e5e7eb;line-height:1.7">${esc(txt)}</div>`;
+function renderSyn(cid,txt,loading,isExec){
+const el=document.getElementById(cid);
+let h=`<div class="syn-card"><div class="top-bar"></div><div class="syn-title">${isExec?"Plano de Acao Final":"Sintese do Mediador"}</div>`;
+if(loading)h+=`<div class="bub-ld" style="justify-content:center;padding:20px"><div class="ld" style="background:#c9a84c"></div>${isExec?"Montando plano...":"Sintetizando..."}</div>`;
+else h+=`<div class="bub-text" style="color:rgba(220,205,180,.85);line-height:1.7">${esc(txt)}</div>`;
 h+=`</div>`;el.innerHTML=h;
 }
 
-function rme(txt,ld){
-const el=document.getElementById("emc");
-let h=`<div class="emed"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:20px">MEDIADOR</span><span class="emt">PLANO DE ACAO FINAL</span></div>`;
-if(ld)h+=`<div style="display:flex;align-items:center;gap:8px;color:#9ca3af"><div class="ld" style="background:#f97316"></div><span style="font-size:13px">Montando plano...</span></div>`;
-else h+=`<div class="at" style="color:#e5e7eb;line-height:1.7">${esc(txt)}</div>`;
-h+=`</div>`;el.innerHTML=h;
+function ceoMsg(cid,txt){
+if(txt)document.getElementById(cid).innerHTML=`<div class="bubble"><div class="bub-av" style="background:radial-gradient(circle at 35% 35%,rgba(201,168,76,.2),rgba(201,168,76,.08));border:1.5px solid rgba(201,168,76,.25)"><span style="color:rgba(201,168,76,.6);font-family:'EB Garamond',serif;font-size:15px;font-weight:600">A</span></div><div class="bub-body" style="border:1px solid rgba(201,168,76,.15)"><div class="bub-hdr"><div><span class="bub-name">Alan</span><span class="bub-role" style="color:rgba(201,168,76,.5)">CEO</span></div></div><div class="bub-text">${esc(txt)}</div></div></div>`;
 }
+
+function updatePauseBtn(inputId,btnContId,nextLabel){
+const c=document.getElementById(inputId).value.trim();
+document.getElementById(btnContId).innerHTML=c?
+`<button class="btn bp" style="width:100%" onclick="${btnContId==='p1btns'?'fp1()':btnContId==='p2btns'?'fp2()':btnContId==='ep1btns'?'efp1()':'efp2()'}">Seguir para ${nextLabel}</button>`:
+`<button class="btn bs" style="width:100%" onclick="${btnContId==='p1btns'?'fp1()':btnContId==='p2btns'?'fp2()':btnContId==='ep1btns'?'efp1()':'efp2()'}">Pular para ${nextLabel}</button>`;
+}
+document.addEventListener("input",e=>{
+if(e.target.id==="c1")updatePauseBtn("c1","p1btns","debate");
+if(e.target.id==="c2")updatePauseBtn("c2","p2btns",rod===3?"voto final":"sintese");
+if(e.target.id==="ec1")updatePauseBtn("ec1","ep1btns","confronto");
+if(e.target.id==="ec2")updatePauseBtn("ec2","ep2btns","versao final");
+});
 
 /* ===== DEBATE HISTORY ===== */
 function buildHistCtx(){
@@ -875,228 +706,240 @@ if(!cont){
 idea=document.getElementById("ii").value.trim();if(!idea)return;
 debateHistory=[];debateNum=1;continueText="";
 hi("vs");sh("va");
-}else{
-debateNum++;
-}
-r1={};r2={};r3={};mt="";
-const ag=selAg;
-const profLabel=prof==="obj"?"Objetiva":"Detalhada";
-document.getElementById("ctxb").innerHTML=`<strong style="color:#d1d5db">${profLabel} · ${rod} rodada${rod>1?"s":""}</strong> - ${idea.length>70?idea.slice(0,70)+"...":idea}`;
+}else{debateNum++}
+r0={};r0resp="";r1={};r2={};r3={};mt="";
+const ag=selAg,tk=TK[prof],ri=RI[prof];
+document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">CONSELHO · ${prof==="obj"?"Objetiva":"Detalhada"} · ${rod} rodada${rod>1?"s":""}</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
 document.getElementById("dbnum").textContent=debateNum>1?`Debate ${debateNum}`:"";
-["r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>document.getElementById(id).innerHTML="");
-["vp1","vr2","vp2","vr3","vsy","vd","vcd"].forEach(id=>hi(id));
+["r0a","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
+["vr0","vr1","vp1","vr2","vp2","vr3","vsy","vd","vcd","r0resp","r0skip"].forEach(id=>hi(id));
+
+// R0 — Esclarecer
+if(escOn&&!cont){
+sh("vr0");
+document.getElementById("r0a").innerHTML="";
+ag.forEach(k=>bubble("r0a",k,null,true,"R0"));sb();
+let dn=0;
+const questions={};
+await Promise.all(ag.map(async k=>{
+try{
+const msg=`${ri.r0}\n\nQUESTAO:\n${idea}`;
+r0[k]=await api(CTX,getAgPrompt(k),msg,tk.r0);
+const clean=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();
+if(clean!=="CLARO")questions[k]=r0[k];
+}catch(e){r0[k]=`Erro: ${e.message}`;questions[k]=r0[k]}
+dn++;
+}));
+// Show only agents that asked questions
+document.getElementById("r0a").innerHTML="";
+const qKeys=Object.keys(questions);
+if(qKeys.length>0){
+qKeys.forEach(k=>bubble("r0a",k,questions[k],false,"R0"));
+sh("r0resp");sb();
+// Wait for Alan to respond
+return;
+}else{
+sh("r0skip");sb();
+await new Promise(r=>setTimeout(r,1500));
+hi("r0skip");
+}
+}
 
 // R1
+await runR1(ag,tk,ri,cont);
+}
+
+async function finishR0(){
+r0resp=document.getElementById("r0input").value.trim();
+hi("r0resp");
+await runR1(selAg,TK[prof],RI[prof],false);
+}
+
+async function runR1(ag,tk,ri,cont){
+sh("vr1");
 document.getElementById("r1a").innerHTML="";
-ag.forEach(k=>ra("r1a",k,null,true,"R1"));rp("r1p",0,ag.length);sb();
+ag.forEach(k=>bubble("r1a",k,null,true,"R1"));rp("r1p",0,ag.length);sb();
 let dn=0;
 const histCtx=buildHistCtx();
-const tk=TK[prof];
-const ri=RI[prof];
-
+// Build R0 context if exists
+let r0ctx="";
+const qKeys=Object.keys(r0).filter(k=>{const c=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();return c!=="CLARO"});
+if(qKeys.length>0){
+r0ctx="\n\nPERGUNTAS DOS MEMBROS:\n";
+qKeys.forEach(k=>{r0ctx+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}): ${r0[k]}\n`});
+if(r0resp)r0ctx+=`\nAlan respondeu: ${r0resp}\n`;
+}
 await Promise.all(ag.map(async k=>{
 try{
 let msg=`${ri.r1}\n\nIDEIA:\n${idea}`;
+if(r0ctx)msg+=r0ctx;
 if(continueText)msg+=`\n\nNOVO PEDIDO DE ALAN:\n${continueText}`;
 const dbCtx=histCtx||null;
-r1[k]=await api(CTX,AG[k].s,msg,tk.r1,dbCtx);
+r1[k]=await api(CTX,getAgPrompt(k),msg,tk.r1,dbCtx);
 }catch(e){r1[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("r1a").innerHTML="";ag.forEach(ak=>ra("r1a",ak,r1[ak]||null,!r1[ak],"R1"));rp("r1p",dn,ag.length);sb();
+dn++;document.getElementById("r1a").innerHTML="";ag.forEach(ak=>bubble("r1a",ak,r1[ak]||null,!r1[ak],"R1"));rp("r1p",dn,ag.length);sb();
 }));
 document.getElementById("r1p").innerHTML="";
-
-// Flow by rounds
 if(rod===1){await syn();return}
-sh("vp1");up1();sb();
+sh("vp1");updatePauseBtn("c1","p1btns","debate");sb();
 }
-
-function up1(){const c=document.getElementById("c1").value.trim();document.getElementById("p1b").textContent=c?"Enviar e debater":"Seguir para debate"}
-function up2(){const c=document.getElementById("c2").value.trim();const b=rod===3?"voto final":"sintese";document.getElementById("p2b").textContent=c?`Enviar e ${b}`:`${b.charAt(0).toUpperCase()+b.slice(1)}`}
-document.addEventListener("input",e=>{if(e.target.id==="c1")up1();if(e.target.id==="c2")up2()});
 
 async function fp1(){
 hi("vp1");sh("vr2");
 const ce=document.getElementById("c1").value.trim();
-if(ce)document.getElementById("c1d").innerHTML=`<div class="cm"><strong>Alan:</strong> ${esc(ce)}</div>`;
-const ag=selAg;document.getElementById("r2a").innerHTML="";
-ag.forEach(k=>ra("r2a",k,null,true,"R2"));rp("r2p",0,ag.length);sb();
+ceoMsg("c1d",ce);
+const ag=selAg,tk=TK[prof],ri=RI[prof];
+document.getElementById("r2a").innerHTML="";
+ag.forEach(k=>bubble("r2a",k,null,true,"R2"));rp("r2p",0,ag.length);sb();
 let dn=0;
-const tk=TK[prof];
-const ri=RI[prof];
-
-// Build debate context for caching (same for all agents in R2)
 let debCtx=`IDEIA:\n${idea}\n\nPARECERES R1:\n\n`;
-ag.forEach(k=>{debCtx+=`${getAg(k).i} ${getAg(k).n}: ${r1[k]}\n\n`});
-if(ce)debCtx+=`Alan (CEO real): ${ce}\n\n`;
+ag.forEach(k=>{debCtx+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}): ${r1[k]}\n\n`});
+if(ce)debCtx+=`Alan (CEO): ${ce}\n\n`;
 const histCtx=buildHistCtx();
 if(histCtx)debCtx=histCtx+debCtx;
-
 await Promise.all(ag.map(async k=>{
 try{
 let m=`${ri.r2}\n\nPARECERES DOS OUTROS (R1):\n\n`;
-ag.forEach(ak=>{if(ak!==k)m+=`${getAg(ak).i} ${getAg(ak).n}: ${r1[ak]}\n\n`});
+ag.forEach(ak=>{if(ak!==k)m+=`${getAgDisplay(ak).n} (${getAgDisplay(ak).r}): ${r1[ak]}\n\n`});
 m+=`\nSeu parecer (R1): "${r1[k]}"\n\nReaja aos OUTROS.`;
-r2[k]=await api(CTX,AG[k].s,m,tk.r2,debCtx);
+r2[k]=await api(CTX,getAgPrompt(k),m,tk.r2,debCtx);
 }catch(e){r2[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("r2a").innerHTML="";ag.forEach(ak=>ra("r2a",ak,r2[ak]||null,!r2[ak],"R2"));rp("r2p",dn,ag.length);sb();
+dn++;document.getElementById("r2a").innerHTML="";ag.forEach(ak=>bubble("r2a",ak,r2[ak]||null,!r2[ak],"R2"));rp("r2p",dn,ag.length);sb();
 }));
 document.getElementById("r2p").innerHTML="";
-
 if(rod===2){await syn();return}
-sh("vp2");up2();sb();
+sh("vp2");updatePauseBtn("c2","p2btns","voto final");sb();
 }
 
-async function fp2(){
-hi("vp2");
-if(rod===3){await rr3();return}
-await syn();
-}
+async function fp2(){hi("vp2");if(rod===3){await rr3();return}await syn()}
 
 async function rr3(){
 sh("vr3");
 const ce1=document.getElementById("c1").value.trim(),ce2=document.getElementById("c2").value.trim();
-if(ce2)document.getElementById("c2d").innerHTML=`<div class="cm"><strong>Alan:</strong> ${esc(ce2)}</div>`;
-const ag=selAg;document.getElementById("r3a").innerHTML="";
-ag.forEach(k=>ra("r3a",k,null,true,"R3"));rp("r3p",0,ag.length);sb();
+ceoMsg("c2d",ce2);
+const ag=selAg,tk=TK[prof],ri=RI[prof];
+document.getElementById("r3a").innerHTML="";
+ag.forEach(k=>bubble("r3a",k,null,true,"R3"));rp("r3p",0,ag.length);sb();
 let dn=0;
-const tk=TK[prof];
-const ri=RI[prof];
-
-// Build debate context for R3 caching
-let debCtx=`IDEIA: ${idea}\n\n`;
-if(ce1)debCtx+=`Alan (pos R1): ${ce1}\n\n`;
-debCtx+="DEBATE:\n\n";
-ag.forEach(k=>{debCtx+=`${getAg(k).i} ${getAg(k).n}\n  R1: ${r1[k]}\n  Debate: ${r2[k]}\n\n`});
+let debCtx=`IDEIA: ${idea}\n\n`;if(ce1)debCtx+=`Alan (pos R1): ${ce1}\n\n`;
+debCtx+="DEBATE:\n\n";ag.forEach(k=>{debCtx+=`${getAgDisplay(k).n}\n  R1: ${r1[k]}\n  Debate: ${r2[k]}\n\n`});
 if(ce2)debCtx+=`Alan (pos debate): ${ce2}\n\n`;
-const histCtx=buildHistCtx();
-if(histCtx)debCtx=histCtx+debCtx;
-
+const histCtx=buildHistCtx();if(histCtx)debCtx=histCtx+debCtx;
 await Promise.all(ag.map(async k=>{
 try{
-let m=`${ri.r3}\n\nDEBATE:\n\n`;
-ag.forEach(ak=>{m+=`${getAg(ak).i} ${getAg(ak).n}${ak===k?" (VOCE)":""}\n  R1: ${r1[ak]}\n  Debate: ${r2[ak]}\n\n`});
-m+="De seu VOTO FINAL.";
-r3[k]=await api(CTX,AG[k].s,m,tk.r3,debCtx);
+let m=`${ri.r3}\n\nDe seu VOTO FINAL.`;
+r3[k]=await api(CTX,getAgPrompt(k),m,tk.r3,debCtx);
 }catch(e){r3[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("r3a").innerHTML="";ag.forEach(ak=>ra("r3a",ak,r3[ak]||null,!r3[ak],"R3"));rp("r3p",dn,ag.length);sb();
+dn++;document.getElementById("r3a").innerHTML="";ag.forEach(ak=>bubble("r3a",ak,r3[ak]||null,!r3[ak],"R3"));rp("r3p",dn,ag.length);sb();
 }));
 document.getElementById("r3p").innerHTML="";
 await syn();
 }
 
-async function sk(){hi("vp1");hi("vp2");
-if(rod===1)await syn();
-else if(rod===2){
-// skip pause after R1 for 2-round: go to R2 then syn
-// but if we're at vp1, we skip directly to syn
-await syn();
-}else{
-await syn();
-}
-}
-
 async function syn(){
-sh("vsy");rm("",true);sb();
-const ag=selAg;
+sh("vsy");renderSyn("mc","",true,false);sb();
+const ag=selAg,tk=TK[prof];
 const ce1=document.getElementById("c1")?.value.trim()||"",ce2=document.getElementById("c2")?.value.trim()||"";
-const msPrompt=prof==="obj"?MS_OBJ:MS_DET;
-const tk=TK[prof];
-
+const msP=prof==="obj"?MS_OBJ:MS_DET;
 let m=`IDEIA:\n${idea}\n\n`;
 if(buildHistCtx())m+=buildHistCtx();
 if(continueText)m+=`NOVO PEDIDO DE ALAN: ${continueText}\n\n`;
-m+=`= R1 =\n\n`;
-ag.forEach(k=>{m+=`${getAg(k).i} ${getAg(k).n}:\n${r1[k]}\n\n`});
+m+="= R1 =\n\n";ag.forEach(k=>{m+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}):\n${r1[k]}\n\n`});
 if(ce1)m+=`Alan (pos R1): ${ce1}\n\n`;
-if(Object.keys(r2).length){m+="= DEBATE =\n\n";ag.forEach(k=>{if(r2[k])m+=`${getAg(k).i} ${getAg(k).n}:\n${r2[k]}\n\n`})}
+if(Object.keys(r2).length){m+="= DEBATE =\n\n";ag.forEach(k=>{if(r2[k])m+=`${getAgDisplay(k).n}:\n${r2[k]}\n\n`})}
 if(ce2)m+=`Alan (pos debate): ${ce2}\n\n`;
-if(Object.keys(r3).length){m+="= VOTOS =\n\n";ag.forEach(k=>{if(r3[k])m+=`${getAg(k).i} ${getAg(k).n}:\n${r3[k]}\n\n`})}
-m+=`Sintetize.`;
-try{mt=await api(CTX,msPrompt,m,tk.med);rm(mt,false);debateHistory.push(mt)}catch(e){rm(`Erro: ${e.message}`,false)}
+if(Object.keys(r3).length){m+="= VOTOS =\n\n";ag.forEach(k=>{if(r3[k])m+=`${getAgDisplay(k).n}:\n${r3[k]}\n\n`})}
+m+="Sintetize.";
+try{mt=await api(CTX,msP,m,tk.med);renderSyn("mc",mt,false,false);debateHistory.push(mt)}catch(e){renderSyn("mc","Erro: "+e.message,false,false)}
 sh("vd");sb();
 }
 
 function startCd(){hi("vd");sh("vcd");document.getElementById("cdi").value="";document.getElementById("cdi").focus();sb()}
 function cancelCd(){hi("vcd");sh("vd");sb()}
 function doCd(){
-continueText=document.getElementById("cdi").value.trim();
-if(!continueText)return;
-hi("vcd");
-document.getElementById("c1").value="";document.getElementById("c2").value="";
+continueText=document.getElementById("cdi").value.trim();if(!continueText)return;
+hi("vcd");document.getElementById("c1").value="";document.getElementById("c2").value="";
 go(true);
 }
 
-/* ===== COMITE DE EXECUCAO ===== */
-function startExec(){
-hi("vd");
-// Show exec config screen
-sh("vexCfg");
-renderExAgToggles();
-sb();
+/* ===== COPY ALL ===== */
+function copyAll(){
+const ag=selAg;const ce1=document.getElementById("c1")?.value.trim()||"";const ce2=document.getElementById("c2")?.value.trim()||"";
+const d=new Date();const ds=`${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()}`;
+let t=`CONSELHO — ${ds} — ${prof==="obj"?"Objetiva":"Detalhada"} — ${rod} rodada${rod>1?"s":""}\n`;
+t+=`Membros: ${ag.map(k=>getAgDisplay(k).n+" ("+getAgDisplay(k).r+")").join(", ")}\n`;
+t+=`Questao: ${idea}\n\n`;
+// R0
+const qKeys=Object.keys(r0).filter(k=>{const c=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();return c!=="CLARO"});
+if(qKeys.length>0){
+t+=`=== RODADA 0 — ESCLARECER ===\n\n`;
+qKeys.forEach(k=>{t+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}): ${r0[k]}\n\n`});
+if(r0resp)t+=`Alan: ${r0resp}\n\n`;
+}
+t+=`=== RODADA 1 — ANALISES ===\n\n`;
+ag.forEach(k=>{t+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}):\n${r1[k]||""}\n\n`});
+t+=`=== INTERVENCAO CEO ===\n${ce1||"sem intervencao"}\n\n`;
+if(Object.keys(r2).length){
+t+=`=== RODADA 2 — DEBATE ===\n\n`;ag.forEach(k=>{if(r2[k])t+=`${getAgDisplay(k).n}:\n${r2[k]}\n\n`});
+t+=`=== INTERVENCAO CEO ===\n${ce2||"sem intervencao"}\n\n`;
+}
+if(Object.keys(r3).length){
+t+=`=== RODADA 3 — VOTO FINAL ===\n\n`;ag.forEach(k=>{if(r3[k])t+=`${getAgDisplay(k).n}:\n${r3[k]}\n\n`});
+}
+t+=`=== SINTESE DO MEDIADOR ===\n${mt}\n`;
+doCopy(t,"Copiar tudo","#vd .bs:last-child");
 }
 
+function doCopy(txt,label,sel){
+try{navigator.clipboard.writeText(txt)}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta)}
+const b=document.querySelector(sel);if(b){const o=b.textContent;b.textContent="Copiado!";setTimeout(()=>{b.textContent=o},2000)}
+}
+
+/* ===== EXEC ===== */
+function startExec(){hi("vd");sh("vexCfg");renderExAgToggles();sb()}
+
 function runExec(){
-hi("vexCfg");sh("vex");
+hi("vexCfg");sh("vex");sh("ver1");
 er1={};er2={};er3={};emt="";
-["er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc"].forEach(id=>document.getElementById(id).innerHTML="");
+["er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 ["vep1","ver2","vep2","ver3","vesy","ved"].forEach(id=>hi(id));
-
-// Shared context for exec = CTX + ROPCTX
-const execShared=CTX+"\n\n"+ROPCTX;
-const etk=ETK[eprof];
-const eri=ERI[eprof];
-
+const exSh=CTX+"\n\n"+ROPCTX,etk=ETK[eprof],eri=ERI[eprof];
 document.getElementById("er1a").innerHTML="";
-EKS.forEach(k=>ra("er1a",k,null,true,"R1"));rp("er1p",0,EKS.length);sb();
+EKS.forEach(k=>bubble("er1a",k,null,true,"R1"));rp("er1p",0,EKS.length);sb();
 let dn=0;
 const histMsg=debateHistory.map((s,i)=>`=== DEBATE ${i+1} ===\n${s}`).join("\n\n");
-
 Promise.all(EKS.map(async k=>{
-try{
-let msg=`${eri.r1}\n\nDECISAO APROVADA:\n${histMsg}\n\nIDEIA ORIGINAL:\n${idea}`;
-er1[k]=await api(execShared,EAG[k].s,msg,etk.r1);
-}catch(e){er1[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("er1a").innerHTML="";EKS.forEach(ak=>ra("er1a",ak,er1[ak]||null,!er1[ak],"R1"));rp("er1p",dn,EKS.length);sb();
+try{er1[k]=await api(exSh,EAG[k].s,`${eri.r1}\n\nDECISAO APROVADA:\n${histMsg}\n\nIDEIA ORIGINAL:\n${idea}`,etk.r1)}catch(e){er1[k]=`Erro: ${e.message}`}
+dn++;document.getElementById("er1a").innerHTML="";EKS.forEach(ak=>bubble("er1a",ak,er1[ak]||null,!er1[ak],"R1"));rp("er1p",dn,EKS.length);sb();
 })).then(()=>{
 document.getElementById("er1p").innerHTML="";
 if(erod===1){esyn();return}
-sh("vep1");eup1();sb();
+sh("vep1");updatePauseBtn("ec1","ep1btns","confronto");sb();
 });
 }
 
-function eup1(){const c=document.getElementById("ec1").value.trim();document.getElementById("ep1b").textContent=c?"Enviar e confrontar":"Seguir para confronto"}
-function eup2(){const c=document.getElementById("ec2").value.trim();document.getElementById("ep2b").textContent=c?"Enviar e finalizar":"Versao final"}
-document.addEventListener("input",e=>{if(e.target.id==="ec1")eup1();if(e.target.id==="ec2")eup2()});
-
 async function efp1(){
 hi("vep1");sh("ver2");
-const ce=document.getElementById("ec1").value.trim();
-if(ce)document.getElementById("ec1d").innerHTML=`<div class="cm"><strong>Alan:</strong> ${esc(ce)}</div>`;
-const execShared=CTX+"\n\n"+ROPCTX;
-const etk=ETK[eprof];
-const eri=ERI[eprof];
-
+const ce=document.getElementById("ec1").value.trim();ceoMsg("ec1d",ce);
+const exSh=CTX+"\n\n"+ROPCTX,etk=ETK[eprof],eri=ERI[eprof];
 document.getElementById("er2a").innerHTML="";
-EKS.forEach(k=>ra("er2a",k,null,true,"R2"));rp("er2p",0,EKS.length);sb();
+EKS.forEach(k=>bubble("er2a",k,null,true,"R2"));rp("er2p",0,EKS.length);sb();
 let dn=0;
-
-// Debate context for exec R2
 let debCtx=`IDEIA:\n${idea}\n\nPLANOS R1:\n\n`;
-EKS.forEach(k=>{debCtx+=`${EAG[k].i} ${EAG[k].n}: ${er1[k]}\n\n`});
+EKS.forEach(k=>{debCtx+=`${EAG[k].n} (${EAG[k].r}): ${er1[k]}\n\n`});
 if(ce)debCtx+=`Alan: ${ce}\n\n`;
-
 await Promise.all(EKS.map(async k=>{
 try{
 let m=`${eri.r2}\n\nPLANOS DOS OUTROS (R1):\n\n`;
-EKS.forEach(ak=>{if(ak!==k)m+=`${EAG[ak].i} ${EAG[ak].n}: ${er1[ak]}\n\n`});
+EKS.forEach(ak=>{if(ak!==k)m+=`${EAG[ak].n}: ${er1[ak]}\n\n`});
 m+=`\nSeu plano (R1): "${er1[k]}"\n\nConfrontar.`;
-er2[k]=await api(execShared,EAG[k].s,m,etk.r2,debCtx);
+er2[k]=await api(exSh,EAG[k].s,m,etk.r2,debCtx);
 }catch(e){er2[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("er2a").innerHTML="";EKS.forEach(ak=>ra("er2a",ak,er2[ak]||null,!er2[ak],"R2"));rp("er2p",dn,EKS.length);sb();
+dn++;document.getElementById("er2a").innerHTML="";EKS.forEach(ak=>bubble("er2a",ak,er2[ak]||null,!er2[ak],"R2"));rp("er2p",dn,EKS.length);sb();
 }));
 document.getElementById("er2p").innerHTML="";
 if(erod===2){await esyn();return}
-sh("vep2");eup2();sb();
+sh("vep2");updatePauseBtn("ec2","ep2btns","versao final");sb();
 }
 
 async function efp2(){hi("vep2");await err3()}
@@ -1104,72 +947,49 @@ async function efp2(){hi("vep2");await err3()}
 async function err3(){
 sh("ver3");
 const ce1=document.getElementById("ec1").value.trim(),ce2=document.getElementById("ec2").value.trim();
-if(ce2)document.getElementById("ec2d").innerHTML=`<div class="cm"><strong>Alan:</strong> ${esc(ce2)}</div>`;
-const execShared=CTX+"\n\n"+ROPCTX;
-const etk=ETK[eprof];
-const eri=ERI[eprof];
-
+ceoMsg("ec2d",ce2);
+const exSh=CTX+"\n\n"+ROPCTX,etk=ETK[eprof],eri=ERI[eprof];
 document.getElementById("er3a").innerHTML="";
-EKS.forEach(k=>ra("er3a",k,null,true,"R3"));rp("er3p",0,EKS.length);sb();
+EKS.forEach(k=>bubble("er3a",k,null,true,"R3"));rp("er3p",0,EKS.length);sb();
 let dn=0;
-
-// Debate context for exec R3
-let debCtx=`IDEIA: ${idea}\n\n`;
-if(ce1)debCtx+=`Alan (pos R1): ${ce1}\n\n`;
-debCtx+="DEBATE:\n\n";
-EKS.forEach(k=>{debCtx+=`${EAG[k].i} ${EAG[k].n}\n  R1: ${er1[k]}\n  Confronto: ${er2[k]}\n\n`});
-if(ce2)debCtx+=`Alan (pos confronto): ${ce2}\n\n`;
-
+let debCtx=`IDEIA: ${idea}\n\n`;if(ce1)debCtx+=`Alan (pos R1): ${ce1}\n\n`;
+debCtx+="DEBATE:\n\n";EKS.forEach(k=>{debCtx+=`${EAG[k].n}\n  R1: ${er1[k]}\n  Confronto: ${er2[k]}\n\n`});
+if(ce2)debCtx+=`Alan: ${ce2}\n\n`;
 await Promise.all(EKS.map(async k=>{
-try{
-let m=`${eri.r3}\n\nDEBATE:\n\n`;
-EKS.forEach(ak=>{m+=`${EAG[ak].i} ${EAG[ak].n}${ak===k?" (VOCE)":""}\n  R1: ${er1[ak]}\n  Confronto: ${er2[ak]}\n\n`});
-m+="De sua VERSAO FINAL.";
-er3[k]=await api(execShared,EAG[k].s,m,etk.r3,debCtx);
-}catch(e){er3[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("er3a").innerHTML="";EKS.forEach(ak=>ra("er3a",ak,er3[ak]||null,!er3[ak],"R3"));rp("er3p",dn,EKS.length);sb();
+try{er3[k]=await api(exSh,EAG[k].s,`${eri.r3}\n\nDe sua VERSAO FINAL.`,etk.r3,debCtx)}catch(e){er3[k]=`Erro: ${e.message}`}
+dn++;document.getElementById("er3a").innerHTML="";EKS.forEach(ak=>bubble("er3a",ak,er3[ak]||null,!er3[ak],"R3"));rp("er3p",dn,EKS.length);sb();
 }));
 document.getElementById("er3p").innerHTML="";
 await esyn();
 }
 
-async function esk(){hi("vep1");hi("vep2");await esyn()}
-
 async function esyn(){
-sh("vesy");rme("",true);sb();
-const execShared=CTX+"\n\n"+ROPCTX;
-const emsPrompt=eprof==="obj"?EMS_OBJ:EMS_DET;
-const etk=ETK[eprof];
+sh("vesy");renderSyn("emc","",true,true);sb();
+const exSh=CTX+"\n\n"+ROPCTX,etk=ETK[eprof];
+const emsP=eprof==="obj"?EMS_OBJ:EMS_DET;
 const ce1=document.getElementById("ec1")?.value.trim()||"",ce2=document.getElementById("ec2")?.value.trim()||"";
 const histMsg=debateHistory.map((s,i)=>`=== DEBATE ${i+1} ===\n${s}`).join("\n\n");
-
-let m=`DECISAO APROVADA:\n${histMsg}\n\nIDEIA:\n${idea}\n\n`;
-m+="= R1 =\n\n";
-EKS.forEach(k=>{m+=`${EAG[k].i} ${EAG[k].n}:\n${er1[k]}\n\n`});
+let m=`DECISAO APROVADA:\n${histMsg}\n\nIDEIA:\n${idea}\n\n= R1 =\n\n`;
+EKS.forEach(k=>{m+=`${EAG[k].n}:\n${er1[k]}\n\n`});
 if(ce1)m+=`Alan: ${ce1}\n\n`;
-if(Object.keys(er2).length){m+="= CONFRONTO =\n\n";EKS.forEach(k=>{if(er2[k])m+=`${EAG[k].i} ${EAG[k].n}:\n${er2[k]}\n\n`})}
+if(Object.keys(er2).length){m+="= CONFRONTO =\n\n";EKS.forEach(k=>{if(er2[k])m+=`${EAG[k].n}:\n${er2[k]}\n\n`})}
 if(ce2)m+=`Alan: ${ce2}\n\n`;
-if(Object.keys(er3).length){m+="= VERSOES FINAIS =\n\n";EKS.forEach(k=>{if(er3[k])m+=`${EAG[k].i} ${EAG[k].n}:\n${er3[k]}\n\n`})}
+if(Object.keys(er3).length){m+="= VERSOES FINAIS =\n\n";EKS.forEach(k=>{if(er3[k])m+=`${EAG[k].n}:\n${er3[k]}\n\n`})}
 m+="Monte o PLANO DE ACAO FINAL no formato obrigatorio.";
-try{emt=await api(execShared,emsPrompt,m,etk.med);rme(emt,false)}catch(e){rme(`Erro: ${e.message}`,false)}
+try{emt=await api(exSh,emsP,m,etk.med);renderSyn("emc",emt,false,true)}catch(e){renderSyn("emc","Erro: "+e.message,false,true)}
 sh("ved");sb();
 }
 
-async function copyPlan(){
-try{await navigator.clipboard.writeText(emt);
-const b=document.querySelector("#ved .bo");if(b){b.textContent="Copiado!";setTimeout(()=>{b.textContent="Copiar plano"},2000)}
-}catch(e){const ta=document.createElement("textarea");ta.value=emt;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta)}
-}
+function copyPlan(){doCopy(emt,"Copiar plano","#ved .bo")}
 
 function rst(){
-r1={};r2={};r3={};mt="";er1={};er2={};er3={};emt="";
+r0={};r0resp="";r1={};r2={};r3={};mt="";er1={};er2={};er3={};emt="";
 idea="";debateHistory=[];debateNum=1;continueText="";
-selAg=["cvo","cmo","cfo","cbo"];prof="obj";rod=3;eprof="obj";erod=3;
-["ii","c1","c2","cdi","ec1","ec2"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
-["r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
-["va","vp1","vr2","vp2","vr3","vsy","vd","vcd","vexCfg","vex","vep1","ver2","vep2","ver3","vesy","ved"].forEach(id=>hi(id));
-renderAgToggles();
-setProf("obj");setRod(3);
+selAg=["cvo","cmo","cfo","cbo"];prof="obj";rod=3;escOn=true;eprof="obj";erod=3;pubChoice="A";
+["ii","c1","c2","cdi","r0input","ec1","ec2"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+["r0a","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
+["va","vr0","vr1","vp1","vr2","vp2","vr3","vsy","vd","vcd","vexCfg","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved","r0resp","r0skip"].forEach(id=>hi(id));
+renderAgToggles();setProf("obj");setRod(3);setEsc(true);
 sh("vs");window.scrollTo(0,0);
 }
 </script>
