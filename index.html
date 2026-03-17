@@ -804,31 +804,46 @@ const lines=txt.split("\n").map(l=>l.trim()).filter(Boolean);
 let section="";
 for(let i=0;i<lines.length;i++){
 const l=lines[i];
-const lu=l.toUpperCase().replace(/[:\-—]/g," ").trim();
+// Strip markdown bold/italic, #headers, and normalize
+const stripped=l.replace(/\*\*/g,"").replace(/\*/g,"").replace(/^#+\s*/,"").replace(/__/g,"");
+const lu=stripped.toUpperCase().replace(/[:\-—]/g," ").replace(/\s+/g," ").trim();
+// Extract value after colon from original stripped line
+const valAfterColon=stripped.replace(/^[^:]*:\s*/,"").trim();
 if(lu.startsWith("CONVERGENCIA")||lu.startsWith("CONVERGÊNCIA")){
-section="conv";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.conv=v;continue;
+section="conv";if(valAfterColon&&valAfterColon.length>2&&valAfterColon.toUpperCase()!==lu)s.conv=valAfterColon;continue;
 }else if(lu.startsWith("DIVERGENCIA")||lu.startsWith("DIVERGÊNCIA")){
-section="div";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.div=v;continue;
+section="div";if(valAfterColon&&valAfterColon.length>2&&valAfterColon.toUpperCase()!==lu)s.div=valAfterColon;continue;
 }else if(lu.startsWith("VEREDICTO")){
-section="verdict";const v=l.replace(/^[^:]*:\s*/i,"");
-if(v){const parts=v.split(/\s*[—–-]\s*/,2);s.verdict=parts[0].replace(/[\[\]]/g,"").trim();if(parts[1])s.verdictReason=parts[1].trim();}
+section="verdict";
+if(valAfterColon&&valAfterColon.toUpperCase()!==lu){
+const parts=valAfterColon.split(/\s*[—–]\s*/,2);
+s.verdict=parts[0].replace(/[\[\]]/g,"").trim();
+if(parts[1])s.verdictReason=parts[1].trim();
+}
 continue;
-}else if(lu.startsWith("O QUE FICOU DECIDIDO")||lu.startsWith("O QUE FAZER")){
+}else if(lu.startsWith("O QUE FICOU DECIDIDO")||lu.startsWith("O QUE FAZER")||lu.startsWith("ACOES")||lu.startsWith("AÇÕES")){
 section="actions";continue;
-}else if(lu.startsWith("O QUE O CONSELHO MATOU")||lu.startsWith("O QUE NAO FAZER")||lu.startsWith("O QUE NÃO FAZER")){
+}else if(lu.startsWith("O QUE O CONSELHO MATOU")||lu.startsWith("O QUE NAO FAZER")||lu.startsWith("O QUE NÃO FAZER")||lu.startsWith("DESCARTADO")){
 section="killed";continue;
 }else if(lu.startsWith("RISCO")){
-section="risk";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.risk=v;continue;
-}else if(lu.startsWith("AMANHA DE MANHA")||lu.startsWith("AMANHÃ DE MANHÃ")){
-section="tomorrow";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.tomorrow=v;continue;
+section="risk";if(valAfterColon&&valAfterColon.length>2&&valAfterColon.toUpperCase()!==lu)s.risk=valAfterColon;continue;
+}else if(lu.startsWith("AMANHA DE MANHA")||lu.startsWith("AMANHÃ DE MANHÃ")||lu.startsWith("PRIMEIRA ACAO")||lu.startsWith("PRIMEIRA AÇÃO")){
+section="tomorrow";if(valAfterColon&&valAfterColon.length>2&&valAfterColon.toUpperCase()!==lu)s.tomorrow=valAfterColon;continue;
 }else if(lu.startsWith("CENARIO")||lu.startsWith("CENÁRIO")){
 section="skip";continue;
 }
-// Append to current section
-const clean=l.replace(/^[-•*]\s*/,"").replace(/^\d+[\.\)]\s*/,"");
+// Clean line: strip bullets, numbers, markdown
+const clean=stripped.replace(/^[-•*]\s*/,"").replace(/^\d+[\.\)]\s*/,"").trim();
+if(!clean)continue;
 if(section==="conv")s.conv+=(s.conv?" ":"")+clean;
 else if(section==="div")s.div+=(s.div?" ":"")+clean;
-else if(section==="verdict"&&!s.verdictReason)s.verdictReason=clean;
+else if(section==="verdict"){
+if(!s.verdict){
+const parts=clean.split(/\s*[—–]\s*/,2);
+s.verdict=parts[0].replace(/[\[\]]/g,"").trim();
+if(parts[1])s.verdictReason=parts[1].trim();
+}else if(!s.verdictReason)s.verdictReason=clean;
+}
 else if(section==="actions"&&clean)s.actions.push(clean);
 else if(section==="killed"&&clean){
 const kp=clean.split(/\s*[—–]\s*/,2);
