@@ -23,6 +23,7 @@
 --pb-bg:#F2F2F7;--pb-track:#E5E5EA;--pb-fill:#48484A;
 --ceo-label:#6B6B70;--ceo-border:#48484A;
 --max-msg:#D4618C;
+--sala-overlay:transparent;--sala-bg:none;
 }
 [data-theme="dark"]{
 --bg:#2D2D2D;--card:#2C2C2E;--surface:#252528;--input:#3A3A3C;
@@ -40,13 +41,35 @@
 --pb-bg:#3A3A3C;--pb-track:#48484A;--pb-fill:#8E8E93;
 --ceo-label:#8E8E93;--ceo-border:#636366;
 --max-msg:#E07A9E;
+--sala-overlay:transparent;--sala-bg:none;
+}
+[data-theme="sala"]{
+--bg:transparent;--card:#3D2A15;--surface:#332210;--input:#4A3418;
+--border:#5A3E20;--border-subtle:#4A3418;--border-sep:#4A3418;
+--tog-bg:#3D2A15;--tog-active:#5A3E20;--tog-shadow:rgba(0,0,0,0.3);
+--text:#E8D4B0;--text2:#D4BC94;--text3:#A07848;--text-dim:#7A5830;--text-muted:#5A3E20;
+--text-off:#8A6840;--text-off2:#7A5830;
+--card-off:#332210;--card-off-border:#4A3418;
+--btn-blue:#1E6632;--btn-orange:#8A6840;--btn-dark:#1E6632;
+--btn-light-bg:#3D2A15;--btn-light-txt:#A07848;--btn-light-border:#5A3E20;
+--ag-cvo:#B8943C;--ag-cmo:#A07848;--ag-cfo:#2E7A42;--ag-cbo:#8A6840;--ag-sm:#C4A460;--ag-pub:#1E6632;
+--ag-pm:#B8943C;--ag-coo:#A07848;--ag-bs:#C4A460;
+--syn-green:#2E7A42;--syn-red:#A05A3A;
+--verdict-reason:#D4BC94;
+--pb-bg:#332210;--pb-track:#4A3418;--pb-fill:#B8943C;
+--ceo-label:#A07848;--ceo-border:#5A3E20;
+--max-msg:#C4A460;
+--sala-overlay:rgba(30,20,12,0.3);--sala-bg:url('bg-conselho.png') center/cover fixed;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;transition:background .3s,color .3s}
+body{background:var(--sala-bg,none),var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;transition:background-color .3s,color .3s}
+body::before{content:"";position:fixed;inset:0;background:var(--sala-overlay);pointer-events:none;z-index:0;transition:background .3s}
+body>*{position:relative;z-index:1}
 
 /* Header */
 .header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 0;margin-bottom:28px}
+[data-theme="sala"] .header{background:#332210}
 .header-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
 .header h1{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
 
@@ -55,6 +78,8 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sa
 .dm-toggle .dm-circle{width:16px;height:16px;border-radius:50%;background:#FFFFFF;position:absolute;top:2px;left:2px;transition:transform .3s,background .3s}
 [data-theme="dark"] .dm-toggle{background:#8E8E93}
 [data-theme="dark"] .dm-toggle .dm-circle{background:#1D1D1F;transform:translateX(16px)}
+[data-theme="sala"] .dm-toggle{background:#5A3E20}
+[data-theme="sala"] .dm-toggle .dm-circle{background:#E8D4B0;transform:translateX(16px)}
 
 /* Container */
 .container{max-width:1280px;margin:0 auto;padding:0 24px 48px}
@@ -176,6 +201,7 @@ textarea::placeholder{color:var(--text-dim)}
 
 /* PIN Screen */
 .pin-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s,transform .4s}
+[data-theme="sala"] .pin-screen{background:#2A1A0A}
 .pin-screen.out{opacity:0;transform:translateY(-30px);pointer-events:none}
 .pin-title{font-size:28px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:40px;font-family:'Inter',-apple-system,sans-serif}
 .pin-dots{display:flex;gap:16px;margin-bottom:36px}
@@ -420,16 +446,19 @@ textarea::placeholder{color:var(--text-dim)}
 </div><!-- /appWrap -->
 
 <script>
-/* ===== DARK MODE ===== */
+/* ===== THEME TOGGLE ===== */
+const THEMES=["dark","sala","light"];
 function toggleDark(){
-const isDark=document.documentElement.getAttribute("data-theme")==="dark";
-document.documentElement.setAttribute("data-theme",isDark?"light":"dark");
-localStorage.setItem("theme",isDark?"light":"dark");
+const cur=document.documentElement.getAttribute("data-theme")||"dark";
+const idx=THEMES.indexOf(cur);
+const next=THEMES[(idx+1)%THEMES.length];
+document.documentElement.setAttribute("data-theme",next);
+localStorage.setItem("theme",next);
 }
 (function(){
 const saved=localStorage.getItem("theme");
-if(saved==="light"){
-document.documentElement.setAttribute("data-theme","light");
+if(saved&&THEMES.includes(saved)){
+document.documentElement.setAttribute("data-theme",saved);
 }else{
 document.documentElement.setAttribute("data-theme","dark");
 }
