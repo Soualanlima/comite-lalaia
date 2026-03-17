@@ -626,14 +626,12 @@ CHECKPOINT SEMANAL: [...] | SINAIS DE ALERTA: [...] | PRIMEIRA ACAO AMANHA: [...
 
 /* ===== ROUND INSTRUCTIONS ===== */
 const RI={obj:{
-r0:`Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: "CLARO"
-Se falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.`,
+r0:`Leia a questao abaixo. Voce tem 1 oportunidade de fazer uma pergunta antes de analisar. Se falta alguma informacao que MUDARIA sua analise (numero especifico, prazo, quem executa, contexto que nao esta claro), pergunte agora em 1 frase direta. Se o contexto esta suficiente pra voce analisar com confianca, responda apenas: CLARO`,
 r1:"Analise sob sua otica. Responda em 3-5 frases certeiras. Encontre o que Alan nao ve. Feche com conclusao clara.",
 r2:"Reaja aos outros em 3-5 frases. 1 concordancia, 1 discordancia, 1 insight novo. REGRA: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo.",
 r3:"Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. NAO vote em outro agente. Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."
 },det:{
-r0:`Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: "CLARO"
-Se falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.`,
+r0:`Leia a questao abaixo. Voce tem 1 oportunidade de fazer uma pergunta antes de analisar. Se falta alguma informacao que MUDARIA sua analise (numero especifico, prazo, quem executa, contexto que nao esta claro), pergunte agora em 1 frase direta. Se o contexto esta suficiente pra voce analisar com confianca, responda apenas: CLARO`,
 r1:"Analise a questao sob sua otica profissional. Use o briefing como contexto mas pense com independencia. Encontre o que Alan NAO esta vendo. Dedique 30%+ a cenarios futuros. Seja cirurgico: cada frase deve carregar um insight. Maximo 1 paragrafo denso.",
 r2:`Receba pareceres dos OUTROS. Reaja com argumentos. Aponte o que ninguem mencionou. Se mudou de posicao, diga. Seja especifico: "o Financeiro ignora que...", "concordo com o Marketing sobre X, mas..." REGRA DE OURO: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo. Maximo 1 paragrafo denso.`,
 r3:"Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. NAO vote em outro agente. Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."}};
@@ -941,9 +939,6 @@ document.getElementById("dbnum").textContent=debateNum>1?`Debate ${debateNum}`:"
 
 // R0 — Esclarecer
 if(escOn&&!cont){
-sh("vr0");
-renderRound("r0a",ag,r0,"R0",false);sb();
-let dn=0;
 const questions={};
 await Promise.all(ag.map(async k=>{
 try{
@@ -952,18 +947,15 @@ r0[k]=await api(CTX,getAgPrompt(k),msg,tk.r0);
 const clean=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();
 if(clean!=="CLARO")questions[k]=r0[k];
 }catch(e){r0[k]=`Erro: ${e.message}`;questions[k]=r0[k]}
-dn++;renderRound("r0a",ag,r0,"R0",false);sb();
 }));
 const qKeys=Object.keys(questions);
 if(qKeys.length>0){
+sh("vr0");
 renderRound("r0a",qKeys,questions,"R0",false);
 sh("r0resp");sb();
 return;
-}else{
-sh("r0skip");sb();
-await new Promise(r=>setTimeout(r,1500));
-hi("r0skip");
 }
+// All said CLARO — skip R0 entirely, go straight to R1
 }
 
 await runR1(ag,tk,ri,cont);
