@@ -20,7 +20,7 @@ color:#1D1D1F;font-family:'Inter',-apple-system,sans-serif;min-height:100vh}
 .container{max-width:1280px;margin:0 auto;padding:0 24px 48px}
 
 /* Agent grid */
-.ag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.ag-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}
 .ag-card{background:#F8F9FA;border:1.5px solid #EBEBEB;border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .25s ease;opacity:.65;position:relative}
 .ag-card.on{opacity:1;background:#FFFFFF;box-shadow:0 1px 8px rgba(0,0,0,0.04)}
 .ag-card .top-bar{position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;opacity:.6;display:none}
@@ -143,6 +143,9 @@ textarea::placeholder{color:#AEAEB2}
 .r0-skip{text-align:center;padding:12px;color:#AEAEB2;font-size:12px;font-style:italic}
 
 /* Mobile */
+@media(max-width:900px){
+.ag-grid{grid-template-columns:repeat(3,1fr)}
+}
 @media(max-width:640px){
 .container{padding:0 16px 48px}
 .header-inner{padding:0 16px}
@@ -150,9 +153,6 @@ textarea::placeholder{color:#AEAEB2}
 .syn-grid{grid-template-columns:1fr}
 .controls-row{flex-direction:column;gap:12px}
 .control-group{flex:1 1 auto}
-}
-@media(max-width:480px){
-.ag-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
