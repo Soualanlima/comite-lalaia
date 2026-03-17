@@ -765,11 +765,103 @@ h+=`</div>`;el.innerHTML+=h;
 
 function rp(cid,d,t){document.getElementById(cid).innerHTML=`<div class="pb"><div class="pbb"><div class="pbf" style="width:${(d/t)*100}%"></div></div><span style="font-size:10px;color:#AEAEB2">${d}/${t}</span></div>`}
 
+function parseSynthesis(txt){
+const s={conv:"",div:"",verdict:"",verdictReason:"",actions:[],killed:[],risk:"",tomorrow:"",raw:""};
+try{
+const lines=txt.split("\n").map(l=>l.trim()).filter(Boolean);
+let section="";
+for(let i=0;i<lines.length;i++){
+const l=lines[i];
+const lu=l.toUpperCase().replace(/[:\-—]/g," ").trim();
+if(lu.startsWith("CONVERGENCIA")||lu.startsWith("CONVERGÊNCIA")){
+section="conv";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.conv=v;continue;
+}else if(lu.startsWith("DIVERGENCIA")||lu.startsWith("DIVERGÊNCIA")){
+section="div";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.div=v;continue;
+}else if(lu.startsWith("VEREDICTO")){
+section="verdict";const v=l.replace(/^[^:]*:\s*/i,"");
+if(v){const parts=v.split(/\s*[—–-]\s*/,2);s.verdict=parts[0].replace(/[\[\]]/g,"").trim();if(parts[1])s.verdictReason=parts[1].trim();}
+continue;
+}else if(lu.startsWith("O QUE FICOU DECIDIDO")||lu.startsWith("O QUE FAZER")){
+section="actions";continue;
+}else if(lu.startsWith("O QUE O CONSELHO MATOU")||lu.startsWith("O QUE NAO FAZER")||lu.startsWith("O QUE NÃO FAZER")){
+section="killed";continue;
+}else if(lu.startsWith("RISCO")){
+section="risk";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.risk=v;continue;
+}else if(lu.startsWith("AMANHA DE MANHA")||lu.startsWith("AMANHÃ DE MANHÃ")){
+section="tomorrow";const v=l.replace(/^[^:]*:\s*/i,"");if(v&&v.length>2)s.tomorrow=v;continue;
+}else if(lu.startsWith("CENARIO")||lu.startsWith("CENÁRIO")){
+section="skip";continue;
+}
+// Append to current section
+const clean=l.replace(/^[-•*]\s*/,"").replace(/^\d+[\.\)]\s*/,"");
+if(section==="conv")s.conv+=(s.conv?" ":"")+clean;
+else if(section==="div")s.div+=(s.div?" ":"")+clean;
+else if(section==="verdict"&&!s.verdictReason)s.verdictReason=clean;
+else if(section==="actions"&&clean)s.actions.push(clean);
+else if(section==="killed"&&clean){
+const kp=clean.split(/\s*[—–]\s*/,2);
+s.killed.push(kp.length>1?kp:[clean,""]);
+}
+else if(section==="risk")s.risk+=(s.risk?" ":"")+clean;
+else if(section==="tomorrow")s.tomorrow+=(s.tomorrow?" ":"")+clean;
+}
+if(s.conv||s.verdict||s.actions.length)return s;
+}catch(e){}
+return null;
+}
+
 function renderSyn(cid,txt,loading,isExec){
 const el=document.getElementById(cid);
 let h=`<div class="syn-card"><div class="syn-title">${isExec?"Plano de Acao Final":"Sintese do Mediador"}</div>`;
-if(loading)h+=`<div class="bub-ld" style="justify-content:center;padding:20px"><div class="ld" style="background:#48484A"></div>${isExec?"Montando plano...":"Sintetizando..."}</div>`;
-else h+=`<div class="syn-raw">${esc(txt)}</div>`;
+if(loading){
+h+=`<div class="bub-ld" style="justify-content:center;padding:20px"><div class="ld" style="background:#48484A"></div>${isExec?"Montando plano...":"Sintetizando..."}</div>`;
+}else if(isExec){
+h+=`<div class="syn-raw">${esc(txt)}</div>`;
+}else{
+const s=parseSynthesis(txt);
+if(s){
+// Convergencia + Divergencia side by side
+if(s.conv||s.div){
+h+=`<div class="syn-grid">`;
+h+=`<div class="syn-conv"><div class="syn-label">CONVERGÊNCIA</div><p class="syn-text">${esc(s.conv)}</p></div>`;
+h+=`<div class="syn-div"><div class="syn-label">DIVERGÊNCIA</div><p class="syn-text">${esc(s.div)}</p></div>`;
+h+=`</div>`;
+}
+// Veredicto
+if(s.verdict){
+h+=`<div class="syn-verdict"><div class="syn-verdict-label">VEREDICTO</div><div class="syn-verdict-big">${esc(s.verdict)}</div>`;
+if(s.verdictReason)h+=`<div class="syn-verdict-reason">${esc(s.verdictReason)}</div>`;
+h+=`</div>`;
+}
+// O que ficou decidido
+if(s.actions.length){
+h+=`<div style="margin-bottom:18px"><div class="syn-section-label">O QUE FICOU DECIDIDO</div>`;
+s.actions.forEach((a,i)=>{
+h+=`<div class="syn-action"><span class="syn-action-num">${i+1}.</span><span class="syn-action-text">${esc(a)}</span></div>`;
+});
+h+=`</div>`;
+}
+// O que o conselho matou
+if(s.killed.length){
+h+=`<div style="margin-bottom:18px"><div class="syn-section-label">O QUE O CONSELHO MATOU</div>`;
+s.killed.forEach(k=>{
+const item=Array.isArray(k)?k[0]:k,reason=Array.isArray(k)&&k[1]?k[1]:"";
+h+=`<div class="syn-killed"><span class="struck">${esc(item)}</span>${reason?`<span class="reason"> — ${esc(reason)}</span>`:""}</div>`;
+});
+h+=`</div>`;
+}
+// Risco aberto
+if(s.risk){
+h+=`<div style="margin-bottom:18px"><div class="syn-section-label">RISCO ABERTO</div><p class="syn-risk">${esc(s.risk)}</p></div>`;
+}
+// Amanha de manha
+if(s.tomorrow){
+h+=`<div class="syn-tomorrow"><div class="syn-tomorrow-label">AMANHÃ DE MANHÃ</div><p class="syn-tomorrow-text">${esc(s.tomorrow)}</p></div>`;
+}
+}else{
+h+=`<div class="syn-raw">${esc(txt)}</div>`;
+}
+}
 h+=`</div>`;el.innerHTML=h;
 }
 
