@@ -13,12 +13,11 @@ color:#1D1D1F;font-family:'Inter',-apple-system,sans-serif;min-height:100vh}
 
 /* Header */
 .header{background:#FFFFFF;border-bottom:1px solid #E5E5EA;padding:14px 0;margin-bottom:28px}
-.header-inner{max-width:1060px;margin:0 auto;padding:0 24px}
-.header h1{font-size:18px;font-weight:700;color:#1D1D1F;letter-spacing:-0.02em}
-.header .subtitle{font-size:11px;color:#AEAEB2;margin-top:1px;font-weight:400}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 24px}
+.header h1{font-size:24px;font-weight:700;color:#1D1D1F;letter-spacing:-0.02em}
 
 /* Container */
-.container{max-width:1060px;margin:0 auto;padding:0 24px 48px}
+.container{max-width:1280px;margin:0 auto;padding:0 24px 48px}
 
 /* Agent grid */
 .ag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
@@ -54,7 +53,7 @@ color:#1D1D1F;font-family:'Inter',-apple-system,sans-serif;min-height:100vh}
 textarea{width:100%;min-height:80px;padding:14px 16px;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:10px;font-size:14px;font-family:'Inter',-apple-system,sans-serif;color:#1D1D1F;resize:vertical;outline:none}
 textarea:focus{border-color:#86868B}
 textarea::placeholder{color:#AEAEB2}
-.btn-primary{width:100%;padding:14px;background:#48484A;color:#FFFFFF;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.btn-primary{width:100%;padding:14px;background:#4A6FA5;color:#FFFFFF;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-dark{padding:12px;font-size:13px;font-weight:600;background:#48484A;color:#FFFFFF;border:none;border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-light{padding:10px;font-size:12px;font-weight:500;background:#FFFFFF;color:#86868B;border:1px solid #E5E5EA;border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-skip{padding:8px 20px;font-size:12px;font-weight:600;background:#4A6FA5;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
@@ -166,14 +165,13 @@ textarea::placeholder{color:#AEAEB2}
 <div class="header">
 <div class="header-inner">
 <h1>Conselho</h1>
-<p class="subtitle">debate genuino &middot; decisao superior</p>
 </div>
 </div>
 
 <div class="container">
 
 <!-- CONFIG SCREEN -->
-<div id="vs" style="max-width:840px;margin:0 auto">
+<div id="vs">
 <div style="margin-bottom:28px">
 <div class="cfg-label">Membros <span>&middot; max. 5</span></div>
 <div id="agToggles" class="ag-grid"></div>
@@ -948,8 +946,7 @@ document.getElementById("dbnum").textContent=debateNum>1?`Debate ${debateNum}`:"
 // R0 — Esclarecer
 if(escOn&&!cont){
 sh("vr0");
-document.getElementById("r0a").innerHTML="";
-ag.forEach(k=>bubble("r0a",k,null,true,"R0"));sb();
+renderRound("r0a",ag,r0,"R0",false);sb();
 let dn=0;
 const questions={};
 await Promise.all(ag.map(async k=>{
@@ -959,12 +956,11 @@ r0[k]=await api(CTX,getAgPrompt(k),msg,tk.r0);
 const clean=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();
 if(clean!=="CLARO")questions[k]=r0[k];
 }catch(e){r0[k]=`Erro: ${e.message}`;questions[k]=r0[k]}
-dn++;
+dn++;renderRound("r0a",ag,r0,"R0",false);sb();
 }));
-document.getElementById("r0a").innerHTML="";
 const qKeys=Object.keys(questions);
 if(qKeys.length>0){
-qKeys.forEach(k=>bubble("r0a",k,questions[k],false,"R0"));
+renderRound("r0a",qKeys,questions,"R0",false);
 sh("r0resp");sb();
 return;
 }else{
