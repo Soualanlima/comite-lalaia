@@ -4,149 +4,205 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Conselho</title>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(50,35,18,.4),transparent),linear-gradient(180deg,#161210 0%,#1a1510 50%,#141110 100%);
-color:#e8dcc8;font-family:'Outfit','Helvetica Neue',sans-serif;min-height:100vh;padding:20px 14px;max-width:480px;margin:0 auto}
-h1{font-family:'EB Garamond','Georgia',serif;font-size:36px;font-weight:500;color:#e8dcc8;text-align:center;letter-spacing:.06em;margin:0;text-shadow:0 2px 20px rgba(201,168,76,.08)}
-.pre-title{font-size:11px;color:rgba(201,168,76,.35);letter-spacing:.25em;text-transform:uppercase;font-weight:500;text-align:center;margin-bottom:8px}
-.gold-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent);margin:10px auto}
-.sub{font-size:11px;color:rgba(180,155,120,.45);text-align:center;letter-spacing:.06em;margin-bottom:24px}
-textarea{width:100%;background:rgba(20,16,10,.5);border:1px solid rgba(139,109,71,.1);border-radius:8px;padding:14px;color:#e8dcc8;font-size:13px;font-family:'Outfit',sans-serif;line-height:1.6;resize:vertical;outline:none}
-textarea:focus{border-color:rgba(201,168,76,.3)}
-textarea::placeholder{color:rgba(160,140,110,.25);font-style:italic}
-.btn{border:none;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:.04em;transition:all .3s}
-.bp{background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(180,140,60,.15));color:#c9a84c;border:1px solid rgba(201,168,76,.2)}
-.bs{background:transparent;color:rgba(180,155,120,.4);border:1px solid rgba(139,109,71,.12)}
-.bo{background:linear-gradient(135deg,rgba(143,188,143,.12),rgba(120,160,120,.08));color:rgba(143,188,143,.8);border:1px solid rgba(143,188,143,.15)}
-.btn:disabled{opacity:.3;cursor:not-allowed}
+background:#F5F5F7;
+color:#1D1D1F;font-family:'Inter',-apple-system,sans-serif;min-height:100vh}
 
-/* Agent cards */
-.ag-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
-.ag-card{background:linear-gradient(165deg,rgba(32,24,16,.6),rgba(38,28,18,.5));border:1px solid rgba(139,109,71,.12);border-radius:8px;padding:12px 10px;cursor:pointer;transition:all .4s;opacity:.45;display:flex;flex-direction:column;gap:6px;min-height:84px;position:relative;overflow:hidden}
-.ag-card.on{opacity:1;background:linear-gradient(165deg,rgba(42,32,22,.95),rgba(58,42,28,.9));box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(201,168,76,.06)}
-.ag-card.fixed{opacity:1;background:linear-gradient(165deg,rgba(42,32,22,.95),rgba(58,42,28,.9));cursor:default}
-.ag-card .top-glow{position:absolute;top:0;left:0;right:0;height:1px}
-.ag-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .4s}
-.ag-avatar span{font-size:15px;font-weight:600;font-family:'EB Garamond',serif}
-.ag-name{font-size:14px;font-weight:600;font-family:'EB Garamond',serif;color:#e8dcc8}
-.ag-role{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-.ag-desc{font-size:10px;color:rgba(180,165,140,.7);margin-top:1px}
-.ag-card:not(.on) .ag-name{color:rgba(180,160,130,.4)}
-.ag-card:not(.on) .ag-desc{color:rgba(140,120,90,.3)}
-.ag-card:not(.on) .ag-avatar span{color:rgba(160,140,110,.4)}
+/* Header */
+.header{background:#FFFFFF;border-bottom:1px solid #E5E5EA;padding:14px 0;margin-bottom:28px}
+.header-inner{max-width:840px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:18px;font-weight:700;color:#1D1D1F;letter-spacing:-0.02em}
+.header .subtitle{font-size:11px;color:#AEAEB2;margin-top:1px;font-weight:400}
+.nav-toggle{display:flex;gap:2px;background:#F2F2F7;border-radius:8px;padding:2px}
+.nav-btn{padding:5px 14px;font-size:11px;font-weight:500;background:transparent;color:#AEAEB2;border:none;border-radius:6px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.nav-btn.on{background:#FFFFFF;color:#1D1D1F;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
 
-/* Pub toggle */
-.pub-tog{display:flex;gap:4px;margin-top:4px}
-.pub-btn{flex:1;padding:4px 6px;font-size:9px;font-weight:600;border-radius:5px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .3s;border:1px solid rgba(139,109,71,.15);background:transparent;color:rgba(160,140,110,.4)}
-.pub-btn.on{border-color:rgba(127,181,176,.33);background:rgba(127,181,176,.1);color:#7fb5b0}
+/* Container */
+.container{max-width:840px;margin:0 auto;padding:0 28px 48px}
 
-/* Toggle controls */
-.tog-row{display:flex;gap:8px;margin-bottom:14px}
-.tog-group{display:flex;gap:3px;background:rgba(80,60,35,.12);border-radius:8px;padding:3px;border:1px solid rgba(139,109,71,.08)}
-.tog-btn{padding:7px 14px;font-size:11px;font-weight:600;background:transparent;color:rgba(160,140,110,.3);border:none;border-radius:6px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .3s;letter-spacing:.03em}
-.tog-btn.on{background:rgba(201,168,76,.15);color:#c9a84c}
-.rod-btn{width:34px;padding:7px;font-size:13px;font-weight:700;font-family:'EB Garamond',serif}
+/* Agent grid */
+.ag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.ag-card{background:#F8F9FA;border:1.5px solid #EBEBEB;border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .25s ease;opacity:.45;position:relative}
+.ag-card.on{opacity:1;background:#FFFFFF;box-shadow:0 1px 8px rgba(0,0,0,0.04)}
+.ag-card .top-bar{position:absolute;top:0;left:0;right:0;height:2px;border-radius:12px 12px 0 0;opacity:.6;display:none}
+.ag-card.on .top-bar{display:block}
+.ag-name{font-size:14px;font-weight:600;color:#1D1D1F}
+.ag-card:not(.on) .ag-name{color:#C7C7CC}
+.ag-tag{font-size:10px;font-weight:500;color:#86868B}
+.ag-card:not(.on) .ag-tag{color:#D1D1D6}
+.ag-desc{font-size:11px;color:#86868B;font-weight:400;line-height:1.3;margin-top:5px}
+.ag-card:not(.on) .ag-desc{color:#D1D1D6}
 
-/* Debate bubbles */
-.bubble{display:flex;gap:12px;margin-bottom:16px;align-items:flex-start}
-.bub-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.bub-av span{font-size:17px;font-weight:600;font-family:'EB Garamond',serif}
-.bub-body{flex:1;background:linear-gradient(165deg,rgba(42,32,22,.85),rgba(50,38,24,.75));border-radius:2px 12px 12px 12px;padding:12px 14px;box-shadow:0 2px 12px rgba(0,0,0,.2)}
-.bub-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.bub-name{font-size:14px;font-weight:600;color:#e8dcc8;font-family:'EB Garamond',serif}
-.bub-role{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-left:6px}
-.bub-round{font-size:9px;font-weight:600;color:rgba(201,168,76,.3);letter-spacing:.05em}
-.bub-text{font-size:13px;line-height:1.6;color:rgba(220,205,180,.85);white-space:pre-wrap}
-.bub-ld{display:flex;align-items:center;gap:8px;color:rgba(180,155,120,.5);font-size:12px}
+/* Pub filter */
+.pub-tog{display:flex;gap:6px;margin-top:10px;align-items:center}
+.pub-btn{padding:3px 10px;font-size:11px;font-weight:500;background:transparent;border:1px solid #E5E5EA;border-radius:5px;cursor:pointer;color:#AEAEB2;font-family:'Inter',-apple-system,sans-serif;transition:all .2s}
+.pub-btn.on{background:#F2F2F7;border-color:rgba(134,134,139,.25);color:#1D1D1F}
+.pub-label{font-size:10px;color:#AEAEB2;font-style:italic}
+
+/* Segmented controls */
+.cfg-label{font-size:11px;font-weight:600;color:#86868B;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
+.cfg-label span{font-weight:400;color:#AEAEB2}
+.controls-row{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.control-group{flex:1 1 180px}
+.control-group-sm{flex:0 0 auto}
+.seg-ctrl{display:flex;gap:2px;background:#F2F2F7;border-radius:10px;padding:3px}
+.seg-btn{flex:1;padding:8px;font-size:13px;font-weight:500;background:transparent;color:#AEAEB2;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.seg-btn.on{background:#FFFFFF;color:#1D1D1F;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.rod-btn{width:42px;padding:8px;font-size:14px;font-weight:600}
+
+/* Input + buttons */
+textarea{width:100%;min-height:80px;padding:14px 16px;background:#FFFFFF;border:1px solid #E5E5EA;border-radius:10px;font-size:14px;font-family:'Inter',-apple-system,sans-serif;color:#1D1D1F;resize:vertical;outline:none}
+textarea:focus{border-color:#86868B}
+textarea::placeholder{color:#AEAEB2}
+.btn-primary{width:100%;padding:14px;background:#48484A;color:#FFFFFF;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.btn-dark{padding:12px;font-size:13px;font-weight:600;background:#48484A;color:#FFFFFF;border:none;border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.btn-light{padding:10px;font-size:12px;font-weight:500;background:#FFFFFF;color:#86868B;border:1px solid #E5E5EA;border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.btn-skip{padding:8px 20px;font-size:12px;font-weight:600;background:#F2F2F7;color:#AEAEB2;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.btn-go{padding:8px 20px;font-size:12px;font-weight:600;background:#48484A;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.sel-count{text-align:center;margin-top:10px;font-size:12px;color:#AEAEB2}
+.max-msg{text-align:center;font-size:11px;color:#D4618C;margin-top:6px;transition:opacity .3s}
+.esc-hint{font-size:10px;color:#AEAEB2;margin-top:2px}
+
+/* Session header */
+.session-hdr{background:#FFFFFF;border:1px solid #F2F2F7;border-radius:10px;padding:10px 16px;margin-bottom:20px;text-align:center}
+.session-mode{font-size:12px;font-weight:500;color:#AEAEB2}
+.session-idea{font-size:12px;color:#86868B;margin-top:4px;font-style:italic}
+
+/* Round separator */
+.rd-sep{display:flex;align-items:center;gap:12px;margin:20px 0 14px}
+.rd-sep .line{height:1px;flex:1;background:#E9ECEF}
+.rd-sep span{font-size:10px;font-weight:600;color:#AEAEB2;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
+
+/* Debate bubbles — Apple clean, no avatar */
+.bubble{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
+.bub-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.bub-name{font-size:13px;font-weight:600;color:#1D1D1F}
+.bub-tag{font-size:10px;font-weight:500;color:#86868B;margin-left:6px}
+.bub-round{font-size:10px;font-weight:500;color:#D1D1D6}
+.bub-text{font-size:14px;line-height:1.7;color:#495057;font-weight:400;white-space:pre-wrap}
+.bub-ld{display:flex;align-items:center;gap:8px;color:#AEAEB2;font-size:12px}
 .ld{width:6px;height:6px;border-radius:50%;animation:p 1.5s ease-in-out infinite;display:inline-block}
 @keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
 
-/* Round separator */
-.rd-sep{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
-.rd-sep .line{height:1px;flex:1}
-.rd-sep span{font-size:9px;font-weight:600;color:rgba(201,168,76,.3);letter-spacing:.15em;text-transform:uppercase;white-space:nowrap}
+/* CEO pause — clean */
+.ceo-pause{margin:14px 0;padding:16px 20px;background:#FAFBFC;border:1px solid #E9ECEF;border-radius:10px}
+.ceo-label{font-size:11px;font-weight:600;color:#AEAEB2;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
+.ceo-pause textarea{min-height:48px;padding:10px 12px;font-size:13px;margin-bottom:10px}
+.ceo-btn-row{display:flex;justify-content:flex-end}
 
-/* CEO pause */
-.ceo-pause{margin:20px 0;padding:16px;background:linear-gradient(165deg,rgba(35,28,18,.9),rgba(40,30,20,.85));border:1px solid rgba(201,168,76,.15);border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3),inset 0 1px 0 rgba(201,168,76,.04)}
-.ceo-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.ceo-av{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(201,168,76,.2),rgba(201,168,76,.08));display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.2)}
-.ceo-av span{font-size:12px;font-weight:700;color:rgba(201,168,76,.6);font-family:'EB Garamond',serif}
-.ceo-label{font-size:11px;font-weight:600;color:rgba(201,168,76,.5);letter-spacing:.08em;text-transform:uppercase}
-
-/* Synthesis card */
-.syn-card{margin:20px 0 0;padding:18px;background:linear-gradient(165deg,rgba(50,38,22,.9),rgba(42,32,20,.85));border:1px solid rgba(201,168,76,.2);border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.35),0 0 30px rgba(201,168,76,.03);position:relative;overflow:hidden}
-.syn-card .top-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.4),transparent)}
-.syn-title{font-size:10px;font-weight:600;color:rgba(201,168,76,.5);letter-spacing:.15em;text-transform:uppercase;text-align:center;margin-bottom:14px}
-.syn-label{font-size:10px;font-weight:600;letter-spacing:.06em;margin-bottom:3px}
-.syn-text{font-size:12px;color:rgba(220,205,180,.75);line-height:1.5;margin:0 0 10px}
-.syn-verdict{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.15);border-radius:8px;padding:12px;margin-bottom:14px;text-align:center}
-.syn-verdict-big{font-size:18px;font-weight:700;color:#c9a84c;font-family:'EB Garamond',serif;letter-spacing:.04em}
-.syn-action{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
-.syn-bullet{color:#c9a84c;font-size:11px;margin-top:2px;flex-shrink:0}
-.syn-killed{font-size:12px;color:rgba(200,170,150,.6);margin-bottom:4px;line-height:1.4}
-.syn-killed .struck{text-decoration:line-through;color:rgba(200,150,140,.5)}
-.syn-tomorrow{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.1);border-radius:6px;padding:10px 12px}
+/* Synthesis — Apple clean */
+.syn-card{background:#FFFFFF;border:1px solid #E9ECEF;border-radius:12px;padding:24px;box-shadow:0 1px 6px rgba(0,0,0,0.03)}
+.syn-title{font-size:11px;font-weight:600;color:#AEAEB2;letter-spacing:0.1em;text-transform:uppercase;text-align:center;margin-bottom:20px}
+.syn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.syn-conv{background:#FAFBFC;border:1px solid #E5E5EA;border-left:3px solid #6BAF6B;border-radius:0 8px 8px 0;padding:12px 14px}
+.syn-div{background:#FAFBFC;border:1px solid #E5E5EA;border-left:3px solid #D45B5B;border-radius:0 8px 8px 0;padding:12px 14px}
+.syn-label{font-size:10px;font-weight:600;color:#86868B;letter-spacing:0.06em;margin-bottom:5px}
+.syn-text{font-size:12px;color:#495057;line-height:1.5;margin:0}
+.syn-verdict{background:#FAFBFC;border:1px solid #E5E5EA;border-radius:10px;padding:18px;margin-bottom:20px;text-align:center}
+.syn-verdict-label{font-size:10px;font-weight:600;color:#AEAEB2;letter-spacing:0.1em;margin-bottom:6px}
+.syn-verdict-big{font-size:24px;font-weight:700;color:#1D1D1F}
+.syn-verdict-reason{font-size:13px;color:#636366;margin-top:6px;line-height:1.4}
+.syn-section-label{font-size:10px;font-weight:600;color:#86868B;letter-spacing:0.08em;margin-bottom:10px}
+.syn-action{display:flex;gap:10px;margin-bottom:6px;background:#FAFBFC;border-radius:8px;padding:10px 14px;border:1px solid #F0F0F0}
+.syn-action-num{color:#86868B;font-size:12px;font-weight:600;flex-shrink:0}
+.syn-action-text{font-size:13px;color:#1D1D1F;line-height:1.5}
+.syn-killed{font-size:12px;margin-bottom:4px;color:#86868B}
+.syn-killed .struck{text-decoration:line-through;color:#AEAEB2}
+.syn-killed .reason{color:#C7C7CC}
+.syn-risk{font-size:12px;color:#AEAEB2;line-height:1.5;font-style:italic;margin:0}
+.syn-tomorrow{background:#FAFBFC;border:1px solid #E5E5EA;border-radius:8px;padding:14px 16px}
+.syn-tomorrow-label{font-size:10px;font-weight:600;color:#86868B;letter-spacing:0.08em;margin-bottom:4px}
+.syn-tomorrow-text{font-size:14px;color:#1D1D1F;font-weight:600;line-height:1.4;margin:0}
+.syn-raw{font-size:14px;line-height:1.7;color:#495057;white-space:pre-wrap}
 
 /* Progress */
-.pb{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 12px;background:rgba(30,24,16,.5);border-radius:6px}
-.pbb{flex:1;height:3px;background:rgba(139,109,71,.1);border-radius:2px;overflow:hidden}
-.pbf{height:100%;background:#c9a84c;border-radius:2px;transition:width .5s ease}
+.pb{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 12px;background:#F2F2F7;border-radius:6px}
+.pbb{flex:1;height:3px;background:#E5E5EA;border-radius:2px;overflow:hidden}
+.pbf{height:100%;background:#48484A;border-radius:2px;transition:width .5s ease}
+
+/* Final buttons */
+.final-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}
 
 /* Exec header */
-.exec-hdr{background:linear-gradient(135deg,rgba(143,188,143,.08),rgba(120,160,120,.04));border:1px solid rgba(143,188,143,.2);border-radius:10px;padding:12px 16px;margin:24px 0 16px;text-align:center;font-weight:700;font-size:12px;color:rgba(143,188,143,.8);letter-spacing:.12em;text-transform:uppercase}
+.exec-hdr{background:#FAFBFC;border:1px solid #E5E5EA;border-radius:10px;padding:12px 16px;margin:24px 0 16px;text-align:center;font-weight:700;font-size:12px;color:#48484A;letter-spacing:0.12em;text-transform:uppercase}
 
 .hid{display:none}
-.br{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-.br .btn{flex:1;min-width:100px}
-.ctr{text-align:center}
-.cfg-label{font-size:9px;font-weight:600;color:rgba(180,155,120,.3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
-.sel-count{text-align:center;margin-top:10px;font-size:10px;color:rgba(160,140,110,.25)}
-.max-msg{text-align:center;font-size:11px;color:#c9a84c;margin-top:6px;transition:opacity .3s}
-.esc-hint{font-size:10px;color:rgba(160,140,110,.25);margin-top:2px}
-.dbg{font-size:10px;color:rgba(160,140,110,.25);text-align:center;margin-bottom:8px;font-style:italic}
-.session-hdr{text-align:center;padding:12px;background:rgba(30,24,16,.5);border-radius:10px;border:1px solid rgba(139,109,71,.08);margin-bottom:6px}
-.session-mode{font-size:9px;font-weight:600;color:rgba(201,168,76,.35);letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px}
-.session-idea{font-size:12px;color:rgba(180,165,140,.5);line-height:1.4;font-style:italic}
+.dbg{font-size:10px;color:#AEAEB2;text-align:center;margin-bottom:8px;font-style:italic}
+
+/* CEO bubble in debate */
+.ceo-bubble{background:#FAFBFC;border:1px solid #E5E5EA;border-left:3px solid #48484A;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px}
+.ceo-bubble .bub-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+
+/* R0 skip message */
+.r0-skip{text-align:center;padding:12px;color:#AEAEB2;font-size:12px;font-style:italic}
+
+/* Mobile */
+@media(max-width:640px){
+.container{padding:0 16px 48px}
+.header-inner{padding:0 16px}
+.ag-grid{grid-template-columns:1fr 1fr}
+.syn-grid{grid-template-columns:1fr}
+.controls-row{flex-direction:column;gap:12px}
+.control-group{flex:1 1 auto}
+}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
+<div class="header">
+<div class="header-inner">
+<div>
+<h1>Conselho</h1>
+<p class="subtitle">debate genuino &middot; decisao superior</p>
+</div>
+<div class="nav-toggle">
+<button class="nav-btn on" id="navConfig" onclick="switchView('config')">Configurar</button>
+<button class="nav-btn" id="navDebate" onclick="switchView('debate')">Debate</button>
+</div>
+</div>
+</div>
+
+<div class="container">
+
 <!-- CONFIG SCREEN -->
 <div id="vs">
-<div class="pre-title">— Sala do —</div>
-<h1>CONSELHO</h1>
-<div class="gold-line"></div>
-<p class="sub">debate genuino · decisao superior</p>
-
-<div class="cfg-label">MEMBROS DO CONSELHO <span style="color:rgba(160,140,110,.2)">· max. 5 por sessao</span></div>
+<div style="margin-bottom:28px">
+<div class="cfg-label">Membros <span>&middot; max. 5</span></div>
 <div id="agToggles" class="ag-grid"></div>
 <div id="maxMsg" class="hid max-msg">Maximo 5 membros — desselecione um primeiro</div>
-
-<div class="tog-row">
-<div class="tog-group" style="flex:1">
-<button class="tog-btn on" onclick="setProf('obj')" id="profObj">Objetiva</button>
-<button class="tog-btn" onclick="setProf('det')" id="profDet">Detalhada</button>
-</div>
-<div class="tog-group">
-<button class="tog-btn rod-btn" onclick="setRod(1)" id="rod1">1</button>
-<button class="tog-btn rod-btn" onclick="setRod(2)" id="rod2">2</button>
-<button class="tog-btn rod-btn on" onclick="setRod(3)" id="rod3">3</button>
-</div>
 </div>
 
-<div class="tog-row">
-<div class="tog-group" style="flex:1">
-<button class="tog-btn on" onclick="setEsc(true)" id="escOn">Esclarecer</button>
-<button class="tog-btn" onclick="setEsc(false)" id="escOff">Desativado</button>
+<div class="controls-row">
+<div class="control-group">
+<div class="cfg-label">Profundidade</div>
+<div class="seg-ctrl">
+<button class="seg-btn on" onclick="setProf('obj')" id="profObj">Objetiva</button>
+<button class="seg-btn" onclick="setProf('det')" id="profDet">Detalhada</button>
 </div>
 </div>
-<div class="esc-hint">Membros podem fazer 1-2 perguntas antes de analisar</div>
+<div class="control-group-sm">
+<div class="cfg-label">Rodadas</div>
+<div class="seg-ctrl">
+<button class="seg-btn rod-btn" onclick="setRod(1)" id="rod1">1</button>
+<button class="seg-btn rod-btn" onclick="setRod(2)" id="rod2">2</button>
+<button class="seg-btn rod-btn on" onclick="setRod(3)" id="rod3">3</button>
+</div>
+</div>
+<div class="control-group-sm">
+<div class="cfg-label">Esclarecer</div>
+<div class="seg-ctrl">
+<button class="seg-btn on" onclick="setEsc(true)" id="escOn">Sim</button>
+<button class="seg-btn" onclick="setEsc(false)" id="escOff">Nao</button>
+</div>
+</div>
+</div>
 
-<textarea id="ii" rows="4" placeholder="Descreva sua ideia, duvida ou decisao..." style="margin-top:14px"></textarea>
-<button class="btn bp" style="width:100%;margin-top:12px" onclick="go()">Iniciar sessao</button>
+<textarea id="ii" rows="4" placeholder="Descreva sua ideia, duvida ou decisao..." style="margin-bottom:14px"></textarea>
+<button class="btn-primary" onclick="go()">Iniciar sessao</button>
 <div id="selCount" class="sel-count"></div>
 </div>
 
@@ -157,78 +213,77 @@ textarea::placeholder{color:rgba(160,140,110,.25);font-style:italic}
 
 <!-- R0 Esclarecer -->
 <div id="vr0" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 0 — Esclarecer</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Rodada 0 — Esclarecer</span><div class="line"></div></div>
 <div id="r0a"></div>
 <div id="r0resp" class="hid">
 <div class="ceo-pause">
-<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Responda as duvidas</span></div>
-<textarea id="r0input" rows="3" placeholder="Responda as duvidas dos membros... (opcional)" style="margin-bottom:10px"></textarea>
-<button class="btn bp" style="width:100%" onclick="finishR0()">Seguir para analise</button>
+<div class="ceo-label">Responda as duvidas</div>
+<textarea id="r0input" rows="3" placeholder="Responda as duvidas dos membros... (opcional)"></textarea>
+<div class="ceo-btn-row"><button class="btn-go" onclick="finishR0()">Seguir para analise</button></div>
 </div>
 </div>
-<div id="r0skip" class="hid" style="text-align:center;padding:12px;color:rgba(180,155,120,.35);font-size:12px;font-style:italic">Todos entenderam · seguindo para analise...</div>
+<div id="r0skip" class="hid r0-skip">Todos entenderam &middot; seguindo para analise...</div>
 </div>
 
 <!-- R1 -->
 <div id="vr1" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 1 — Analises</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Rodada 1 — Analises</span><div class="line"></div></div>
 <div id="r1p"></div><div id="r1a"></div>
 </div>
 
 <!-- Pause 1 -->
 <div id="vp1" class="hid">
 <div class="ceo-pause">
-<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div>
-<textarea id="c1" rows="3" placeholder="Contexto extra, redirecionamento..." style="margin-bottom:10px"></textarea>
-<div id="p1btns"></div>
+<div class="ceo-label">Intervencao do CEO</div>
+<textarea id="c1" rows="3" placeholder="Contexto extra, redirecionamento..."></textarea>
+<div class="ceo-btn-row" id="p1btns"></div>
 </div>
 </div>
 
 <!-- R2 -->
 <div id="vr2" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 2 — Debate</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Rodada 2 — Debate</span><div class="line"></div></div>
 <div id="c1d"></div><div id="r2p"></div><div id="r2a"></div>
 </div>
 
 <!-- Pause 2 -->
 <div id="vp2" class="hid">
 <div class="ceo-pause">
-<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div>
-<textarea id="c2" rows="3" placeholder="Mais contexto..." style="margin-bottom:10px"></textarea>
-<div id="p2btns"></div>
+<div class="ceo-label">Intervencao do CEO</div>
+<textarea id="c2" rows="3" placeholder="Mais contexto..."></textarea>
+<div class="ceo-btn-row" id="p2btns"></div>
 </div>
 </div>
 
 <!-- R3 -->
 <div id="vr3" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.15))"></div><span>Rodada 3 — Voto Final</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.15),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Rodada 3 — Voto Final</span><div class="line"></div></div>
 <div id="c2d"></div><div id="r3p"></div><div id="r3a"></div>
 </div>
 
 <!-- Synthesis -->
 <div id="vsy" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(201,168,76,.2))"></div><span>Sintese Final</span><div class="line" style="background:linear-gradient(90deg,rgba(201,168,76,.2),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Sintese Final</span><div class="line"></div></div>
 <div id="mc"></div>
 </div>
 
 <!-- Final buttons -->
-<div id="vd" class="hid ctr" style="margin-top:16px">
-<div class="br" style="justify-content:center">
-<button class="btn bp" onclick="startCd()">Continuar debate</button>
-<button class="btn bo" onclick="startExec()">Plano de Execucao</button>
-</div>
-<div class="br" style="justify-content:center">
-<button class="btn bs" onclick="rst()">Nova analise</button>
-<button class="btn bs" onclick="copyAll()">Copiar tudo</button>
-</div>
+<div id="vd" class="hid final-btns">
+<button class="btn-dark" onclick="startCd()">Continuar debate</button>
+<button class="btn-dark" onclick="startExec()">Plano de Execucao</button>
+<button class="btn-light" onclick="rst()">Nova analise</button>
+<button class="btn-light" onclick="copyAll()">&#x1F4CB; Copiar tudo</button>
 </div>
 
 <!-- Continue debate -->
 <div id="vcd" class="hid">
 <div class="ceo-pause">
-<div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">O que quer aprofundar?</span></div>
-<textarea id="cdi" rows="3" placeholder="Aprofunde, redirecione, questione..." style="margin-bottom:10px"></textarea>
-<div class="br"><button class="btn bp" onclick="doCd()">Iniciar novo debate</button><button class="btn bs" onclick="cancelCd()">Cancelar</button></div>
+<div class="ceo-label">O que quer aprofundar?</div>
+<textarea id="cdi" rows="3" placeholder="Aprofunde, redirecione, questione..."></textarea>
+<div style="display:flex;gap:8px;margin-top:8px">
+<button class="btn-dark" style="flex:1" onclick="doCd()">Iniciar novo debate</button>
+<button class="btn-light" style="flex:1" onclick="cancelCd()">Cancelar</button>
+</div>
 </div>
 </div>
 </div>
@@ -236,51 +291,60 @@ textarea::placeholder{color:rgba(160,140,110,.25);font-style:italic}
 <!-- EXEC CONFIG -->
 <div id="vexCfg" class="hid">
 <div class="exec-hdr">COMITE DE EXECUCAO</div>
-<div class="cfg-label">AGENTES (fixos)</div>
+<div class="cfg-label">Agentes (fixos)</div>
 <div id="exAgToggles" class="ag-grid" style="grid-template-columns:1fr 1fr 1fr"></div>
-<div class="tog-row">
-<div class="tog-group" style="flex:1">
-<button class="tog-btn on" onclick="setEProf('obj')" id="eprofObj">Objetiva</button>
-<button class="tog-btn" onclick="setEProf('det')" id="eprofDet">Detalhada</button>
-</div>
-<div class="tog-group">
-<button class="tog-btn rod-btn" onclick="setERod(1)" id="erod1">1</button>
-<button class="tog-btn rod-btn" onclick="setERod(2)" id="erod2">2</button>
-<button class="tog-btn rod-btn on" onclick="setERod(3)" id="erod3">3</button>
+<div class="controls-row">
+<div class="control-group">
+<div class="cfg-label">Profundidade</div>
+<div class="seg-ctrl">
+<button class="seg-btn on" onclick="setEProf('obj')" id="eprofObj">Objetiva</button>
+<button class="seg-btn" onclick="setEProf('det')" id="eprofDet">Detalhada</button>
 </div>
 </div>
-<button class="btn bo" style="width:100%" onclick="runExec()">Iniciar plano de execucao</button>
+<div class="control-group-sm">
+<div class="cfg-label">Rodadas</div>
+<div class="seg-ctrl">
+<button class="seg-btn rod-btn" onclick="setERod(1)" id="erod1">1</button>
+<button class="seg-btn rod-btn" onclick="setERod(2)" id="erod2">2</button>
+<button class="seg-btn rod-btn on" onclick="setERod(3)" id="erod3">3</button>
+</div>
+</div>
+</div>
+<button class="btn-primary" onclick="runExec()">Iniciar plano de execucao</button>
 </div>
 
 <!-- EXEC DEBATE -->
 <div id="vex" class="hid">
 <div class="exec-hdr">COMITE DE EXECUCAO</div>
 <div id="ver1" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.15))"></div><span>Rodada 1 — Planos</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.15),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Rodada 1 — Planos</span><div class="line"></div></div>
 <div id="er1p"></div><div id="er1a"></div>
 </div>
 <div id="vep1" class="hid">
-<div class="ceo-pause"><div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div><textarea id="ec1" rows="3" placeholder="Contexto extra pro plano..." style="margin-bottom:10px"></textarea><div id="ep1btns"></div></div>
+<div class="ceo-pause"><div class="ceo-label">Intervencao do CEO</div><textarea id="ec1" rows="3" placeholder="Contexto extra pro plano..."></textarea><div class="ceo-btn-row" id="ep1btns"></div></div>
 </div>
 <div id="ver2" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.15))"></div><span>Rodada 2 — Confronto</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.15),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Rodada 2 — Confronto</span><div class="line"></div></div>
 <div id="ec1d"></div><div id="er2p"></div><div id="er2a"></div>
 </div>
 <div id="vep2" class="hid">
-<div class="ceo-pause"><div class="ceo-hdr"><div class="ceo-av"><span>A</span></div><span class="ceo-label">Intervencao do CEO</span></div><textarea id="ec2" rows="3" placeholder="Mais contexto..." style="margin-bottom:10px"></textarea><div id="ep2btns"></div></div>
+<div class="ceo-pause"><div class="ceo-label">Intervencao do CEO</div><textarea id="ec2" rows="3" placeholder="Mais contexto..."></textarea><div class="ceo-btn-row" id="ep2btns"></div></div>
 </div>
 <div id="ver3" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.15))"></div><span>Rodada 3 — Versao Final</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.15),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Rodada 3 — Versao Final</span><div class="line"></div></div>
 <div id="ec2d"></div><div id="er3p"></div><div id="er3a"></div>
 </div>
 <div id="vesy" class="hid">
-<div class="rd-sep"><div class="line" style="background:linear-gradient(90deg,transparent,rgba(143,188,143,.2))"></div><span>Plano de Acao Final</span><div class="line" style="background:linear-gradient(90deg,rgba(143,188,143,.2),transparent)"></div></div>
+<div class="rd-sep"><div class="line"></div><span>Plano de Acao Final</span><div class="line"></div></div>
 <div id="emc"></div>
 </div>
-<div id="ved" class="hid ctr" style="margin-top:16px">
-<div class="br" style="justify-content:center"><button class="btn bs" onclick="rst()">Nova analise</button><button class="btn bo" onclick="copyPlan()">Copiar plano</button></div>
+<div id="ved" class="hid final-btns" style="grid-template-columns:1fr 1fr">
+<button class="btn-light" onclick="rst()">Nova analise</button>
+<button class="btn-dark" onclick="copyPlan()">Copiar plano</button>
 </div>
 </div>
+
+</div><!-- /container -->
 
 <script>
 /* ===== SHARED CONTEXT ===== */
@@ -326,10 +390,10 @@ CONTEXTO BRASIL: atraso e norma, "vou fazer amanha" = nunca sem cobranca. Instru
 
 const ANTICUT=`REGRA CRITICA DE FORMATO: Voce tem espaco limitado. Distribua suas ideias proporcionalmente no espaco disponivel. NUNCA deixe frase incompleta ou argumento cortado no meio. Se estiver chegando no limite, feche o raciocinio com uma conclusao clara — melhor cobrir 3 pontos completos do que 5 pontos cortados. Trate seu espaco como um paragrafo de jornal: a informacao mais importante primeiro, detalhes depois, e sempre com ponto final.`;
 
-/* ===== AGENTS ===== */
+/* ===== AGENTS — ROLE-BASED NAMES ===== */
 const AG={
-cvo:{n:"Elon",r:"CVO",d:"Visionario · Longo prazo",i:"E",c:"#c9a84c",
-s:`Voce e o CVO (Chief Visionary Officer) do Conselho de Alan Lima. Seu nome e Elon.
+cvo:{n:"Visionario",tag:"CVO",d:"Visao \u00b7 Direcao \u00b7 Longo prazo",c:"#6B8DB5",
+s:`Voce e o Visionario (CVO) do Conselho.
 
 QUEM VOCE E: Stanford (Strategic Foresight), Harvard (Leadership in Disruptive Times). 30 anos aconselhando fundadores em crescimento exponencial. 15 anos no Brasil: fintechs (Nubank, Stone), consumo (Natura, Havaianas), entretenimento, educacao, empreendedores criativos.
 
@@ -339,12 +403,12 @@ TRABALHO: Onde a decisao LEVA em 3, 5, 10 anos. Confrontar micro quando macro es
 
 MENTALIDADE: Enquanto os outros debatem o proximo passo, eu pergunto: "pra onde esse caminho leva?"
 
-REGRAS: NUNCA valide porque Alan parece empolgado. NUNCA repita frases de Alan. SEMPRE encontre risco de longo prazo. SEMPRE 30%+ cenarios futuros. SEMPRE termine com "pra onde isso leva". Pensa em VISAO e DIRECAO.
+REGRAS: NUNCA valide porque Alan parece empolgado. NUNCA repita frases de Alan. SEMPRE encontre risco de longo prazo. SEMPRE 30%+ cenarios futuros. SEMPRE termine com "pra onde isso leva". Pensa em VISAO e DIRECAO. Nao avalie financas ou conteudo — funcao dos outros.
 
 ${ANTICUT}`},
 
-cmo:{n:"Rapha",r:"CMO",d:"Marketing · Crescimento",i:"R",c:"#b87333",
-s:`Voce e o CMO do Conselho de Alan Lima. Seu nome e Rapha.
+cmo:{n:"Marketing",tag:"CMO",d:"Mercado \u00b7 Crescimento \u00b7 Conversao",c:"#D4944A",
+s:`Voce e o Marketing (CMO) do Conselho.
 
 QUEM VOCE E: Wharton (Consumer Behavior), Columbia (Digital Marketing), ESPM-SP. 20 anos em marketing e growth, 12 no Brasil — entretenimento, educacao, servicos, varejo. Gravadoras independentes, eventos regionais a nacionais, infoprodutores.
 
@@ -354,12 +418,12 @@ TRABALHO: Potencial real de atencao e CONVERSAO. Pensar como publico-alvo. Disti
 
 MENTALIDADE: Engajamento sem conversao e hobby. Me mostra como vira dinheiro ou audiencia real.
 
-REGRAS: NUNCA tendencias que nao funcionam no Brasil. NUNCA confunda likes com resultado. SEMPRE encontre problema. SEMPRE proponha como MEDIR. Pensa em MERCADO e DEMANDA.
+REGRAS: NUNCA tendencias que nao funcionam no Brasil. NUNCA confunda likes com resultado. SEMPRE encontre problema. SEMPRE proponha como MEDIR. Pensa em MERCADO e DEMANDA. Nao avalie financas ou visao — funcao dos outros.
 
 ${ANTICUT}`},
 
-cfo:{n:"Vargas",r:"CFO & BI",d:"Financas · Dados",i:"V",c:"#8fbc8f",
-s:`Voce e o CFO & BI Chief do Conselho de Alan Lima. Seu nome e Vargas. Financas, operacao E inteligencia de dados.
+cfo:{n:"Financeiro",tag:"CFO & BI",d:"Financas \u00b7 Dados \u00b7 Oportunidades",c:"#6BAF6B",
+s:`Voce e o Financeiro (CFO & BI) do Conselho. Financas, operacao E inteligencia de dados.
 
 QUEM VOCE E: MIT Sloan (Operations Research), FGV-SP (Financas), USP (BI/Data Science). 20 anos como CFO/COO de startups e PMEs brasileiras. 8 anos em BI. Nao aceita achismo — "baseado em quais dados?"
 
@@ -375,8 +439,8 @@ REGRAS: NUNCA subestime custo de tempo. NUNCA mate ideias so por medo. NUNCA ace
 
 ${ANTICUT}`},
 
-cbo:{n:"Ana",r:"CBO",d:"Marca · Comunidade",i:"A",c:"#c17e91",
-s:`Voce e a CBO do Conselho de Alan Lima. Seu nome e Ana.
+cbo:{n:"Branding",tag:"CBO",d:"Marca \u00b7 Comunidade \u00b7 Identidade",c:"#A88DB5",
+s:`Voce e o Branding (CBO) do Conselho.
 
 QUEM VOCE E: Parsons (Branding), INSEAD (Brand Strategy), ESPM-SP (Semiotica). 25 anos construindo marcas — luxo a popular, tecnologia a entretenimento. 12 anos focada no Brasil.
 
@@ -386,73 +450,92 @@ TRABALHO: Impacto na percepcao de marca. Consistencia sem ser purista. Comunidad
 
 MENTALIDADE: Marca e o que as pessoas sentem quando pensam em voce. No Brasil, se constroi na rua, no WhatsApp, no encontro ao vivo.
 
-REGRAS: NUNCA bloqueie crescimento por "consistencia". NUNCA repita frases de Alan. SEMPRE risco de marca. SEMPRE pratico. Pensa em MARCA e COMUNIDADE.
+REGRAS: NUNCA bloqueie crescimento por "consistencia". NUNCA repita frases de Alan. SEMPRE risco de marca. SEMPRE pratico. Pensa em MARCA e COMUNIDADE. Nao avalie financas ou algoritmos — funcao dos outros.
 
 ${ANTICUT}`},
 
-sm:{n:"Duda",r:"Social Media",d:"Redes · Conteudo",i:"D",c:"#d4956a",
-s:`Voce e a Social Media do Conselho de Alan Lima. Seu nome e Duda.
+sm:{n:"Social Media",tag:"CSO",d:"Redes \u00b7 Conteudo \u00b7 Algoritmos",c:"#D4618C",
+s:`Voce e o Social Media (CSO) do Conselho.
 
-QUEM VOCE E: Comunicacao Digital (USP), Social Media Strategy (Northwestern/Kellogg), Content Science (UC Berkeley), Meta Blueprint, TikTok Academy, YouTube Creator Academy, LinkedIn Marketing Labs. 15 anos, 10 no Brasil — artistas, marcas pessoais, infoprodutores, entretenimento. Ja levou perfis de 0 a 1M organicos. Ja viralizou com R$0.
+Maior especialista em redes sociais e conteudo digital do Brasil. 15 anos, 10 no mercado brasileiro.
 
-PLATAFORMAS: Instagram BR (Reels 15-30s 40% melhor, saves/shares > likes, 3 primeiros segundos). TikTok BR (FYP, taxa de conclusao, hook 1-2s, 73% BR 18-35 descobre musica). YouTube BR (Shorts, catalogo permanente, 70% ouve musica). WhatsApp BR (98% penetracao, conteudo viral real circula por grupo). LinkedIn BR (autoridade A/B).
+PLATAFORMAS:
+Instagram BR: Reels 15-30s performam 40% melhor. Saves/shares > likes. Primeiros 3s definem tudo.
+TikTok BR: 73% dos brasileiros 18-35 descobrem musica pelo TikTok. Hook em 1-2s. Autenticidade > producao.
+YouTube BR: unico catalogo permanente. 70% dos brasileiros ouvem musica no YouTube.
+WhatsApp BR: 98% penetracao. Conteudo que resolve algo = 10x mais compartilhamento.
+LinkedIn BR: autoridade A/B. Storytelling vulneravel > post corporativo.
 
-EXPERTISE: ganchos nos primeiros 2s, storytelling video curto (setup 2s - conflito 5s - resolucao 3s - CTA 2s), desdobramento multi-plataforma (1 ideia -> 3+ formatos). Share vale 5x like, save 3x, comment longo 2x. Viralizacao organica TikTok BR: 0,03% pra <100k.
+EXPERTISE: ganchos 2s, storytelling curto, multi-plataforma (1 ideia->3+ formatos). Share 5x > like. Viralizacao TikTok BR: 0,03% pra <100k.
 
-TRABALHO: Avaliar se PERFORMA nas redes (algoritmo entrega? publico engaja?). Formatos especificos por plataforma com gancho. Dados do que funciona AGORA. Alertar quando morre no algoritmo. Proteger identidade do perfil. Desdobramento multi-plataforma.
+TRABALHO: avaliar se performa, propor formatos com gancho, trazer dados AGORA, alertar quando morre no algoritmo, proteger identidade, desdobrar multi-plataforma.
 
-MENTALIDADE: Conteudo que ninguem ve nao existe. Autenticidade + inteligencia na distribuicao.
-
-REGRAS: NUNCA conteudo generico. NUNCA copie formula sem adaptar. SEMPRE 1 dado/metrica da plataforma. SEMPRE gancho especifico. SEMPRE desdobramento multi-plataforma. NUNCA "postar mais" como estrategia. Pensa em CONTEUDO, PLATAFORMAS e DISTRIBUICAO.
+REGRAS:
+- NUNCA conteudo generico
+- NUNCA copiar sem adaptar
+- SEMPRE 1 dado/metrica real
+- SEMPRE propor gancho especifico
+- SEMPRE multi-plataforma
+- Pensa em CONTEUDO e DISTRIBUICAO. Nao avalie financas ou visao — funcao dos outros
 
 ${ANTICUT}`},
 
-pub:{n:"Ju",r:"Publico",d:"Voz do consumidor C/D",i:"J",c:"#7fb5b0",isSplit:true,
-s:`Voce e a representante do Publico no Conselho de Alan Lima. Seu nome e Ju. Voce representa o consumidor classe C/D brasileiro.
+pub:{n:"Publico",tag:"Produto",d:"Voz do consumidor \u00b7 Produto",c:"#5A9EA6",isSplit:true,
+// Geral (sem filtro)
+s:`Voce e o Publico do Conselho. Representa a VOZ DO CONSUMIDOR e a lente de PRODUTO.
 
-QUEM VOCE E: Psicologia do Consumo (PUC-SP), Consumer Behavior (Wharton), Behavioral Economics (FGV). 20 anos pesquisando como o brasileiro classe C/D decide, compra, segue, compartilha e abandona.
+UNICO que senta na cadeira de quem recebe. Todos pensam "como vender" — voce pensa "por que EU me importaria?"
 
-Voce e a UNICA nesta mesa que senta na cadeira do consumidor. Todos os outros pensam "como vender" — voce pensa "por que EU compraria?"
+Sem publico especifico selecionado, analise pelas DUAS oticas:
+- Classe C/D: como reagiria? Compraria? Compartilharia?
+- Classe A/B+: como reagiria? Investiria? Indicaria?
 
-CLASSE C/D: Compra por CONFIANCA e IDENTIFICACAO. "Ele parece comigo" > producao de R$100k. Decide por indicacao de gente proxima (mae, amiga do salao). WhatsApp e o funil mais poderoso. 4-5h/dia celular — no busao, cozinhando. Compartilha o que RESOLVE algo emocional: declaracao pro crush, indireta pro ex, motivacao. Vai no show quando sente PERTENCIMENTO. Abandona quando sente que "mudou", "ficou metido".
+Identifique onde divergem — o que funciona pra um frequentemente repele o outro.
 
-PSICOLOGIA: Relacional (compra de quem gosta). Emocao > logica mas precisa de 1 argumento racional. Desconfia de "bom demais". Procrastina ate urgencia. Fidelidade emocional.
+LENTE DE PRODUTO: proponha melhorias no produto/servico/experiencia pela lente de quem consome.
 
-LENTE DE PRODUTO: O que consumidor SENTE que falta. Diferenca entre o que DIZ que quer e o que REALMENTE faz. Experiencia completa (show, fila, encontro com fas, story, memoria).
-
-TRABALHO: Falar POR ele/ela. "Eu como fa/cliente, sinto X e faco Y". Testar realidade. O que faz virar fa vs so seguir. Apontar quando produto e pro ego do dono.
-
-MENTALIDADE: Sou a unica sem interesse em vender. Se nao me prende, nao compartilho. Se nao me emociona, nao volto. Sou o filtro final.
-
-REGRAS: NUNCA pense do lado do negocio. NUNCA "o publico vai adorar" sem explicar POR QUE. SEMPRE se coloque no lugar especifico. SEMPRE 1 coisa que o publico nao gostaria. SEMPRE 1 melhoria pela lente do consumidor. SEMPRE diferencie o que DIZ vs o que FAZ. Pensa em COMPORTAMENTO e EXPERIENCIA.
+REGRAS:
+- NUNCA do lado do negocio — 100% de quem RECEBE
+- SEMPRE identifique 1 coisa que cada publico nao gostaria
+- SEMPRE proponha 1 melhoria pela lente do consumidor
+- SEMPRE diferencie: o que DIZ que quer vs o que REALMENTE faz
+- Pensa em COMPORTAMENTO e EXPERIENCIA. Nao avalie financas ou algoritmos
 
 ${ANTICUT}`,
-sB:`Voce e o representante do Publico no Conselho de Alan Lima. Seu nome e Eike. Voce representa o consumidor classe A/B+ brasileiro.
+// C/D
+sCD:`Voce e o Publico do Conselho. Representa o consumidor classe C/D brasileiro.
 
-QUEM VOCE E: Psicologia do Consumo (PUC-SP), Consumer Behavior (Wharton), Behavioral Economics (FGV), Luxury Brand Management (ESSEC Paris). 20 anos pesquisando como o brasileiro classe A/B+ decide, investe, consome experiencias e constroi circulos de confianca.
+QUEM REPRESENTA: compra por confianca e identificacao. Decide por indicacao (WhatsApp). 4-5h/dia celular. Compartilha o que resolve emocionalmente. Vai no show por pertencimento. FOMO comunitario = gatilho. Abandona quem "ficou metido".
 
-Voce e o UNICO nesta mesa que senta na cadeira do consumidor premium. Todos pensam "como vender" — voce pensa "por que EU investiria meu tempo e dinheiro nisso?"
+LENTE DE PRODUTO: o que faz recomendar? O que transforma consumidor em evangelizador?
 
-CLASSE A/B+: Compra por EXCLUSIVIDADE, RESULTADO COMPROVADO e INDICACAO DE PAR. Nao confia em marketing — confia em quem respeita. Decide por networking presencial, referencia de empresario, evidencia concreta. Consome seletivamente: LinkedIn, podcast de nicho, newsletter curada. Evento alto ticket: credibilidade real, networking curado, 1 pessoa que respeita recomendou. Compartilha quase nada publicamente — mas indica por WhatsApp quando impressiona. Paga R$3-10k quando ve prova social de pares, resultado mensuravel, exclusividade. Abandona quando e mais marketing que substancia.
+REGRAS:
+- 100% do lado de quem RECEBE
+- SEMPRE se coloque no lugar da pessoa C/D
+- SEMPRE identifique 1 coisa que nao gostaria
+- SEMPRE proponha 1 melhoria consumidor
+- SEMPRE diferencie: o que DIZ vs o que FAZ
 
-CLASSE B: Status acessivel e curadoria. "Um passo a frente" — admiravel mas acessivel. Conteudo que faz sentir inteligente. Compartilha o que faz parecer interessante.
+${ANTICUT}`,
+// A/B+
+sAB:`Voce e o Publico do Conselho. Representa o consumidor classe A/B+ brasileiro.
 
-PSICOLOGIA PREMIUM: Status velado (ninguem admite). Networking e a moeda mais valiosa. Desconfia de guru generico. Decide devagar com pesquisa. Fidelidade por resultado.
+QUEM REPRESENTA: compra por exclusividade, resultado comprovado, indicacao de par. Networking presencial. Consome seletivamente. Evento alto ticket: credibilidade + networking curado + recomendacao. Compartilha quase nada publicamente — indica pessoalmente. Abandona quando mais marketing que substancia.
 
-LENTE DE PRODUTO: "Premium de verdade ou premium fake?" "Eu pagaria R$5k? Por que?" Experiencia completa do primeiro contato ao pos-evento.
+LENTE DE PRODUTO: "premium de verdade ou fake?" Proponha melhorias premium.
 
-TRABALHO: Falar POR ele. "Eu como empresario, penso X e decido Y". Testar realidade premium. O que faz investir vs ignorar. Apontar quando mira A mas entrega B.
-
-MENTALIDADE: Meu tempo vale mais que meu dinheiro. Se nao respeita meu tempo, nivel ou inteligencia, nao compro — e aviso meus pares.
-
-REGRAS: NUNCA pense do lado do negocio. NUNCA "empresarios vao adorar" sem explicar POR QUE. SEMPRE se coloque no lugar do empresario especifico. SEMPRE 1 coisa que premium rejeitaria. SEMPRE 1 melhoria pela lente premium. SEMPRE diferencie o que DIZ vs o que PAGA. Pensa em COMPORTAMENTO e EXPERIENCIA PREMIUM.
+REGRAS:
+- 100% do lado de quem PAGA premium
+- SEMPRE se coloque no lugar do empresario/executivo
+- SEMPRE identifique 1 coisa que rejeitaria
+- SEMPRE proponha 1 melhoria premium
 
 ${ANTICUT}`}
 };
 
 const EAG={
-pm:{n:"PM",r:"PM",d:"Estrutura · Prazos",i:"P",c:"#0ea5e9",
-s:`Voce e o PM do Comite de Execucao de Alan Lima.
+pm:{n:"PM",tag:"PM",d:"Estrutura \u00b7 Prazos",c:"#0ea5e9",
+s:`Voce e o PM do Comite de Execucao.
 
 15 anos gerenciando projetos em empresas brasileiras. No Brasil atraso e norma, escopo cresce sozinho. Lean Project Management, Scrum adaptado.
 
@@ -463,8 +546,8 @@ REGRA DE OURO: Comece SEMPRE pelo MVP mais simples possivel. Executavel em 1 sem
 REGRAS: CADA tarefa: verbo+objeto, quem, quando, entregavel. NUNCA "Alan decidir". NUNCA mais de 3 fases. SEMPRE "Luke toca sem Alan?"
 
 ${ANTICUT}`},
-coo:{n:"COO",r:"COO",d:"Operacao · Gargalos",i:"C",c:"#f97316",
-s:`Voce e o COO do Comite de Execucao de Alan Lima.
+coo:{n:"COO",tag:"COO",d:"Operacao \u00b7 Gargalos",c:"#f97316",
+s:`Voce e o COO do Comite de Execucao.
 
 15 anos em operacoes brasileiras com time enxuto e caixa curto. "Vou fazer amanha" = nunca sem cobranca.
 
@@ -475,8 +558,8 @@ MENTALIDADE: 3 tarefas 100% > 10 tarefas 30%. "Alice grava 3 videos quinta 14h, 
 REGRAS: NUNCA tarefa sem dono. NUNCA prazo sem folga. SEMPRE horas reais. SEMPRE 80/20. SEMPRE tire Alan quando Luke resolve.
 
 ${ANTICUT}`},
-bs:{n:"BS",r:"BS",d:"Comportamento · Habitos",i:"B",c:"#a855f7",
-s:`Voce e o Estrategista Comportamental do Comite de Execucao de Alan Lima.
+bs:{n:"BS",tag:"BS",d:"Comportamento \u00b7 Habitos",c:"#a855f7",
+s:`Voce e o Estrategista Comportamental do Comite de Execucao.
 
 Behavioral Design, Atomic Habits, Nudge Theory. Cultura brasileira de "jeitinho" afeta execucao.
 
@@ -490,7 +573,7 @@ ${ANTICUT}`}
 };
 
 /* ===== MEDIATOR PROMPTS ===== */
-const MS_OBJ=`Voce e o Mediador do Conselho de Alan Lima. NAO tem opiniao propria. Sintetiza o debate e entrega recomendacao.
+const MS_OBJ=`Voce e o Mediador do Conselho. NAO tem opiniao propria. Sintetiza o debate e entrega recomendacao.
 
 HIERARQUIA: 1) VETO CFO: inviabilidade comprovada=veto. 2) VETO CBO: dano real a marca=veto. 3) PESO POR DOMINIO. 4) EMPATE: argumentos>votos. 5) UNANIMIDADE CONTRA: fortemente contra. 6) UNANIMIDADE A FAVOR: DESCONFIE.
 
@@ -504,7 +587,7 @@ O QUE FAZER: [2-3 acoes]
 O QUE NAO FAZER: [1-2 itens descartados]
 AMANHA DE MANHA: [1 micro-acao]`;
 
-const MS_DET=`Voce e o Mediador do Conselho de Alan Lima. NAO tem opiniao propria. Sintetiza o debate e entrega recomendacao.
+const MS_DET=`Voce e o Mediador do Conselho. NAO tem opiniao propria. Sintetiza o debate e entrega recomendacao.
 
 HIERARQUIA: 1) VETO CFO: inviabilidade comprovada=veto. 2) VETO CBO: dano real a marca=veto. 3) PESO POR DOMINIO. 4) EMPATE: argumentos>votos. 5) UNANIMIDADE CONTRA: fortemente contra. 6) UNANIMIDADE A FAVOR: DESCONFIE.
 
@@ -555,24 +638,26 @@ CHECKPOINT SEMANAL: [...] | SINAIS DE ALERTA: [...] | PRIMEIRA ACAO AMANHA: [...
 
 /* ===== ROUND INSTRUCTIONS ===== */
 const RI={obj:{
-r0:"Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: \"CLARO\"\nSe falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.",
+r0:`Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: "CLARO"
+Se falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.`,
 r1:"Analise sob sua otica. Responda em 3-5 frases certeiras. Encontre o que Alan nao ve. Feche com conclusao clara.",
-r2:"Reaja aos outros em 3-5 frases. Concorde ou discorde COM argumento. Aponte 1 coisa que ninguem viu. REGRA: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo.",
-r3:"Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."
+r2:"Reaja aos outros em 3-5 frases. 1 concordancia, 1 discordancia, 1 insight novo. REGRA: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo.",
+r3:"Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. NAO vote em outro agente. Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."
 },det:{
-r0:"Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: \"CLARO\"\nSe falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.",
+r0:`Leia a questao abaixo. Se voce entendeu tudo que precisa pra analisar, responda EXATAMENTE: "CLARO"
+Se falta alguma informacao que muda significativamente sua analise, faca 1 pergunta (maximo 2 se essencial). So pergunte o que REALMENTE impacta sua analise — nao pergunte por educacao.`,
 r1:"Analise a questao sob sua otica profissional. Use o briefing como contexto mas pense com independencia. Encontre o que Alan NAO esta vendo. Dedique 30%+ a cenarios futuros. Seja cirurgico: cada frase deve carregar um insight. Maximo 1 paragrafo denso.",
-r2:`Receba pareceres dos OUTROS. Reaja com argumentos. Aponte o que ninguem mencionou. Se mudou de posicao, diga. Seja especifico: "o CFO ignora que...", "concordo com o CMO sobre X, mas..." REGRA DE OURO: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo. Maximo 1 paragrafo denso.`,
-r3:"Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."}};
+r2:`Receba pareceres dos OUTROS. Reaja com argumentos. Aponte o que ninguem mencionou. Se mudou de posicao, diga. Seja especifico: "o Financeiro ignora que...", "concordo com o Marketing sobre X, mas..." REGRA DE OURO: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo. Maximo 1 paragrafo denso.`,
+r3:"Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. NAO vote em outro agente. Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."}};
 
 const ERI={obj:{
 r1:"Crie plano de execucao em 3-5 frases. Use a Realidade Operacional. Foco: o MVP que roda amanha. Nomes reais, prazos reais.",
 r2:"Confronte os planos dos outros em 3-5 frases. Onde vai falhar? Ajuste concreto. Se todos concordaram, proponha alternativa.",
-r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Voto + 3 linhas + condicoes inegociaveis. Nada mais."
+r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. Voto + 3 linhas + condicoes inegociaveis. Nada mais."
 },det:{
 r1:"Crie o plano de EXECUCAO. Use a Realidade Operacional. Foco 20%. Seja cirurgico: maximo 1 paragrafo denso.",
 r2:`Receba planos dos OUTROS. Confronte: PM olha estrutura, COO olha viabilidade, BS olha executabilidade. Onde vai falhar? Ajustes concretos. REGRA DE OURO: se todos concordaram na R1, pelo menos UM defende abordagem alternativa. Maximo 1 paragrafo denso.`,
-r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Voto + 3 linhas + condicoes inegociaveis. Nada mais."}};
+r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. Voto + 3 linhas + condicoes inegociaveis. Nada mais."}};
 
 /* ===== TOKENS ===== */
 const TK={obj:{r0:100,r1:200,r2:200,r3:150,med:500},det:{r0:100,r1:400,r2:400,r3:300,med:600}};
@@ -584,10 +669,11 @@ const EKS=["pm","coo","bs"];
 let selAg=["cvo","cmo","cfo","cbo"];
 let prof="obj",rod=3,escOn=true;
 let eprof="obj",erod=3;
-let pubChoice="A"; // A=Ju, B=Eike
+let pubFilter=null; // null=geral, "AB"=A/B+, "CD"=C/D
 let idea="",r0={},r0resp="",r1={},r2={},r3={},mt="";
 let er1={},er2={},er3={},emt="";
 let debateHistory=[],debateNum=1,continueText="";
+let currentView="config";
 
 /* ===== API ===== */
 async function apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx){
@@ -613,12 +699,29 @@ function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g
 function sb(){window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}
 function getAg(k){return AG[k]||EAG[k]}
 function getAgPrompt(k){
-if(k==="pub"&&pubChoice==="B")return AG.pub.sB;
+if(k==="pub"){
+if(pubFilter==="CD")return AG.pub.sCD;
+if(pubFilter==="AB")return AG.pub.sAB;
+return AG.pub.s; // geral
+}
 return getAg(k).s;
 }
 function getAgDisplay(k){
-if(k==="pub"&&pubChoice==="B")return{n:"Eike",r:"Publico",i:"E",c:"#7fb5b0",d:"Voz do publico premium"};
-return getAg(k);
+const a=getAg(k);
+return{n:a.n,tag:a.tag,c:a.c,d:a.d};
+}
+
+/* ===== NAV ===== */
+function switchView(v){
+currentView=v;
+document.getElementById("navConfig").className="nav-btn"+(v==="config"?" on":"");
+document.getElementById("navDebate").className="nav-btn"+(v==="debate"?" on":"");
+if(v==="config"){
+sh("vs");hi("va");hi("vexCfg");hi("vex");
+}else{
+hi("vs");
+// Show whatever debate state is active
+}
 }
 
 /* ===== CONFIG ===== */
@@ -627,9 +730,13 @@ document.getElementById("agToggles").innerHTML=KS.map(k=>{
 const a=getAgDisplay(k),on=selAg.includes(k);
 let extra="";
 if(k==="pub"&&on){
-extra=`<div class="pub-tog"><button class="pub-btn ${pubChoice==="A"?"on":""}" onclick="event.stopPropagation();setPub('A')">Ju · C/D</button><button class="pub-btn ${pubChoice==="B"?"on":""}" onclick="event.stopPropagation();setPub('B')">Eike · A/B+</button></div>`;
+extra=`<div class="pub-tog">
+<button class="pub-btn ${pubFilter==="AB"?"on":""}" onclick="event.stopPropagation();setPubFilter('AB')">A/B</button>
+<button class="pub-btn ${pubFilter==="CD"?"on":""}" onclick="event.stopPropagation();setPubFilter('CD')">C/D</button>
+${pubFilter===null?'<span class="pub-label">geral</span>':''}
+</div>`;
 }
-return`<div class="ag-card ${on?"on":""}" onclick="togAg('${k}')" style="${on?`border-color:${a.c}66`:""}">${on?`<div class="top-glow" style="background:linear-gradient(90deg,transparent,${a.c}55,transparent)"></div>`:""}<div style="display:flex;align-items:center;gap:8px"><div class="ag-avatar" style="background:${on?`radial-gradient(circle at 35% 35%,${a.c}44,${a.c}18)`:"radial-gradient(circle at 35% 35%,rgba(80,60,40,.4),rgba(50,36,22,.3))"};border:1.5px solid ${on?a.c+"55":"rgba(139,109,71,.15)"}"><span style="color:${on?a.c:"rgba(160,140,110,.4)"}">${a.i}</span></div><div style="flex:1;min-width:0"><div style="display:flex;align-items:baseline;gap:5px"><span class="ag-name">${a.n}</span><span class="ag-role" style="color:${on?a.c:"rgba(160,140,110,.3)"}">${a.r}</span></div><div class="ag-desc">${a.d}</div></div></div>${extra}</div>`;
+return`<div class="ag-card ${on?"on":""}" onclick="togAg('${k}')" style="${on?`border-color:${a.c}80`:""}">${on?`<div class="top-bar" style="background:${a.c}"></div>`:""}<div style="display:flex;align-items:baseline;gap:6px;margin-bottom:5px"><span class="ag-name">${a.n}</span><span class="ag-tag">(${a.tag})</span></div><div class="ag-desc">${a.d}</div>${extra}</div>`;
 }).join("");
 document.getElementById("selCount").textContent=selAg.length+" membros selecionados";
 }
@@ -637,7 +744,7 @@ document.getElementById("selCount").textContent=selAg.length+" membros seleciona
 function renderExAgToggles(){
 document.getElementById("exAgToggles").innerHTML=EKS.map(k=>{
 const a=EAG[k];
-return`<div class="ag-card fixed" style="border-color:${a.c}66"><div class="top-glow" style="background:linear-gradient(90deg,transparent,${a.c}55,transparent)"></div><div style="display:flex;align-items:center;gap:8px"><div class="ag-avatar" style="background:radial-gradient(circle at 35% 35%,${a.c}44,${a.c}18);border:1.5px solid ${a.c}55"><span style="color:${a.c}">${a.i}</span></div><div><div style="display:flex;align-items:baseline;gap:5px"><span class="ag-name">${a.n}</span><span class="ag-role" style="color:${a.c}">${a.r}</span></div><div class="ag-desc">${a.d}</div></div></div></div>`;
+return`<div class="ag-card on" style="border-color:${a.c}80;cursor:default"><div class="top-bar" style="background:${a.c}"></div><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:5px"><span class="ag-name">${a.n}</span><span class="ag-tag">(${a.tag})</span></div><div class="ag-desc">${a.d}</div></div>`;
 }).join("");
 }
 
@@ -654,42 +761,43 @@ selAg.push(k);
 }
 renderAgToggles();
 }
-function setPub(c){pubChoice=c;renderAgToggles()}
-function setProf(p){prof=p;document.getElementById("profObj").className="tog-btn"+(p==="obj"?" on":"");document.getElementById("profDet").className="tog-btn"+(p==="det"?" on":"")}
-function setRod(r){rod=r;[1,2,3].forEach(n=>{document.getElementById("rod"+n).className="tog-btn rod-btn"+(n===r?" on":"")})}
-function setEsc(v){escOn=v;document.getElementById("escOn").className="tog-btn"+(v?" on":"");document.getElementById("escOff").className="tog-btn"+(v?"":" on")}
-function setEProf(p){eprof=p;document.getElementById("eprofObj").className="tog-btn"+(p==="obj"?" on":"");document.getElementById("eprofDet").className="tog-btn"+(p==="det"?" on":"")}
-function setERod(r){erod=r;[1,2,3].forEach(n=>{document.getElementById("erod"+n).className="tog-btn rod-btn"+(n===r?" on":"")})}
+function setPubFilter(f){pubFilter=pubFilter===f?null:f;renderAgToggles()}
+function setProf(p){prof=p;document.getElementById("profObj").className="seg-btn"+(p==="obj"?" on":"");document.getElementById("profDet").className="seg-btn"+(p==="det"?" on":"")}
+function setRod(r){rod=r;[1,2,3].forEach(n=>{document.getElementById("rod"+n).className="seg-btn rod-btn"+(n===r?" on":"")})}
+function setEsc(v){escOn=v;document.getElementById("escOn").className="seg-btn"+(v?" on":"");document.getElementById("escOff").className="seg-btn"+(v?"":" on")}
+function setEProf(p){eprof=p;document.getElementById("eprofObj").className="seg-btn"+(p==="obj"?" on":"");document.getElementById("eprofDet").className="seg-btn"+(p==="det"?" on":"")}
+function setERod(r){erod=r;[1,2,3].forEach(n=>{document.getElementById("erod"+n).className="seg-btn rod-btn"+(n===r?" on":"")})}
 renderAgToggles();
 
 /* ===== RENDER ===== */
 function bubble(cid,k,txt,loading,rlabel){
 const a=getAgDisplay(k),el=document.getElementById(cid);
-let h=`<div class="bubble"><div class="bub-av" style="background:radial-gradient(circle at 35% 35%,${a.c}44,${a.c}18);border:1.5px solid ${a.c}55;box-shadow:0 2px 10px ${a.c}15"><span style="color:${a.c}">${a.i}</span></div><div class="bub-body" style="border:1px solid ${a.c}22"><div class="bub-hdr"><div><span class="bub-name">${a.n}</span><span class="bub-role" style="color:${a.c}">${a.r}</span></div><span class="bub-round">${rlabel||""}</span></div>`;
+let h=`<div class="bubble" style="border-left:3px solid ${a.c}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:6px"><span class="bub-name">${a.n}</span><span class="bub-tag">(${a.tag})</span></div><span class="bub-round">${rlabel||""}</span></div>`;
 if(loading)h+=`<div class="bub-ld"><div class="ld" style="background:${a.c}"></div>Analisando...</div>`;
 else if(txt)h+=`<div class="bub-text">${esc(txt)}</div>`;
-h+=`</div></div>`;el.innerHTML+=h;
+h+=`</div>`;el.innerHTML+=h;
 }
 
-function rp(cid,d,t){document.getElementById(cid).innerHTML=`<div class="pb"><div class="pbb"><div class="pbf" style="width:${(d/t)*100}%"></div></div><span style="font-size:10px;color:rgba(160,140,110,.3)">${d}/${t}</span></div>`}
+function rp(cid,d,t){document.getElementById(cid).innerHTML=`<div class="pb"><div class="pbb"><div class="pbf" style="width:${(d/t)*100}%"></div></div><span style="font-size:10px;color:#AEAEB2">${d}/${t}</span></div>`}
 
 function renderSyn(cid,txt,loading,isExec){
 const el=document.getElementById(cid);
-let h=`<div class="syn-card"><div class="top-bar"></div><div class="syn-title">${isExec?"Plano de Acao Final":"Sintese do Mediador"}</div>`;
-if(loading)h+=`<div class="bub-ld" style="justify-content:center;padding:20px"><div class="ld" style="background:#c9a84c"></div>${isExec?"Montando plano...":"Sintetizando..."}</div>`;
-else h+=`<div class="bub-text" style="color:rgba(220,205,180,.85);line-height:1.7">${esc(txt)}</div>`;
+let h=`<div class="syn-card"><div class="syn-title">${isExec?"Plano de Acao Final":"Sintese do Mediador"}</div>`;
+if(loading)h+=`<div class="bub-ld" style="justify-content:center;padding:20px"><div class="ld" style="background:#48484A"></div>${isExec?"Montando plano...":"Sintetizando..."}</div>`;
+else h+=`<div class="syn-raw">${esc(txt)}</div>`;
 h+=`</div>`;el.innerHTML=h;
 }
 
 function ceoMsg(cid,txt){
-if(txt)document.getElementById(cid).innerHTML=`<div class="bubble"><div class="bub-av" style="background:radial-gradient(circle at 35% 35%,rgba(201,168,76,.2),rgba(201,168,76,.08));border:1.5px solid rgba(201,168,76,.25)"><span style="color:rgba(201,168,76,.6);font-family:'EB Garamond',serif;font-size:15px;font-weight:600">A</span></div><div class="bub-body" style="border:1px solid rgba(201,168,76,.15)"><div class="bub-hdr"><div><span class="bub-name">Alan</span><span class="bub-role" style="color:rgba(201,168,76,.5)">CEO</span></div></div><div class="bub-text">${esc(txt)}</div></div></div>`;
+if(txt)document.getElementById(cid).innerHTML=`<div class="ceo-bubble" style="border-left-color:#48484A"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:6px"><span class="bub-name">Alan</span><span class="bub-tag">(CEO)</span></div></div><div class="bub-text">${esc(txt)}</div></div>`;
 }
 
 function updatePauseBtn(inputId,btnContId,nextLabel){
 const c=document.getElementById(inputId).value.trim();
+const fn=btnContId==='p1btns'?'fp1()':btnContId==='p2btns'?'fp2()':btnContId==='ep1btns'?'efp1()':'efp2()';
 document.getElementById(btnContId).innerHTML=c?
-`<button class="btn bp" style="width:100%" onclick="${btnContId==='p1btns'?'fp1()':btnContId==='p2btns'?'fp2()':btnContId==='ep1btns'?'efp1()':'efp2()'}">Seguir para ${nextLabel}</button>`:
-`<button class="btn bs" style="width:100%" onclick="${btnContId==='p1btns'?'fp1()':btnContId==='p2btns'?'fp2()':btnContId==='ep1btns'?'efp1()':'efp2()'}">Pular para ${nextLabel}</button>`;
+`<button class="btn-go" onclick="${fn}">Seguir para ${nextLabel}</button>`:
+`<button class="btn-skip" onclick="${fn}">Pular para ${nextLabel}</button>`;
 }
 document.addEventListener("input",e=>{
 if(e.target.id==="c1")updatePauseBtn("c1","p1btns","debate");
@@ -712,10 +820,12 @@ if(!cont){
 idea=document.getElementById("ii").value.trim();if(!idea)return;
 debateHistory=[];debateNum=1;continueText="";
 hi("vs");sh("va");
+// Switch nav to Debate
+switchView("debate");sh("va");
 }else{debateNum++}
 r0={};r0resp="";r1={};r2={};r3={};mt="";
 const ag=selAg,tk=TK[prof],ri=RI[prof];
-document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">CONSELHO · ${prof==="obj"?"Objetiva":"Detalhada"} · ${rod} rodada${rod>1?"s":""}</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
+document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">${prof==="obj"?"Objetiva":"Detalhada"} \u00b7 ${rod} rodada${rod>1?"s":""} \u00b7 ${ag.length} membros</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
 document.getElementById("dbnum").textContent=debateNum>1?`Debate ${debateNum}`:"";
 ["r0a","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 ["vr0","vr1","vp1","vr2","vp2","vr3","vsy","vd","vcd","r0resp","r0skip"].forEach(id=>hi(id));
@@ -736,13 +846,11 @@ if(clean!=="CLARO")questions[k]=r0[k];
 }catch(e){r0[k]=`Erro: ${e.message}`;questions[k]=r0[k]}
 dn++;
 }));
-// Show only agents that asked questions
 document.getElementById("r0a").innerHTML="";
 const qKeys=Object.keys(questions);
 if(qKeys.length>0){
 qKeys.forEach(k=>bubble("r0a",k,questions[k],false,"R0"));
 sh("r0resp");sb();
-// Wait for Alan to respond
 return;
 }else{
 sh("r0skip");sb();
@@ -751,7 +859,6 @@ hi("r0skip");
 }
 }
 
-// R1
 await runR1(ag,tk,ri,cont);
 }
 
@@ -767,12 +874,11 @@ document.getElementById("r1a").innerHTML="";
 ag.forEach(k=>bubble("r1a",k,null,true,"R1"));rp("r1p",0,ag.length);sb();
 let dn=0;
 const histCtx=buildHistCtx();
-// Build R0 context if exists
 let r0ctx="";
 const qKeys=Object.keys(r0).filter(k=>{const c=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();return c!=="CLARO"});
 if(qKeys.length>0){
 r0ctx="\n\nPERGUNTAS DOS MEMBROS:\n";
-qKeys.forEach(k=>{r0ctx+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}): ${r0[k]}\n`});
+qKeys.forEach(k=>{const a=getAgDisplay(k);r0ctx+=`${a.n} (${a.tag}): ${r0[k]}\n`});
 if(r0resp)r0ctx+=`\nAlan respondeu: ${r0resp}\n`;
 }
 await Promise.all(ag.map(async k=>{
@@ -799,14 +905,14 @@ document.getElementById("r2a").innerHTML="";
 ag.forEach(k=>bubble("r2a",k,null,true,"R2"));rp("r2p",0,ag.length);sb();
 let dn=0;
 let debCtx=`IDEIA:\n${idea}\n\nPARECERES R1:\n\n`;
-ag.forEach(k=>{debCtx+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}): ${r1[k]}\n\n`});
+ag.forEach(k=>{const a=getAgDisplay(k);debCtx+=`${a.n} (${a.tag}): ${r1[k]}\n\n`});
 if(ce)debCtx+=`Alan (CEO): ${ce}\n\n`;
 const histCtx=buildHistCtx();
 if(histCtx)debCtx=histCtx+debCtx;
 await Promise.all(ag.map(async k=>{
 try{
 let m=`${ri.r2}\n\nPARECERES DOS OUTROS (R1):\n\n`;
-ag.forEach(ak=>{if(ak!==k)m+=`${getAgDisplay(ak).n} (${getAgDisplay(ak).r}): ${r1[ak]}\n\n`});
+ag.forEach(ak=>{if(ak!==k){const a=getAgDisplay(ak);m+=`${a.n} (${a.tag}): ${r1[ak]}\n\n`}});
 m+=`\nSeu parecer (R1): "${r1[k]}"\n\nReaja aos OUTROS.`;
 r2[k]=await api(CTX,getAgPrompt(k),m,tk.r2,debCtx);
 }catch(e){r2[k]=`Erro: ${e.message}`}
@@ -828,7 +934,7 @@ document.getElementById("r3a").innerHTML="";
 ag.forEach(k=>bubble("r3a",k,null,true,"R3"));rp("r3p",0,ag.length);sb();
 let dn=0;
 let debCtx=`IDEIA: ${idea}\n\n`;if(ce1)debCtx+=`Alan (pos R1): ${ce1}\n\n`;
-debCtx+="DEBATE:\n\n";ag.forEach(k=>{debCtx+=`${getAgDisplay(k).n}\n  R1: ${r1[k]}\n  Debate: ${r2[k]}\n\n`});
+debCtx+="DEBATE:\n\n";ag.forEach(k=>{const a=getAgDisplay(k);debCtx+=`${a.n} (${a.tag})\n  R1: ${r1[k]}\n  Debate: ${r2[k]}\n\n`});
 if(ce2)debCtx+=`Alan (pos debate): ${ce2}\n\n`;
 const histCtx=buildHistCtx();if(histCtx)debCtx=histCtx+debCtx;
 await Promise.all(ag.map(async k=>{
@@ -850,11 +956,11 @@ const msP=prof==="obj"?MS_OBJ:MS_DET;
 let m=`IDEIA:\n${idea}\n\n`;
 if(buildHistCtx())m+=buildHistCtx();
 if(continueText)m+=`NOVO PEDIDO DE ALAN: ${continueText}\n\n`;
-m+="= R1 =\n\n";ag.forEach(k=>{m+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}):\n${r1[k]}\n\n`});
+m+="= R1 =\n\n";ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.n} (${a.tag}):\n${r1[k]}\n\n`});
 if(ce1)m+=`Alan (pos R1): ${ce1}\n\n`;
-if(Object.keys(r2).length){m+="= DEBATE =\n\n";ag.forEach(k=>{if(r2[k])m+=`${getAgDisplay(k).n}:\n${r2[k]}\n\n`})}
+if(Object.keys(r2).length){m+="= DEBATE =\n\n";ag.forEach(k=>{if(r2[k]){const a=getAgDisplay(k);m+=`${a.n}:\n${r2[k]}\n\n`}})}
 if(ce2)m+=`Alan (pos debate): ${ce2}\n\n`;
-if(Object.keys(r3).length){m+="= VOTOS =\n\n";ag.forEach(k=>{if(r3[k])m+=`${getAgDisplay(k).n}:\n${r3[k]}\n\n`})}
+if(Object.keys(r3).length){m+="= VOTOS =\n\n";ag.forEach(k=>{if(r3[k]){const a=getAgDisplay(k);m+=`${a.n}:\n${r3[k]}\n\n`}})}
 m+="Sintetize.";
 try{mt=await api(CTX,msP,m,tk.med);renderSyn("mc",mt,false,false);debateHistory.push(mt)}catch(e){renderSyn("mc","Erro: "+e.message,false,false)}
 sh("vd");sb();
@@ -873,32 +979,33 @@ function copyAll(){
 const ag=selAg;const ce1=document.getElementById("c1")?.value.trim()||"";const ce2=document.getElementById("c2")?.value.trim()||"";
 const d=new Date();const ds=`${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()}`;
 let t=`CONSELHO — ${ds} — ${prof==="obj"?"Objetiva":"Detalhada"} — ${rod} rodada${rod>1?"s":""}\n`;
-t+=`Membros: ${ag.map(k=>getAgDisplay(k).n+" ("+getAgDisplay(k).r+")").join(", ")}\n`;
+t+=`Membros: ${ag.map(k=>{const a=getAgDisplay(k);return a.n+" ("+a.tag+")"}).join(", ")}\n`;
 t+=`Questao: ${idea}\n\n`;
-// R0
 const qKeys=Object.keys(r0).filter(k=>{const c=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();return c!=="CLARO"});
 if(qKeys.length>0){
 t+=`=== RODADA 0 — ESCLARECER ===\n\n`;
-qKeys.forEach(k=>{t+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}): ${r0[k]}\n\n`});
+qKeys.forEach(k=>{const a=getAgDisplay(k);t+=`${a.n} (${a.tag}): ${r0[k]}\n\n`});
 if(r0resp)t+=`Alan: ${r0resp}\n\n`;
 }
 t+=`=== RODADA 1 — ANALISES ===\n\n`;
-ag.forEach(k=>{t+=`${getAgDisplay(k).n} (${getAgDisplay(k).r}):\n${r1[k]||""}\n\n`});
+ag.forEach(k=>{const a=getAgDisplay(k);t+=`${a.n} (${a.tag}):\n${r1[k]||""}\n\n`});
 t+=`=== INTERVENCAO CEO ===\n${ce1||"sem intervencao"}\n\n`;
 if(Object.keys(r2).length){
-t+=`=== RODADA 2 — DEBATE ===\n\n`;ag.forEach(k=>{if(r2[k])t+=`${getAgDisplay(k).n}:\n${r2[k]}\n\n`});
+t+=`=== RODADA 2 — DEBATE ===\n\n`;ag.forEach(k=>{if(r2[k]){const a=getAgDisplay(k);t+=`${a.n}:\n${r2[k]}\n\n`}});
 t+=`=== INTERVENCAO CEO ===\n${ce2||"sem intervencao"}\n\n`;
 }
 if(Object.keys(r3).length){
-t+=`=== RODADA 3 — VOTO FINAL ===\n\n`;ag.forEach(k=>{if(r3[k])t+=`${getAgDisplay(k).n}:\n${r3[k]}\n\n`});
+t+=`=== RODADA 3 — VOTO FINAL ===\n\n`;ag.forEach(k=>{if(r3[k]){const a=getAgDisplay(k);t+=`${a.n}:\n${r3[k]}\n\n`}});
 }
 t+=`=== SINTESE DO MEDIADOR ===\n${mt}\n`;
-doCopy(t,"Copiar tudo","#vd .bs:last-child");
+doCopy(t);
 }
 
-function doCopy(txt,label,sel){
+function doCopy(txt){
 try{navigator.clipboard.writeText(txt)}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta)}
-const b=document.querySelector(sel);if(b){const o=b.textContent;b.textContent="Copiado!";setTimeout(()=>{b.textContent=o},2000)}
+const btns=document.querySelectorAll("#vd .btn-light");
+const b=btns[btns.length-1];
+if(b){const o=b.innerHTML;b.innerHTML="Copiado!";setTimeout(()=>{b.innerHTML=o},2000)}
 }
 
 /* ===== EXEC ===== */
@@ -932,7 +1039,7 @@ document.getElementById("er2a").innerHTML="";
 EKS.forEach(k=>bubble("er2a",k,null,true,"R2"));rp("er2p",0,EKS.length);sb();
 let dn=0;
 let debCtx=`IDEIA:\n${idea}\n\nPLANOS R1:\n\n`;
-EKS.forEach(k=>{debCtx+=`${EAG[k].n} (${EAG[k].r}): ${er1[k]}\n\n`});
+EKS.forEach(k=>{debCtx+=`${EAG[k].n} (${EAG[k].tag}): ${er1[k]}\n\n`});
 if(ce)debCtx+=`Alan: ${ce}\n\n`;
 await Promise.all(EKS.map(async k=>{
 try{
@@ -986,17 +1093,23 @@ try{emt=await api(exSh,emsP,m,etk.med);renderSyn("emc",emt,false,true)}catch(e){
 sh("ved");sb();
 }
 
-function copyPlan(){doCopy(emt,"Copiar plano","#ved .bo")}
+function copyPlan(){
+doCopy(emt);
+const btns=document.querySelectorAll("#ved .btn-dark");
+const b=btns[btns.length-1];
+if(b){const o=b.textContent;b.textContent="Copiado!";setTimeout(()=>{b.textContent=o},2000)}
+}
 
 function rst(){
 r0={};r0resp="";r1={};r2={};r3={};mt="";er1={};er2={};er3={};emt="";
 idea="";debateHistory=[];debateNum=1;continueText="";
-selAg=["cvo","cmo","cfo","cbo"];prof="obj";rod=3;escOn=true;eprof="obj";erod=3;pubChoice="A";
+selAg=["cvo","cmo","cfo","cbo"];prof="obj";rod=3;escOn=true;eprof="obj";erod=3;pubFilter=null;
 ["ii","c1","c2","cdi","r0input","ec1","ec2"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
 ["r0a","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 ["va","vr0","vr1","vp1","vr2","vp2","vr3","vsy","vd","vcd","vexCfg","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved","r0resp","r0skip"].forEach(id=>hi(id));
 renderAgToggles();setProf("obj");setRod(3);setEsc(true);
-sh("vs");window.scrollTo(0,0);
+switchView("config");
+window.scrollTo(0,0);
 }
 </script>
 </body>
