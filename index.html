@@ -13,12 +13,12 @@ color:#1D1D1F;font-family:'Inter',-apple-system,sans-serif;min-height:100vh}
 
 /* Header */
 .header{background:#FFFFFF;border-bottom:1px solid #E5E5EA;padding:14px 0;margin-bottom:28px}
-.header-inner{max-width:840px;margin:0 auto;padding:0 28px}
+.header-inner{max-width:1060px;margin:0 auto;padding:0 24px}
 .header h1{font-size:18px;font-weight:700;color:#1D1D1F;letter-spacing:-0.02em}
 .header .subtitle{font-size:11px;color:#AEAEB2;margin-top:1px;font-weight:400}
 
 /* Container */
-.container{max-width:840px;margin:0 auto;padding:0 28px 48px}
+.container{max-width:1060px;margin:0 auto;padding:0 24px 48px}
 
 /* Agent grid */
 .ag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
@@ -57,7 +57,7 @@ textarea::placeholder{color:#AEAEB2}
 .btn-primary{width:100%;padding:14px;background:#48484A;color:#FFFFFF;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-dark{padding:12px;font-size:13px;font-weight:600;background:#48484A;color:#FFFFFF;border:none;border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-light{padding:10px;font-size:12px;font-weight:500;background:#FFFFFF;color:#86868B;border:1px solid #E5E5EA;border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
-.btn-skip{padding:8px 20px;font-size:12px;font-weight:600;background:#F2F2F7;color:#AEAEB2;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+.btn-skip{padding:8px 20px;font-size:12px;font-weight:600;background:#4A6FA5;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-go{padding:8px 20px;font-size:12px;font-weight:600;background:#48484A;color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .sel-count{text-align:center;margin-top:10px;font-size:12px;color:#AEAEB2}
 .max-msg{text-align:center;font-size:11px;color:#D4618C;margin-top:6px;transition:opacity .3s}
@@ -73,20 +73,30 @@ textarea::placeholder{color:#AEAEB2}
 .rd-sep .line{height:1px;flex:1;background:#E9ECEF}
 .rd-sep span{font-size:10px;font-weight:600;color:#AEAEB2;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
 
-/* Debate bubbles — Apple clean, no avatar */
-.bubble{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
-.bub-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
-.bub-name{font-size:13px;font-weight:600;color:#1D1D1F}
-.bub-tag{font-size:10px;font-weight:500;color:#86868B;margin-left:6px}
-.bub-round{font-size:10px;font-weight:500;color:#D1D1D6}
-.bub-text{font-size:14px;line-height:1.7;color:#495057;font-weight:400;white-space:pre-wrap}
+/* Debate cards grid — vertical side by side */
+.round-grid{display:grid;gap:10px;margin-bottom:10px}
+.d-card{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 0 10px 10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.02);display:flex;flex-direction:column}
+.d-card-r3{padding:12px}
+.d-card .bub-hdr{display:flex;align-items:baseline;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.bub-name{font-size:12px;font-weight:700;color:#1D1D1F}
+.bub-tag{font-size:10px;font-weight:400;color:#86868B}
+.bub-text{font-size:13px;line-height:1.6;color:#495057;font-weight:400;white-space:pre-wrap;flex:1}
+.d-card-r3 .bub-text{font-size:12px}
 .bub-ld{display:flex;align-items:center;gap:8px;color:#AEAEB2;font-size:12px}
 .ld{width:6px;height:6px;border-radius:50%;animation:p 1.5s ease-in-out infinite;display:inline-block}
 @keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
+/* Mobile: horizontal scroll for cards */
+@media(max-width:800px){
+.round-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:10px;padding-bottom:6px}
+.round-grid>div{min-width:200px;flex:0 0 200px;scroll-snap-align:start}
+}
+
+/* Legacy bubble for CEO messages */
+.bubble{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
 
 /* CEO pause — clean */
 .ceo-pause{margin:14px 0;padding:16px 20px;background:#FAFBFC;border:1px solid #E9ECEF;border-radius:10px}
-.ceo-label{font-size:11px;font-weight:600;color:#AEAEB2;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
+.ceo-label{font-size:11px;font-weight:600;color:#6B6B70;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
 .ceo-pause textarea{min-height:48px;padding:10px 12px;font-size:13px;margin-bottom:10px}
 .ceo-btn-row{display:flex;justify-content:flex-end}
 
@@ -145,6 +155,9 @@ textarea::placeholder{color:#AEAEB2}
 .controls-row{flex-direction:column;gap:12px}
 .control-group{flex:1 1 auto}
 }
+@media(max-width:480px){
+.ag-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -160,7 +173,7 @@ textarea::placeholder{color:#AEAEB2}
 <div class="container">
 
 <!-- CONFIG SCREEN -->
-<div id="vs">
+<div id="vs" style="max-width:840px;margin:0 auto">
 <div style="margin-bottom:28px">
 <div class="cfg-label">Membros <span>&middot; max. 5</span></div>
 <div id="agToggles" class="ag-grid"></div>
@@ -260,8 +273,8 @@ textarea::placeholder{color:#AEAEB2}
 
 <!-- Final buttons -->
 <div id="vd" class="hid final-btns">
-<button class="btn-dark" onclick="startCd()">Continuar debate</button>
-<button class="btn-dark" onclick="startExec()">Plano de Execucao</button>
+<button class="btn-dark" style="background:#4A6FA5" onclick="startCd()">Continuar debate</button>
+<button class="btn-dark" style="background:#C4834A" onclick="startExec()">Plano de Execucao</button>
 <button class="btn-light" onclick="rst()">Nova analise</button>
 <button class="btn-light" onclick="copyAll()">&#x1F4CB; Copiar tudo</button>
 </div>
@@ -721,7 +734,9 @@ extra=`<div class="pub-tog">
 ${pubFilter===null?'<span class="pub-label">geral</span>':''}
 </div>`;
 }
-return`<div class="ag-card ${on?"on":""}" onclick="togAg('${k}')" style="${on?`border-color:${a.c}80`:""}">${on?`<div class="top-bar" style="background:${a.c}"></div>`:""}<div style="display:flex;align-items:baseline;gap:6px;margin-bottom:5px"><span class="ag-name">${a.n}</span><span class="ag-tag">(${a.tag})</span></div><div class="ag-desc">${a.d}</div>${extra}</div>`;
+const hasSub=(k!=="sm"&&k!=="pub");
+const nameHtml=hasSub?`<span class="ag-name">${a.tag}</span> <span class="ag-tag">(${a.n})</span>`:`<span class="ag-name">${a.n}</span>`;
+return`<div class="ag-card ${on?"on":""}" onclick="togAg('${k}')" style="${on?`border-color:${a.c}80`:""}">${on?`<div class="top-bar" style="background:${a.c}"></div>`:""}<div style="display:flex;align-items:baseline;gap:6px;margin-bottom:5px">${nameHtml}</div><div class="ag-desc">${a.d}</div>${extra}</div>`;
 }).join("");
 document.getElementById("selCount").textContent=selAg.length+" membros selecionados";
 }
@@ -729,7 +744,7 @@ document.getElementById("selCount").textContent=selAg.length+" membros seleciona
 function renderExAgToggles(){
 document.getElementById("exAgToggles").innerHTML=EKS.map(k=>{
 const a=EAG[k];
-return`<div class="ag-card on" style="border-color:${a.c}80;cursor:default"><div class="top-bar" style="background:${a.c}"></div><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:5px"><span class="ag-name">${a.n}</span><span class="ag-tag">(${a.tag})</span></div><div class="ag-desc">${a.d}</div></div>`;
+return`<div class="ag-card on" style="border-color:${a.c}80;cursor:default"><div class="top-bar" style="background:${a.c}"></div><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:5px"><span class="ag-name">${a.tag}</span> <span class="ag-tag">(${a.n})</span></div><div class="ag-desc">${a.d}</div></div>`;
 }).join("");
 }
 
@@ -755,9 +770,34 @@ function setERod(r){erod=r;[1,2,3].forEach(n=>{document.getElementById("erod"+n)
 renderAgToggles();
 
 /* ===== RENDER ===== */
+function agLabel(k){
+const a=getAgDisplay(k);
+const noSub=(k==="sm"||k==="pub");
+return noSub?`<span class="bub-name">${a.n}</span>`:`<span class="bub-name">${a.tag}</span> <span class="bub-tag">(${a.n})</span>`;
+}
+
+function renderRound(cid,keys,data,rlabel,isR3){
+const el=document.getElementById(cid);
+const n=keys.length;
+let h=`<div class="round-grid" style="grid-template-columns:repeat(${n},1fr)">`;
+keys.forEach(k=>{
+const a=getAgDisplay(k);
+const txt=data[k];
+const loaded=!!txt;
+h+=`<div class="d-card${isR3?" d-card-r3":""}" style="border-top:3px solid ${a.c}">`;
+h+=`<div class="bub-hdr">${agLabel(k)}</div>`;
+if(!loaded)h+=`<div class="bub-ld"><div class="ld" style="background:${a.c}"></div>Analisando...</div>`;
+else h+=`<div class="bub-text">${esc(txt)}</div>`;
+h+=`</div>`;
+});
+h+=`</div>`;
+el.innerHTML=h;
+}
+
+// Legacy bubble for single messages (CEO, R0)
 function bubble(cid,k,txt,loading,rlabel){
 const a=getAgDisplay(k),el=document.getElementById(cid);
-let h=`<div class="bubble" style="border-left:3px solid ${a.c}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:6px"><span class="bub-name">${a.n}</span><span class="bub-tag">(${a.tag})</span></div><span class="bub-round">${rlabel||""}</span></div>`;
+let h=`<div class="bubble" style="border-left:3px solid ${a.c}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div><span style="font-size:10px;color:#D1D1D6">${rlabel||""}</span></div>`;
 if(loading)h+=`<div class="bub-ld"><div class="ld" style="background:${a.c}"></div>Analisando...</div>`;
 else if(txt)h+=`<div class="bub-text">${esc(txt)}</div>`;
 h+=`</div>`;el.innerHTML+=h;
@@ -945,15 +985,14 @@ await runR1(selAg,TK[prof],RI[prof],false);
 
 async function runR1(ag,tk,ri,cont){
 sh("vr1");
-document.getElementById("r1a").innerHTML="";
-ag.forEach(k=>bubble("r1a",k,null,true,"R1"));rp("r1p",0,ag.length);sb();
+renderRound("r1a",ag,r1,"R1",false);rp("r1p",0,ag.length);sb();
 let dn=0;
 const histCtx=buildHistCtx();
 let r0ctx="";
 const qKeys=Object.keys(r0).filter(k=>{const c=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();return c!=="CLARO"});
 if(qKeys.length>0){
 r0ctx="\n\nPERGUNTAS DOS MEMBROS:\n";
-qKeys.forEach(k=>{const a=getAgDisplay(k);r0ctx+=`${a.n} (${a.tag}): ${r0[k]}\n`});
+qKeys.forEach(k=>{const a=getAgDisplay(k);r0ctx+=`${a.tag} (${a.n}): ${r0[k]}\n`});
 if(r0resp)r0ctx+=`\nAlan respondeu: ${r0resp}\n`;
 }
 await Promise.all(ag.map(async k=>{
@@ -964,7 +1003,7 @@ if(continueText)msg+=`\n\nNOVO PEDIDO DE ALAN:\n${continueText}`;
 const dbCtx=histCtx||null;
 r1[k]=await api(CTX,getAgPrompt(k),msg,tk.r1,dbCtx);
 }catch(e){r1[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("r1a").innerHTML="";ag.forEach(ak=>bubble("r1a",ak,r1[ak]||null,!r1[ak],"R1"));rp("r1p",dn,ag.length);sb();
+dn++;renderRound("r1a",ag,r1,"R1",false);rp("r1p",dn,ag.length);sb();
 }));
 document.getElementById("r1p").innerHTML="";
 if(rod===1){await syn();return}
@@ -976,22 +1015,21 @@ hi("vp1");sh("vr2");
 const ce=document.getElementById("c1").value.trim();
 ceoMsg("c1d",ce);
 const ag=selAg,tk=TK[prof],ri=RI[prof];
-document.getElementById("r2a").innerHTML="";
-ag.forEach(k=>bubble("r2a",k,null,true,"R2"));rp("r2p",0,ag.length);sb();
+renderRound("r2a",ag,r2,"R2",false);rp("r2p",0,ag.length);sb();
 let dn=0;
 let debCtx=`IDEIA:\n${idea}\n\nPARECERES R1:\n\n`;
-ag.forEach(k=>{const a=getAgDisplay(k);debCtx+=`${a.n} (${a.tag}): ${r1[k]}\n\n`});
+ag.forEach(k=>{const a=getAgDisplay(k);debCtx+=`${a.tag} (${a.n}): ${r1[k]}\n\n`});
 if(ce)debCtx+=`Alan (CEO): ${ce}\n\n`;
 const histCtx=buildHistCtx();
 if(histCtx)debCtx=histCtx+debCtx;
 await Promise.all(ag.map(async k=>{
 try{
 let m=`${ri.r2}\n\nPARECERES DOS OUTROS (R1):\n\n`;
-ag.forEach(ak=>{if(ak!==k){const a=getAgDisplay(ak);m+=`${a.n} (${a.tag}): ${r1[ak]}\n\n`}});
+ag.forEach(ak=>{if(ak!==k){const a=getAgDisplay(ak);m+=`${a.tag} (${a.n}): ${r1[ak]}\n\n`}});
 m+=`\nSeu parecer (R1): "${r1[k]}"\n\nReaja aos OUTROS.`;
 r2[k]=await api(CTX,getAgPrompt(k),m,tk.r2,debCtx);
 }catch(e){r2[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("r2a").innerHTML="";ag.forEach(ak=>bubble("r2a",ak,r2[ak]||null,!r2[ak],"R2"));rp("r2p",dn,ag.length);sb();
+dn++;renderRound("r2a",ag,r2,"R2",false);rp("r2p",dn,ag.length);sb();
 }));
 document.getElementById("r2p").innerHTML="";
 if(rod===2){await syn();return}
@@ -1005,11 +1043,10 @@ sh("vr3");
 const ce1=document.getElementById("c1").value.trim(),ce2=document.getElementById("c2").value.trim();
 ceoMsg("c2d",ce2);
 const ag=selAg,tk=TK[prof],ri=RI[prof];
-document.getElementById("r3a").innerHTML="";
-ag.forEach(k=>bubble("r3a",k,null,true,"R3"));rp("r3p",0,ag.length);sb();
+renderRound("r3a",ag,r3,"R3",true);rp("r3p",0,ag.length);sb();
 let dn=0;
 let debCtx=`IDEIA: ${idea}\n\n`;if(ce1)debCtx+=`Alan (pos R1): ${ce1}\n\n`;
-debCtx+="DEBATE:\n\n";ag.forEach(k=>{const a=getAgDisplay(k);debCtx+=`${a.n} (${a.tag})\n  R1: ${r1[k]}\n  Debate: ${r2[k]}\n\n`});
+debCtx+="DEBATE:\n\n";ag.forEach(k=>{const a=getAgDisplay(k);debCtx+=`${a.tag} (${a.n})\n  R1: ${r1[k]}\n  Debate: ${r2[k]}\n\n`});
 if(ce2)debCtx+=`Alan (pos debate): ${ce2}\n\n`;
 const histCtx=buildHistCtx();if(histCtx)debCtx=histCtx+debCtx;
 await Promise.all(ag.map(async k=>{
@@ -1017,7 +1054,7 @@ try{
 let m=`${ri.r3}\n\nDe seu VOTO FINAL.`;
 r3[k]=await api(CTX,getAgPrompt(k),m,tk.r3,debCtx);
 }catch(e){r3[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("r3a").innerHTML="";ag.forEach(ak=>bubble("r3a",ak,r3[ak]||null,!r3[ak],"R3"));rp("r3p",dn,ag.length);sb();
+dn++;renderRound("r3a",ag,r3,"R3",true);rp("r3p",dn,ag.length);sb();
 }));
 document.getElementById("r3p").innerHTML="";
 await syn();
@@ -1031,11 +1068,11 @@ const msP=prof==="obj"?MS_OBJ:MS_DET;
 let m=`IDEIA:\n${idea}\n\n`;
 if(buildHistCtx())m+=buildHistCtx();
 if(continueText)m+=`NOVO PEDIDO DE ALAN: ${continueText}\n\n`;
-m+="= R1 =\n\n";ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.n} (${a.tag}):\n${r1[k]}\n\n`});
+m+="= R1 =\n\n";ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${r1[k]}\n\n`});
 if(ce1)m+=`Alan (pos R1): ${ce1}\n\n`;
-if(Object.keys(r2).length){m+="= DEBATE =\n\n";ag.forEach(k=>{if(r2[k]){const a=getAgDisplay(k);m+=`${a.n}:\n${r2[k]}\n\n`}})}
+if(Object.keys(r2).length){m+="= DEBATE =\n\n";ag.forEach(k=>{if(r2[k]){const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${r2[k]}\n\n`}})}
 if(ce2)m+=`Alan (pos debate): ${ce2}\n\n`;
-if(Object.keys(r3).length){m+="= VOTOS =\n\n";ag.forEach(k=>{if(r3[k]){const a=getAgDisplay(k);m+=`${a.n}:\n${r3[k]}\n\n`}})}
+if(Object.keys(r3).length){m+="= VOTOS =\n\n";ag.forEach(k=>{if(r3[k]){const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${r3[k]}\n\n`}})}
 m+="Sintetize.";
 try{mt=await api(CTX,msP,m,tk.med);renderSyn("mc",mt,false,false);debateHistory.push(mt)}catch(e){renderSyn("mc","Erro: "+e.message,false,false)}
 sh("vd");sb();
@@ -1054,23 +1091,23 @@ function copyAll(){
 const ag=selAg;const ce1=document.getElementById("c1")?.value.trim()||"";const ce2=document.getElementById("c2")?.value.trim()||"";
 const d=new Date();const ds=`${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()}`;
 let t=`CONSELHO — ${ds} — ${prof==="obj"?"Objetiva":"Detalhada"} — ${rod} rodada${rod>1?"s":""}\n`;
-t+=`Membros: ${ag.map(k=>{const a=getAgDisplay(k);return a.n+" ("+a.tag+")"}).join(", ")}\n`;
+t+=`Membros: ${ag.map(k=>{const a=getAgDisplay(k);return(k==="sm"||k==="pub")?a.n:a.tag+" ("+a.n+")"}).join(", ")}\n`;
 t+=`Questao: ${idea}\n\n`;
 const qKeys=Object.keys(r0).filter(k=>{const c=r0[k].trim().replace(/[.\s]/g,"").toUpperCase();return c!=="CLARO"});
 if(qKeys.length>0){
 t+=`=== RODADA 0 — ESCLARECER ===\n\n`;
-qKeys.forEach(k=>{const a=getAgDisplay(k);t+=`${a.n} (${a.tag}): ${r0[k]}\n\n`});
+qKeys.forEach(k=>{const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}: ${r0[k]}\n\n`});
 if(r0resp)t+=`Alan: ${r0resp}\n\n`;
 }
 t+=`=== RODADA 1 — ANALISES ===\n\n`;
-ag.forEach(k=>{const a=getAgDisplay(k);t+=`${a.n} (${a.tag}):\n${r1[k]||""}\n\n`});
+ag.forEach(k=>{const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}:\n${r1[k]||""}\n\n`});
 t+=`=== INTERVENCAO CEO ===\n${ce1||"sem intervencao"}\n\n`;
 if(Object.keys(r2).length){
-t+=`=== RODADA 2 — DEBATE ===\n\n`;ag.forEach(k=>{if(r2[k]){const a=getAgDisplay(k);t+=`${a.n}:\n${r2[k]}\n\n`}});
+t+=`=== RODADA 2 — DEBATE ===\n\n`;ag.forEach(k=>{if(r2[k]){const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}:\n${r2[k]}\n\n`}});
 t+=`=== INTERVENCAO CEO ===\n${ce2||"sem intervencao"}\n\n`;
 }
 if(Object.keys(r3).length){
-t+=`=== RODADA 3 — VOTO FINAL ===\n\n`;ag.forEach(k=>{if(r3[k]){const a=getAgDisplay(k);t+=`${a.n}:\n${r3[k]}\n\n`}});
+t+=`=== RODADA 3 — VOTO FINAL ===\n\n`;ag.forEach(k=>{if(r3[k]){const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}:\n${r3[k]}\n\n`}});
 }
 t+=`=== SINTESE DO MEDIADOR ===\n${mt}\n`;
 doCopy(t);
@@ -1092,13 +1129,12 @@ er1={};er2={};er3={};emt="";
 ["er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 ["vep1","ver2","vep2","ver3","vesy","ved"].forEach(id=>hi(id));
 const exSh=CTX+"\n\n"+ROPCTX,etk=ETK[eprof],eri=ERI[eprof];
-document.getElementById("er1a").innerHTML="";
-EKS.forEach(k=>bubble("er1a",k,null,true,"R1"));rp("er1p",0,EKS.length);sb();
+renderRound("er1a",EKS,er1,"R1",false);rp("er1p",0,EKS.length);sb();
 let dn=0;
 const histMsg=debateHistory.map((s,i)=>`=== DEBATE ${i+1} ===\n${s}`).join("\n\n");
 Promise.all(EKS.map(async k=>{
 try{er1[k]=await api(exSh,EAG[k].s,`${eri.r1}\n\nDECISAO APROVADA:\n${histMsg}\n\nIDEIA ORIGINAL:\n${idea}`,etk.r1)}catch(e){er1[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("er1a").innerHTML="";EKS.forEach(ak=>bubble("er1a",ak,er1[ak]||null,!er1[ak],"R1"));rp("er1p",dn,EKS.length);sb();
+dn++;renderRound("er1a",EKS,er1,"R1",false);rp("er1p",dn,EKS.length);sb();
 })).then(()=>{
 document.getElementById("er1p").innerHTML="";
 if(erod===1){esyn();return}
@@ -1110,20 +1146,19 @@ async function efp1(){
 hi("vep1");sh("ver2");
 const ce=document.getElementById("ec1").value.trim();ceoMsg("ec1d",ce);
 const exSh=CTX+"\n\n"+ROPCTX,etk=ETK[eprof],eri=ERI[eprof];
-document.getElementById("er2a").innerHTML="";
-EKS.forEach(k=>bubble("er2a",k,null,true,"R2"));rp("er2p",0,EKS.length);sb();
+renderRound("er2a",EKS,er2,"R2",false);rp("er2p",0,EKS.length);sb();
 let dn=0;
 let debCtx=`IDEIA:\n${idea}\n\nPLANOS R1:\n\n`;
-EKS.forEach(k=>{debCtx+=`${EAG[k].n} (${EAG[k].tag}): ${er1[k]}\n\n`});
+EKS.forEach(k=>{debCtx+=`${EAG[k].tag} (${EAG[k].n}): ${er1[k]}\n\n`});
 if(ce)debCtx+=`Alan: ${ce}\n\n`;
 await Promise.all(EKS.map(async k=>{
 try{
 let m=`${eri.r2}\n\nPLANOS DOS OUTROS (R1):\n\n`;
-EKS.forEach(ak=>{if(ak!==k)m+=`${EAG[ak].n}: ${er1[ak]}\n\n`});
+EKS.forEach(ak=>{if(ak!==k)m+=`${EAG[ak].tag} (${EAG[ak].n}): ${er1[ak]}\n\n`});
 m+=`\nSeu plano (R1): "${er1[k]}"\n\nConfrontar.`;
 er2[k]=await api(exSh,EAG[k].s,m,etk.r2,debCtx);
 }catch(e){er2[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("er2a").innerHTML="";EKS.forEach(ak=>bubble("er2a",ak,er2[ak]||null,!er2[ak],"R2"));rp("er2p",dn,EKS.length);sb();
+dn++;renderRound("er2a",EKS,er2,"R2",false);rp("er2p",dn,EKS.length);sb();
 }));
 document.getElementById("er2p").innerHTML="";
 if(erod===2){await esyn();return}
@@ -1137,15 +1172,14 @@ sh("ver3");
 const ce1=document.getElementById("ec1").value.trim(),ce2=document.getElementById("ec2").value.trim();
 ceoMsg("ec2d",ce2);
 const exSh=CTX+"\n\n"+ROPCTX,etk=ETK[eprof],eri=ERI[eprof];
-document.getElementById("er3a").innerHTML="";
-EKS.forEach(k=>bubble("er3a",k,null,true,"R3"));rp("er3p",0,EKS.length);sb();
+renderRound("er3a",EKS,er3,"R3",true);rp("er3p",0,EKS.length);sb();
 let dn=0;
 let debCtx=`IDEIA: ${idea}\n\n`;if(ce1)debCtx+=`Alan (pos R1): ${ce1}\n\n`;
-debCtx+="DEBATE:\n\n";EKS.forEach(k=>{debCtx+=`${EAG[k].n}\n  R1: ${er1[k]}\n  Confronto: ${er2[k]}\n\n`});
+debCtx+="DEBATE:\n\n";EKS.forEach(k=>{debCtx+=`${EAG[k].tag} (${EAG[k].n})\n  R1: ${er1[k]}\n  Confronto: ${er2[k]}\n\n`});
 if(ce2)debCtx+=`Alan: ${ce2}\n\n`;
 await Promise.all(EKS.map(async k=>{
 try{er3[k]=await api(exSh,EAG[k].s,`${eri.r3}\n\nDe sua VERSAO FINAL.`,etk.r3,debCtx)}catch(e){er3[k]=`Erro: ${e.message}`}
-dn++;document.getElementById("er3a").innerHTML="";EKS.forEach(ak=>bubble("er3a",ak,er3[ak]||null,!er3[ak],"R3"));rp("er3p",dn,EKS.length);sb();
+dn++;renderRound("er3a",EKS,er3,"R3",true);rp("er3p",dn,EKS.length);sb();
 }));
 document.getElementById("er3p").innerHTML="";
 await esyn();
