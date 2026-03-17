@@ -25,39 +25,46 @@
 --max-msg:#D4618C;
 }
 [data-theme="dark"]{
---bg:#2D2D2D;--card:#2C2C2E;--surface:#252528;--input:#3A3A3C;
---border:#3A3A3C;--border-subtle:#333336;--border-sep:#333336;
---tog-bg:#3A3A3C;--tog-active:#48484A;--tog-shadow:rgba(0,0,0,0.2);
---text:#F2F2F7;--text2:#C7C7CC;--text3:#8E8E93;--text-dim:#636366;--text-muted:#48484A;
---text-off:#8E8E93;--text-off2:#636366;
---card-off:#252528;--card-off-border:#3A3A3C;
---btn-blue:#5A8BBF;--btn-orange:#C4934A;--btn-dark:#58585A;
---btn-light-bg:#2C2C2E;--btn-light-txt:#8E8E93;--btn-light-border:#3A3A3C;
---ag-cvo:#7E9FC4;--ag-cmo:#E0A35C;--ag-cfo:#7EC47E;--ag-cbo:#B99DC6;--ag-sm:#E07A9E;--ag-pub:#6BB8C0;
---ag-pm:#38BDF8;--ag-coo:#FB923C;--ag-bs:#C084FC;
---syn-green:#7EC47E;--syn-red:#D46B6B;
---verdict-reason:#8E8E93;
---pb-bg:#3A3A3C;--pb-track:#48484A;--pb-fill:#8E8E93;
---ceo-label:#8E8E93;--ceo-border:#636366;
---max-msg:#E07A9E;
+--bg:transparent;--card:#3D2A15;--surface:#332210;--input:#4A3418;
+--border:#5A3E20;--border-subtle:#4A3418;--border-sep:#5A3E20;
+--tog-bg:#3D2A15;--tog-active:#5A3E20;--tog-shadow:rgba(0,0,0,0.3);
+--text:#E8D4B0;--text2:#D4BC94;--text3:#A07848;--text-dim:#7A5830;--text-muted:#5A3E20;
+--text-off:#A07848;--text-off2:#7A5830;
+--card-off:#332210;--card-off-border:#4A3418;
+--btn-blue:#1E6632;--btn-orange:#8A6840;--btn-dark:#1E6632;
+--btn-light-bg:#3D2A15;--btn-light-txt:#A07848;--btn-light-border:#5A3E20;
+--ag-cvo:#B8943C;--ag-cmo:#A07848;--ag-cfo:#2E7A42;--ag-cbo:#8A6840;--ag-sm:#C4A460;--ag-pub:#1E6632;
+--ag-pm:#B8943C;--ag-coo:#A07848;--ag-bs:#8A6840;
+--syn-green:#2E7A42;--syn-red:#A05A3A;
+--verdict-reason:#D4BC94;
+--pb-bg:#3D2A15;--pb-track:#5A3E20;--pb-fill:#B8943C;
+--ceo-label:#A07848;--ceo-border:#5A3E20;
+--max-msg:#A05A3A;
+--header-bg:#332210;
+--accent:#B8943C;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;transition:background .3s,color .3s}
+[data-theme="dark"] body{background:#2D2D2D;background-image:url('/bg-conselho.png');background-size:cover;background-position:center;background-attachment:fixed}
+.bg-overlay{display:none;position:fixed;inset:0;background:rgba(30,20,12,0.3);pointer-events:none;z-index:0}
+[data-theme="dark"] .bg-overlay{display:block}
 
 /* Header */
-.header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 0;margin-bottom:28px}
+.header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 0;margin-bottom:28px;position:relative;z-index:2}
+[data-theme="dark"] .header{background:#332210}
+[data-theme="dark"] .header h1{color:#B8943C}
 .header-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
 .header h1{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
 
 /* Dark mode toggle */
 .dm-toggle{width:36px;height:20px;border-radius:10px;background:#48484A;cursor:pointer;position:relative;border:none;padding:0;flex-shrink:0;transition:background .3s}
 .dm-toggle .dm-circle{width:16px;height:16px;border-radius:50%;background:#FFFFFF;position:absolute;top:2px;left:2px;transition:transform .3s,background .3s}
-[data-theme="dark"] .dm-toggle{background:#8E8E93}
-[data-theme="dark"] .dm-toggle .dm-circle{background:#1D1D1F;transform:translateX(16px)}
+[data-theme="dark"] .dm-toggle{background:#5A3E20}
+[data-theme="dark"] .dm-toggle .dm-circle{background:#E8D4B0;transform:translateX(16px)}
 
 /* Container */
-.container{max-width:1280px;margin:0 auto;padding:0 24px 48px}
+.container{max-width:1280px;margin:0 auto;padding:0 24px 48px;position:relative;z-index:1}
 
 /* Agent grid */
 .ag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
@@ -94,6 +101,10 @@ textarea{width:100%;min-height:80px;padding:14px 16px;background:var(--input);bo
 textarea:focus{border-color:var(--text3)}
 textarea::placeholder{color:var(--text-dim)}
 .btn-primary{width:100%;padding:14px;background:var(--btn-blue);color:#FFFFFF;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
+[data-theme="dark"] .btn-primary{color:#E8D4B0}
+[data-theme="dark"] .btn-dark{color:#E8D4B0}
+[data-theme="dark"] .btn-skip{color:#E8D4B0}
+[data-theme="dark"] .btn-go{color:#E8D4B0}
 .btn-dark{padding:12px;font-size:13px;font-weight:600;background:var(--btn-dark);color:#FFFFFF;border:none;border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-light{padding:10px;font-size:12px;font-weight:500;background:var(--btn-light-bg);color:var(--btn-light-txt);border:1px solid var(--btn-light-border);border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
 .btn-skip{padding:8px 20px;font-size:12px;font-weight:600;background:var(--btn-blue);color:#FFFFFF;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif}
@@ -176,6 +187,7 @@ textarea::placeholder{color:var(--text-dim)}
 
 /* PIN Screen */
 .pin-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .4s,transform .4s}
+[data-theme="dark"] .pin-screen{background:#332210;background-image:url('/bg-conselho.png');background-size:cover;background-position:center}
 .pin-screen.out{opacity:0;transform:translateY(-30px);pointer-events:none}
 .pin-title{font-size:28px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:40px;font-family:'Inter',-apple-system,sans-serif}
 .pin-dots{display:flex;gap:16px;margin-bottom:36px}
@@ -204,6 +216,7 @@ textarea::placeholder{color:var(--text-dim)}
 </style>
 </head>
 <body>
+<div class="bg-overlay"></div>
 
 <!-- PIN SCREEN -->
 <div class="pin-screen" id="pinScreen">
