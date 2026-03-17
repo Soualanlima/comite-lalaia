@@ -72,23 +72,15 @@ textarea::placeholder{color:#AEAEB2}
 .rd-sep .line{height:1px;flex:1;background:#E9ECEF}
 .rd-sep span{font-size:10px;font-weight:600;color:#AEAEB2;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
 
-/* Debate cards grid — vertical side by side */
-.round-grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:8px;margin-bottom:10px}
-.round-grid::-webkit-scrollbar{height:4px}
-.round-grid::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:2px}
-.d-card{min-width:calc((100% - 36px)/4);max-width:calc((100% - 36px)/4);flex:0 0 calc((100% - 36px)/4);scroll-snap-align:start;background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 0 10px 10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.02);display:flex;flex-direction:column}
-.d-card-r3{padding:12px}
-.d-card .bub-hdr{display:flex;align-items:baseline;gap:4px;margin-bottom:8px;flex-wrap:wrap}
-.bub-name{font-size:12px;font-weight:700;color:#1D1D1F}
-.bub-tag{font-size:10px;font-weight:400;color:#86868B}
-.bub-text{font-size:13px;line-height:1.6;color:#495057;font-weight:400;white-space:pre-wrap;flex:1}
-.d-card-r3 .bub-text{font-size:12px}
+/* Debate bubbles — horizontal stacked */
+.bubble{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
+.bubble .bub-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.bub-name{font-size:13px;font-weight:700;color:#1D1D1F}
+.bub-tag{font-size:10px;font-weight:400;color:#86868B;margin-left:4px}
+.bub-text{font-size:14px;line-height:1.7;color:#495057;font-weight:400;white-space:pre-wrap}
 .bub-ld{display:flex;align-items:center;gap:8px;color:#AEAEB2;font-size:12px}
 .ld{width:6px;height:6px;border-radius:50%;animation:p 1.5s ease-in-out infinite;display:inline-block}
 @keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
-
-/* Legacy bubble for CEO messages */
-.bubble{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
 
 /* CEO pause — clean */
 .ceo-pause{margin:14px 0;padding:16px 20px;background:#FAFBFC;border:1px solid #E9ECEF;border-radius:10px}
@@ -770,23 +762,18 @@ return noSub?`<span class="bub-name">${a.n}</span>`:`<span class="bub-name">${a.
 
 function renderRound(cid,keys,data,rlabel,isR3){
 const el=document.getElementById(cid);
-const n=keys.length;
-let h=`<div class="round-grid">`;
+let h="";
 keys.forEach(k=>{
 const a=getAgDisplay(k);
 const txt=data[k];
-const loaded=!!txt;
-h+=`<div class="d-card${isR3?" d-card-r3":""}" style="border-top:3px solid ${a.c}">`;
-h+=`<div class="bub-hdr">${agLabel(k)}</div>`;
-if(!loaded)h+=`<div class="bub-ld"><div class="ld" style="background:${a.c}"></div>Analisando...</div>`;
+h+=`<div class="bubble" style="border-left:3px solid ${a.c}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div><span style="font-size:10px;color:#D1D1D6">${rlabel||""}</span></div>`;
+if(!txt)h+=`<div class="bub-ld"><div class="ld" style="background:${a.c}"></div>Analisando...</div>`;
 else h+=`<div class="bub-text">${esc(txt)}</div>`;
 h+=`</div>`;
 });
-h+=`</div>`;
 el.innerHTML=h;
 }
 
-// Legacy bubble for single messages (CEO, R0)
 function bubble(cid,k,txt,loading,rlabel){
 const a=getAgDisplay(k),el=document.getElementById(cid);
 let h=`<div class="bubble" style="border-left:3px solid ${a.c}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div><span style="font-size:10px;color:#D1D1D6">${rlabel||""}</span></div>`;
