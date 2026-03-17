@@ -590,7 +590,7 @@ let er1={},er2={},er3={},emt="";
 let debateHistory=[],debateNum=1,continueText="";
 
 /* ===== API ===== */
-async function api(sharedCtx,agentPrompt,msg,tk,debateCtx){
+async function apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx){
 const body={shared_context:sharedCtx,agent_prompt:agentPrompt,message:msg,max_tokens:tk||1000};
 if(debateCtx)body.debate_context=debateCtx;
 const r=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
@@ -598,6 +598,12 @@ const txt=await r.text();let d;
 try{d=JSON.parse(txt)}catch(e){throw new Error(`Resposta invalida (${r.status}): ${txt.slice(0,100)}`)}
 if(!r.ok)throw new Error(d.error||`Erro ${r.status}`);
 return d.text;
+}
+async function api(sharedCtx,agentPrompt,msg,tk,debateCtx){
+try{return await apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx)}catch(e1){
+console.warn("Tentativa 1 falhou, retry...",e1.message);
+try{return await apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx)}catch(e2){throw e2}
+}
 }
 
 /* ===== HELPERS ===== */
