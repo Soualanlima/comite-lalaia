@@ -73,8 +73,10 @@ textarea::placeholder{color:#AEAEB2}
 .rd-sep span{font-size:10px;font-weight:600;color:#AEAEB2;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
 
 /* Debate cards grid — vertical side by side */
-.round-grid{display:grid;gap:10px;margin-bottom:10px}
-.d-card{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 0 10px 10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.02);display:flex;flex-direction:column}
+.round-grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:8px;margin-bottom:10px}
+.round-grid::-webkit-scrollbar{height:4px}
+.round-grid::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:2px}
+.d-card{min-width:calc((100% - 36px)/4);max-width:calc((100% - 36px)/4);flex:0 0 calc((100% - 36px)/4);scroll-snap-align:start;background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 0 10px 10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,0.02);display:flex;flex-direction:column}
 .d-card-r3{padding:12px}
 .d-card .bub-hdr{display:flex;align-items:baseline;gap:4px;margin-bottom:8px;flex-wrap:wrap}
 .bub-name{font-size:12px;font-weight:700;color:#1D1D1F}
@@ -84,11 +86,6 @@ textarea::placeholder{color:#AEAEB2}
 .bub-ld{display:flex;align-items:center;gap:8px;color:#AEAEB2;font-size:12px}
 .ld{width:6px;height:6px;border-radius:50%;animation:p 1.5s ease-in-out infinite;display:inline-block}
 @keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
-/* Mobile: horizontal scroll for cards */
-@media(max-width:800px){
-.round-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:10px;padding-bottom:6px}
-.round-grid>div{min-width:200px;flex:0 0 200px;scroll-snap-align:start}
-}
 
 /* Legacy bubble for CEO messages */
 .bubble{background:#FFFFFF;border:1px solid #F0F0F0;border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.02)}
@@ -777,7 +774,7 @@ return noSub?`<span class="bub-name">${a.n}</span>`:`<span class="bub-name">${a.
 function renderRound(cid,keys,data,rlabel,isR3){
 const el=document.getElementById(cid);
 const n=keys.length;
-let h=`<div class="round-grid" style="grid-template-columns:repeat(${n},1fr)">`;
+let h=`<div class="round-grid">`;
 keys.forEach(k=>{
 const a=getAgDisplay(k);
 const txt=data[k];
