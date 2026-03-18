@@ -1790,6 +1790,8 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 RESPEITAR O ESCOPO:
 LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
+REGRA ESPECIFICA CBO: Quando o CEO pede MACRO ou diz que identidade visual e pra depois, sua contribuicao se LIMITA a: posicionamento, proposta de valor, opcoes de nome com racional, arquetipo de marca, e narrativa central. Cores, tipografia, simbolo, logo, identidade visual e sistema visual sao PROIBIDOS ate o CEO pedir explicitamente. Cada paragrafo sobre visual quando o CEO pediu macro e um paragrafo ROUBADO de estrategia que ele realmente precisa.
+
 ${ANTICUT}`},
 
 sm:{n:"Social Media",tag:"CSO",d:"Redes \u00b7 Conteudo \u00b7 Algoritmos",c:"#D4618C",
@@ -2507,7 +2509,7 @@ r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Vote na DECISAO: 
 
 /* ===== TOKENS ===== */
 const TK={q:100,r1:200,r2:200,r3:150,med:600};
-const SPTK={q:100,p0:500,p05:200,p05r:500,p1:400,p2:400,p3:400,p4:400,p5:400,pFinal:500,med:3000};
+const SPTK={q:100,p0:500,p05:200,p05r:500,p1:400,p2:400,p3:400,p4:400,p5:400,pFinal:500,med:2000};
 const ETK={obj:{r1:300,r2:300,r3:250,med:1000},det:{r1:300,r2:300,r3:250,med:1500}};
 
 /* ===== STATE ===== */
@@ -2532,8 +2534,9 @@ let spRefineReasons={}; /* {memberKey: "reason"} for those who said REFINAR */
 let spRoundData={}; /* spRoundData[3]={cvo:"...",cmo:"..."} for dynamic rounds */
 
 /* ===== API ===== */
-async function apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx){
-const body={shared_context:sharedCtx,agent_prompt:agentPrompt,message:msg,max_tokens:tk||1000};
+async function apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx,addReserve){
+const finalMsg=addReserve?msg+RESERVE_SUFFIX:msg;
+const body={shared_context:sharedCtx,agent_prompt:agentPrompt,message:finalMsg,max_tokens:tk||1000};
 if(debateCtx)body.debate_context=debateCtx;
 const r=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
 const txt=await r.text();let d;
@@ -2541,12 +2544,14 @@ try{d=JSON.parse(txt)}catch(e){throw new Error(`Resposta invalida (${r.status}):
 if(!r.ok)throw new Error(d.error||`Erro ${r.status}`);
 return d.text;
 }
-async function api(sharedCtx,agentPrompt,msg,tk,debateCtx){
-try{return await apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx)}catch(e1){
+async function api(sharedCtx,agentPrompt,msg,tk,debateCtx,addReserve){
+try{return await apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx,addReserve)}catch(e1){
 console.warn("Tentativa 1 falhou, retry...",e1.message);
-try{return await apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx)}catch(e2){throw e2}
+try{return await apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx,addReserve)}catch(e2){throw e2}
 }
 }
+
+const RESERVE_SUFFIX="\n\nATENCAO: Voce tem espaco LIMITADO. Use no MAXIMO 80% do espaco disponivel. Os ultimos 20% sao sua RESERVA DE SEGURANCA pra fechar o raciocinio. Se comecou 4 pontos, feche os 4 com ponto final. NUNCA comece um ponto novo se nao tem certeza que cabe COMPLETO. Frase cortada no meio = falha grave. Ultima palavra da sua resposta DEVE ser seguida de ponto final.";
 
 /* ===== HELPERS ===== */
 function sh(id){document.getElementById(id).classList.remove("hid")}
@@ -2651,7 +2656,7 @@ function bubble(cid,k,txt,loading,rlabel){
 const cc=agColor(k),el=document.getElementById(cid);
 let h=`<div class="bubble" style="border-left:3px solid ${cc}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div><span style="font-size:10px;color:var(--text-muted)">${rlabel||""}</span></div>`;
 if(loading)h+=`<div class="bub-ld"><div class="ld" style="background:${cc}"></div>Analisando...</div>`;
-else if(txt)h+=`<div class="bub-text">${marked.parse(txt)}</div>`;
+else if(txt){let t=txt.trimEnd();if(t&&!/[.!?]$/.test(t))t+="...";h+=`<div class="bub-text">${marked?marked.parse(t):esc(t)}</div>`;}
 h+=`</div>`;el.innerHTML+=h;
 }
 
@@ -2988,7 +2993,7 @@ qCtx+="\n";
 }
 try{
 const msg=SP_P0_INSTR.replace("{DEBATE_CTX}",directCtx+qCtx);
-sp0=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p0,directCtx);
+sp0=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p0,directCtx,true);
 cvoData.cvo=sp0;
 }catch(e){sp0=`Erro: ${e.message}`;cvoData.cvo=sp0}
 renderRound("sp0a",["cvo"],cvoData,"P0",false);
@@ -3014,7 +3019,7 @@ let msg=`${RI.r1}\n\nIDEIA:\n${idea}`;
 if(r0ctx)msg+=r0ctx;
 if(continueText)msg+=`\n\nNOVO PEDIDO DE ALAN:\n${continueText}`;
 const dbCtx=histCtx||null;
-r1[k]=await api(CTX,getAgPrompt(k),msg,TK.r1,dbCtx);
+r1[k]=await api(CTX,getAgPrompt(k),msg,TK.r1,dbCtx,true);
 }catch(e){r1[k]=`Erro: ${e.message}`}
 dn++;renderRound("r1a",ag,r1,"R1",false);rp("r1p",dn,ag.length);sb();
 }));
@@ -3065,7 +3070,7 @@ try{
 let m=`${RI.r2}\n\nPARECERES DOS OUTROS (R1):\n\n`;
 ag.forEach(ak=>{if(ak!==k){const a=getAgDisplay(ak);m+=`${a.tag} (${a.n}): ${r1[ak]}\n\n`}});
 m+=`\nSeu parecer (R1): "${r1[k]}"\n\nReaja aos OUTROS.`;
-r2[k]=await api(CTX,getAgPrompt(k),m,TK.r2,debCtx);
+r2[k]=await api(CTX,getAgPrompt(k),m,TK.r2,debCtx,true);
 }catch(e){r2[k]=`Erro: ${e.message}`}
 dn++;renderRound("r2a",ag,r2,"R2",false);rp("r2p",dn,ag.length);sb();
 }));
@@ -3112,7 +3117,7 @@ const histCtx=buildHistCtx();if(histCtx)debCtx=histCtx+debCtx;
 await Promise.all(ag.map(async k=>{
 try{
 let m=`${RI.r3}\n\nDe seu VOTO FINAL.`;
-r3[k]=await api(CTX,getAgPrompt(k),m,TK.r3,debCtx);
+r3[k]=await api(CTX,getAgPrompt(k),m,TK.r3,debCtx,true);
 }catch(e){r3[k]=`Erro: ${e.message}`}
 dn++;renderRound("r3a",ag,r3,"R3",true);rp("r3p",dn,ag.length);sb();
 }));
@@ -3466,7 +3471,7 @@ renderRound("sp0a",["cvo"],cvoData,"P0",false);rp("sp0p",0,1);sb();
 const debCtxFull=buildDebateCtxFull();
 try{
 const msg=SP_P0_INSTR.replace("{DEBATE_CTX}",debCtxFull);
-sp0=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p0,debCtxFull);
+sp0=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p0,debCtxFull,true);
 cvoData.cvo=sp0;
 }catch(e){sp0=`Erro: ${e.message}`;cvoData.cvo=sp0}
 renderRound("sp0a",["cvo"],cvoData,"P0",false);
@@ -3497,7 +3502,7 @@ let dn=0;
 await Promise.all(ag.map(async k=>{
 try{
 const msg=SP_P05_INSTR.replace("{P0_CTX}",p0ctx);
-sp05[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p05);
+sp05[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p05,null,true);
 }catch(e){sp05[k]=`Erro: ${e.message}`}
 dn++;renderRound("sp05a",ag,sp05,"P0.5",false);rp("sp05p",dn,ag.length);sb();
 }));
@@ -3519,7 +3524,7 @@ let p0ctx=sp0;
 if(ce0)p0ctx+="\n\nAJUSTE DO CEO: "+ce0;
 try{
 const msg=SP_P05R_INSTR.replace("{P05_CTX}",p05ctx)+"\n\nESQUELETO ORIGINAL:\n"+p0ctx;
-sp0corrected=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p05r);
+sp0corrected=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p05r,null,true);
 cvoData.cvo=sp0corrected;
 }catch(e){sp0corrected=`Erro: ${e.message}`;cvoData.cvo=sp0corrected}
 renderRound("sp05ra",["cvo"],cvoData,"P0.5R",false);
@@ -3581,7 +3586,7 @@ await Promise.all(ag.map(async k=>{
 try{
 const guide=getSPMemberGuide(k);
 const msg=SP_P1_INSTR.replace("{DEBATE_CTX}",debCtxFull).replace("{P0_CTX}",p0ctx).replace("{MEMBER_GUIDE}",guide?("SUA FRENTE ESPECIFICA:\n"+guide):"")+qCtx;
-sp1[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p1,debCtxFull+"\n\n"+p0ctx);
+sp1[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p1,debCtxFull+"\n\n"+p0ctx,true);
 }catch(e){sp1[k]=`Erro: ${e.message}`}
 dn++;renderRound("sp1a",ag,sp1,"P1",false);rp("sp1p",dn,ag.length);sb();
 }));
@@ -3636,7 +3641,7 @@ if(ce05_p2)p0ctx_p2+="\n\nAJUSTE DO CEO (pos revisao): "+ce05_p2;
 await Promise.all(ag.map(async k=>{
 try{
 const msg=SP_P2_INSTR.replace("{P1_CTX}",p1ctx).replace("{P0_CTX}",p0ctx_p2)+qCtx;
-sp2[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p2,debCtxFull+"\n\n"+p0ctx_p2+"\n\n"+p1ctx);
+sp2[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p2,debCtxFull+"\n\n"+p0ctx_p2+"\n\n"+p1ctx,true);
 }catch(e){sp2[k]=`Erro: ${e.message}`}
 dn++;renderRound("sp2a",ag,sp2,"P2",false);rp("sp2p",dn,ag.length);sb();
 }));
@@ -3789,7 +3794,7 @@ msg=buildSPFinalInstr(true,allSectionsCtx,ceoIntervention);
 msg=buildSPRefineInstr(roundNum,refineMembers,ceoIntervention,allSectionsCtx);
 }
 const tk=isP6?SPTK.pFinal:(SPTK["p"+roundNum]||500);
-spRoundData[roundNum][k]=await api(CTX,getAgPrompt(k),msg,tk,debCtxFull+"\n\n"+allSectionsCtx);
+spRoundData[roundNum][k]=await api(CTX,getAgPrompt(k),msg,tk,debCtxFull+"\n\n"+allSectionsCtx,true);
 }catch(e){spRoundData[roundNum][k]=`Erro: ${e.message}`}
 dn++;renderRound(areaId,ag,spRoundData[roundNum],`P${roundNum}`,false);rp(progId,dn,ag.length);sb();
 }));
@@ -3883,7 +3888,7 @@ let dn=0;
 await Promise.all(ag.map(async k=>{
 try{
 const msg=buildSPFinalInstr(isForced,allSectionsCtx,lastCeo);
-spFinalData[k]=await api(CTX,getAgPrompt(k),msg,SPTK.pFinal,debCtxFull+"\n\n"+allSectionsCtx);
+spFinalData[k]=await api(CTX,getAgPrompt(k),msg,SPTK.pFinal,debCtxFull+"\n\n"+allSectionsCtx,true);
 }catch(e){spFinalData[k]=`Erro: ${e.message}`}
 dn++;renderRound("spfa",ag,spFinalData,"P-Final",false);rp("spfp",dn,ag.length);sb();
 }));
@@ -4022,10 +4027,9 @@ if(hasPending||isForced){
 msP+=`\nSe houver ⚠️ PENDENTE de algum membro, adicione secao:\n\n⚠️ PONTOS PENDENTES (nao resolvidos):\n- [ponto 1: descricao + entre quais membros]\n- [ponto 2 se houver]\n\nEstes pontos devem ser resolvidos pelo CEO antes de seguir pra execucao.\n`;
 }
 
-const debCtxFull=buildDebateCtxFull();
-
-// COMPRESSED CONTEXT: only original prompt, CORRECTED skeleton (from P0.5), P-Final, and CEO interventions
-let m=debCtxFull+"\n\n";
+// COMPRESSED CONTEXT: only original prompt (truncated), CORRECTED skeleton, P-Final, CEO interventions
+const promptTrunc=idea.length>500?idea.slice(0,500)+"... [truncado]":idea;
+let m=`QUESTAO ORIGINAL DE ALAN:\n${promptTrunc}\n\n`;
 m+="= ESQUELETO CORRIGIDO (CVO) =\n\n"+(sp0corrected||sp0)+"\n\n";
 // CEO interventions only
 if(ce0)m+=`Alan (pos P0): ${ce0}\n\n`;
@@ -4042,7 +4046,7 @@ m+="= VERSAO FINAL =\n\n";
 ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${sp3[k]}\n\n`});
 m+="Organize o plano estrategico no formato especificado.";
 
-try{spmt=await api(CTX,msP,m,SPTK.med,debCtxFull);renderSPlan("spmc",spmt,false)}catch(e){renderSPlan("spmc","Erro: "+e.message,false)}
+try{spmt=await api(CTX,msP,m,SPTK.med);renderSPlan("spmc",spmt,false)}catch(e){renderSPlan("spmc","Erro: "+e.message,false)}
 sh("vspd");sb();
 }
 
