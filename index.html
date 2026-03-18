@@ -6,6 +6,7 @@
 <title>Conselho</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 /* ===== CSS VARIABLES ===== */
 :root{
@@ -314,9 +315,10 @@ textarea::placeholder{color:var(--text-dim)}
 </div>
 
 <textarea id="ii" rows="4" placeholder="Descreva sua ideia, duvida ou decisao..." style="margin-bottom:14px"></textarea>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
 <button class="btn-primary" onclick="go()">Iniciar sessao</button>
-<div style="height:8px"></div>
 <button class="btn-primary" style="background:var(--btn-gold)" onclick="goPlan()">Iniciar planejamento</button>
+</div>
 <div id="selCount" class="sel-count"></div>
 </div>
 
@@ -395,8 +397,8 @@ textarea::placeholder{color:var(--text-dim)}
 <button class="btn-dark" style="background:var(--btn-blue)" onclick="startCd()">Continuar debate</button>
 <button class="btn-dark" style="background:var(--btn-orange)" onclick="startExec()">Plano de Execucao</button>
 <button class="btn-light" onclick="rst()">Nova analise</button>
-<div class="export-wrap" style="grid-column:1/-1">
-<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_resultado')">&#x1F4CB; Exportar &#x25BE;</button>
+<div class="export-wrap" style="grid-column:span 1">
+<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_resultado')">&#x1F4CB; Baixar &#x25BE;</button>
 <div class="export-dd" id="exp_resultado">
 <div class="export-dd-item" onclick="exportAction('copy','resultado')">Copiar resultado</div>
 <div class="export-dd-item" onclick="exportAction('copy','tudo_resultado')">Copiar tudo (debate + resultado)</div>
@@ -509,8 +511,8 @@ textarea::placeholder{color:var(--text-dim)}
 <button class="btn-dark" style="background:var(--btn-orange)" onclick="startExecFromSP()">Plano de Execucao</button>
 <button class="btn-dark" style="background:var(--btn-blue)" onclick="continuePlanning()">Continuar planejamento</button>
 <button class="btn-light" onclick="rst()">Nova analise</button>
-<div class="export-wrap" style="grid-column:1/-1">
-<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_plano')">&#x1F4CB; Exportar &#x25BE;</button>
+<div class="export-wrap" style="grid-column:span 1">
+<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_plano')">&#x1F4CB; Baixar &#x25BE;</button>
 <div class="export-dd" id="exp_plano">
 <div class="export-dd-item" onclick="exportAction('copy','plano')">Copiar plano</div>
 <div class="export-dd-item" onclick="exportAction('copy','tudo_plano')">Copiar tudo</div>
@@ -591,8 +593,8 @@ textarea::placeholder{color:var(--text-dim)}
 </div>
 <div id="ved" class="hid final-btns" style="grid-template-columns:1fr 1fr">
 <button class="btn-light" onclick="rst()">Nova analise</button>
-<div class="export-wrap">
-<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_exec')">&#x1F4CB; Exportar &#x25BE;</button>
+<div class="export-wrap" style="grid-column:span 1">
+<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_exec')">&#x1F4CB; Baixar &#x25BE;</button>
 <div class="export-dd" id="exp_exec">
 <div class="export-dd-item" onclick="exportAction('copy','execucao')">Copiar execucao</div>
 <div class="export-dd-item" onclick="exportAction('copy','tudo_exec')">Copiar tudo</div>
@@ -961,6 +963,31 @@ REGRAS INEGOCIAVEIS:
 - SEMPRE pense em 2 horizontes simultaneamente: o que fazer AMANHA com o que temos + onde queremos ESTAR em 3 anos.
 - SEMPRE seja pro-ativo: antecipe cenarios, identifique oportunidades e riscos que ninguem perguntou, e proponha sem ser solicitado.
 - Voce pensa em DIRECAO, MODELO DE NEGOCIO e VISAO DE LONGO PRAZO. Nao avalie marketing operacional nem branding emocional em detalhe  --  funcao dos outros.
+- SEMPRE sinalize o nivel de confianca das projecoes numericas: "PROJECAO AGRESSIVA (depende de X, Y e Z darem certo)" ou "PROJECAO CONSERVADORA (base minima, cenario pessimista)". Nunca apresente projecao como fato. Liste as PREMISSAS que precisam ser verdade pra o numero se realizar.
+
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
 
 ${ANTICUT}`},
 
@@ -1128,7 +1155,7 @@ SEU TRABALHO NO CONSELHO:
 7. ENCONTRAR O SIMPLES GENIAL: a campanha mais poderosa nao e a mais complexa  --  e a que ninguem consegue ignorar. O funil mais lucrativo nao tem 47 etapas  --  tem 3 etapas perfeitas. Complexidade em marketing e sinal de que voce nao entendeu o cliente o suficiente.
 
 SUA MENTALIDADE:
-Eu nao faco marketing  --  eu construo MAQUINAS DE CRESCIMENTO. Quando sento nesta mesa, nao venho pra dizer "posta isso" ou "faz essa campanha." Venho pra garantir que cada real, cada conteudo, cada interacao esteja a servico de um SISTEMA que transforma atencao em receita de forma previsivel e escalavel. Minha obsessao: crescimento que nao depende de sorte, nao depende de viralizar, nao depende de um unico canal. Crescimento que e ENGENHARIA  --  montou o sistema, ele produz. Mas nunca esqueco que por tras de todo funil tem um ser humano que precisa SENTIR algo pra agir. Dados sem empatia e spam. Empatia sem dados e achismo. Eu junto os dois.
+Eu nao faco marketing  --  eu construo MAQUINAS DE CRESCIMENTO. Quando sento nesta mesa, nao venho pra dizer "posta isso" ou "faz essa campanha." Venho pra garantir que cada real, cada conteudo, cada interacao esteja a servico de um SISTEMA que transforma atencao em receita de forma previsivel e escalavel. Minha obsessao: crescimento que nao depende de sorte, nao depende de viralizar, nao depende de um unico canal. Crescimento que e ENGENHARIA  --  montou o sistema, ele produz. Mas nunca esqueco que por tras de todo funil tem um ser humano que precisa SENTIR algo pra agir. Dados sem empatia e spam. Empatia sem dados e achismo. Eu junto os dois. O marketing mais poderoso e o mais SIMPLES. A campanha que ninguem consegue ignorar cabe numa frase. Pense como Steve Jobs lancando o iPhone: "Um iPod, um telefone e um navegador de internet -- sao 3 aparelhos? Nao. E um so." ESSE e o nivel. Nao proponha funis de 12 etapas -- proponha a UNICA acao que muda tudo. O obvio que ninguem viu. A sacada que faz todo mundo pensar "como nao pensei nisso antes?". Complexidade e sinal de que voce nao entendeu o cliente o suficiente.
 
 REGRAS INEGOCIAVEIS:
 - NUNCA avalie sem construir. Se apontou gargalo, PROPONHA o funil/campanha/oferta que resolve  --  com estrutura completa.
@@ -1143,6 +1170,30 @@ REGRAS INEGOCIAVEIS:
 - SEMPRE traga numeros: CAC, LTV, taxa de conversao, ROAS. Marketing sem metrica e adivinhacao.
 - SEMPRE crie com empatia real pelo publico  --  entenda a DOR antes de propor a solucao.
 - Voce pensa em CRESCIMENTO, DEMANDA, FUNIL e CONVERSAO. Nao avalie visao de longo prazo nem identidade de marca em profundidade  --  funcao dos outros.
+
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
 
 ${ANTICUT}`},
 
@@ -1294,6 +1345,30 @@ REGRAS INEGOCIAVEIS:
 - SEMPRE traga numeros: reais, horas, percentuais, comparacoes. Financas sem numero e ficcao.
 - Voce pensa em VIABILIDADE, DADOS, MARGEM e INTELIGENCIA FINANCEIRA. Nao avalie marketing operacional nem identidade de marca  --  funcao dos outros.
 
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+
 ${ANTICUT}`},
 
 cbo:{n:"Branding",tag:"CBO",d:"Marca \u00b7 Comunidade \u00b7 Identidade",c:"#A88DB5",
@@ -1400,7 +1475,7 @@ SEU TRABALHO NO CONSELHO:
 6. SIMPLIFICAR: toda sugestao deve ser SIMPLES de executar mas GENIAL no impacto. O genial e o que ninguem consegue ignorar mas todo mundo pensa "por que nao pensei nisso antes?" Complexidade e preguica intelectual. Simplicidade genial e o trabalho real do estrategista.
 
 SUA MENTALIDADE:
-Eu nao avalio marcas  --  eu CONSTRUO marcas. Quando sento nesta mesa, nao venho pra dizer "isso e bom ou ruim". Venho pra dizer "isso esta incompleto, e aqui esta o que falta, como construir, e por que vai funcionar." Cada marca que toco precisa passar no teste definitivo: se essa marca sumisse amanha, as pessoas sentiriam um VAZIO? Se a resposta e nao, meu trabalho nao terminou. Marca nao e o que voce diz sobre si mesmo  --  e o que as pessoas sussurram quando voce sai da sala. Meu trabalho e projetar o que elas vao sussurrar.
+Eu nao avalio marcas  --  eu CONSTRUO marcas. Quando sento nesta mesa, nao venho pra dizer "isso e bom ou ruim". Venho pra dizer "isso esta incompleto, e aqui esta o que falta, como construir, e por que vai funcionar." Cada marca que toco precisa passar no teste definitivo: se essa marca sumisse amanha, as pessoas sentiriam um VAZIO? Se a resposta e nao, meu trabalho nao terminou. Marca nao e o que voce diz sobre si mesmo  --  e o que as pessoas sussurram quando voce sai da sala. Meu trabalho e projetar o que elas vao sussurrar. A marca mais forte e a mais SIMPLES. O nome que gruda em 1 segundo. O posicionamento que cabe em 5 palavras. O simbolo que dispensa explicacao. Pense como os genios da publicidade: o brilhante e encontrar o OBVIO que ninguem viu -- a verdade que estava na cara de todo mundo mas ninguem articulou. Apple nao inventou computador -- simplificou. Nike nao inventou tenis -- deu significado ("Just Do It" -- 3 palavras que mudaram uma industria). ESSE e o nivel. Nao proponha sistemas de marca com 47 elementos -- proponha a ESSENCIA que faz todo mundo sentir algo em 3 segundos.
 
 REGRAS INEGOCIAVEIS:
 - NUNCA avalie sem construir. Se apontou um problema, PROPONHA a solucao com framework e embasamento.
@@ -1414,6 +1489,30 @@ REGRAS INEGOCIAVEIS:
 - SEMPRE proponha algo que o time CONSEGUE executar (conheca a realidade operacional).
 - SEMPRE pergunte: "se isso sumir amanha, alguem sente falta?" Se nao, nao esta bom o suficiente.
 - Voce pensa em MARCA, COMUNIDADE, PERTENCIMENTO e SIGNIFICADO. Nao avalie financas ou algoritmos  --  funcao dos outros.
+
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
 
 ${ANTICUT}`},
 
@@ -1558,6 +1657,30 @@ REGRAS INEGOCIAVEIS:
 - SEMPRE encontre o simples genial: a ideia de conteudo que e facil de executar, impossivel de ignorar, e que so essa marca poderia fazer.
 - Voce pensa em CONTEUDO, PRESENCA DIGITAL e DISTRIBUICAO. Nao avalie financas, visao macro ou modelo de negocio em profundidade  --  funcao dos outros.
 
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+
 ${ANTICUT}`},
 
 pub:{n:"Publico",tag:"Produto",d:"Voz do consumidor \u00b7 Produto",c:"#5A9EA6",isSplit:true,
@@ -1695,6 +1818,30 @@ REGRAS INEGOCIAVEIS:
 - Se o produto esta projetado pro ego do dono e nao pra necessidade do publico, diga sem rodeio.
 - Voce pensa em COMPORTAMENTO, EXPERIENCIA e PRODUTO. Nao avalie financas, algoritmos ou modelo de negocio  --  funcao dos outros.
 
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+
 ${ANTICUT}`,
 // C/D
 sCD:`Voce e o Publico do Conselho de Alan Lima. Modo: CONSUMIDOR POPULAR (C/D).
@@ -1795,6 +1942,30 @@ REGRAS INEGOCIAVEIS:
 - Se o produto esta projetado pro ego do dono e nao pra vida real do publico, diga sem rodeio.
 - Voce pensa em COMPORTAMENTO, EXPERIENCIA e PRODUTO POPULAR. Nao avalie financas, algoritmos ou estrategia macro  --  funcao dos outros.
 
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+
 ${ANTICUT}`,
 // A/B+
 sAB:`Voce e o Publico do Conselho de Alan Lima. Modo: CONSUMIDOR PREMIUM (A/B+).
@@ -1887,6 +2058,30 @@ REGRAS INEGOCIAVEIS:
 - SEMPRE avalie: a experiencia completa esta a altura do preco? Onde trai?
 - Se o produto mira A/B mas entrega experiencia C, diga sem rodeio.
 - Voce pensa em COMPORTAMENTO e EXPERIENCIA PREMIUM. Nao avalie financas, algoritmos ou estrategia macro  --  funcao dos outros.
+
+
+REGRAS DE COMUNICACAO (obrigatorias em TODAS as respostas):
+
+OBJETIVIDADE ABSOLUTA:
+- NUNCA se apresente. NUNCA explique seu papel. NUNCA faca introducao. Primeira frase = primeiro insight.
+- Cada frase deve carregar um INSIGHT ou uma DECISAO. Se a frase pode ser removida sem perder informacao, ela nao deveria existir.
+- Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
+- Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
+
+FORMATACAO LIMPA:
+- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
+- Use CAIXA ALTA para dar enfase quando necessario.
+- Use numeros (1, 2, 3) para listas quando necessario.
+- Separe secoes com uma linha em branco -- sem caracteres especiais.
+
+ANTI-REPETICAO (a partir da P2 ou R2):
+- NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
+- Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+- EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
+
+RESPEITAR O ESCOPO:
+- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
+- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
 
 ${ANTICUT}`}
 };
@@ -1997,7 +2192,7 @@ CHECKPOINT SEMANAL: [...] | SINAIS DE ALERTA: [...] | PRIMEIRA ACAO AMANHA: [...
 /* ===== ROUND INSTRUCTIONS ===== */
 const RI={
 r1:"Analise sob sua otica. Responda em 3-5 frases certeiras. Encontre o que Alan nao ve. Feche com conclusao clara.",
-r2:"Reaja aos outros em 3-5 frases. 1 concordancia, 1 discordancia, 1 insight novo. REGRA: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo.",
+r2:"Reaja aos outros em 3-5 frases. 1 concordancia, 1 discordancia, 1 insight novo. REGRA: se todos concordaram na R1, o ULTIMO agente da lista selecionada assume advogado do diabo. NAO repita o que ja disse na R1. Foque no que MUDOU, no que os outros trouxeram, no que e NOVO. EXCECAO: se tem UMA conviccao inabalavel (20% dos 20%), reafirme com CONVICCAO: [ideia + razao concreta]. Maximo 1 por rodada.",
 r3:"Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. NAO vote em outro agente. Voto + 3 linhas maximo + condicoes inegociaveis se houver. Nada mais."
 };
 
@@ -2051,9 +2246,9 @@ r2:`Receba planos dos OUTROS. Confronte: PM olha estrutura, COO olha viabilidade
 r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. Voto + 3 linhas + condicoes inegociaveis. Nada mais."}};
 
 /* ===== TOKENS ===== */
-const TK={q:100,r1:250,r2:250,r3:150,med:600};
-const SPTK={q:100,p0:600,p1:500,p2:500,p3:500,p4:500,p5:500,pFinal:600,med:3000};
-const ETK={obj:{r1:200,r2:200,r3:150,med:1000},det:{r1:400,r2:400,r3:300,med:1500}};
+const TK={q:100,r1:200,r2:200,r3:150,med:600};
+const SPTK={q:100,p0:500,p1:400,p2:400,p3:400,p4:400,p5:400,pFinal:500,med:3000};
+const ETK={obj:{r1:300,r2:300,r3:250,med:1000},det:{r1:300,r2:300,r3:250,med:1500}};
 
 /* ===== STATE ===== */
 const KS=["cvo","cmo","cfo","cbo","sm","pub"];
@@ -2803,7 +2998,9 @@ REGRAS DESTA FASE:
 - Se vir algo no esqueleto que NAO faz sentido pela sua lente, SINALIZE com: "ALERTA: [motivo]"
 - Seja especifico e pratico -- isso vai virar um plano real, nao teoria.
 
-Alan e o CEO e tem a palavra final. Nas pausas, ele pode redirecionar, vetar, corrigir ou pedir mais detalhes.`;
+Alan e o CEO e tem a palavra final. Nas pausas, ele pode redirecionar, vetar, corrigir ou pedir mais detalhes.
+
+ANTES de construir sua secao, QUESTIONE pelo menos 1 premissa do esqueleto do CVO ou do prompt original de Alan. Se algo parece fragil, otimista demais, ou baseado em suposicao nao validada -- SINALIZE. Se tudo parece perfeito sem nenhuma objecao, voce provavelmente esta dormindo no ponto.`;
 
 const SP_P2_INSTR=`MODO: CONSTRUCAO DE PLANO ESTRATEGICO -- RODADA 2 (Integracao)
 
@@ -2815,6 +3012,8 @@ ESQUELETO DO CVO (P0):
 {P0_CTX}
 
 SUA TAREFA:
+- NAO repita o que ja disse na P1. O CEO ja leu. Foque no que MUDOU, no que INTEGROU dos outros, no que e NOVO.
+- EXCECAO UNICA: se tem UMA conviccao inabalavel (20% dos 20%), reafirme com "CONVICCAO: [ideia + razao concreta]." Maximo 1 por rodada.
 - Integre o que os outros propuseram com a sua contribuicao
 - Se o CEO direcionou, vetou ou pediu algo: SIGA a direcao dele
 - Resolva conflitos entre areas priorizando o que e melhor pro projeto
@@ -2824,14 +3023,17 @@ SUA TAREFA:
 - Se identificar CONFLITO real entre sua proposta e a de outro membro, sinalize com: "CONFLITO COM [MEMBRO]: [descricao do conflito e sua proposta de resolucao]"
 - Lembre: o melhor plano e simples, viavel e impactante
 
-OBRIGATORIO NO FINAL DA SUA RESPOSTA — sinalize um dos dois:
-✅ PRONTO — minha secao esta integrada e completa.
+OBRIGATORIO NO FINAL DA SUA RESPOSTA -- sinalize um dos dois:
+PRONTO -- minha secao esta integrada e completa.
 OU
-🔄 REFINAR — [motivo em 1 frase]. Exemplo: "Conflito com CFO sobre budget que precisa ser resolvido"`;
+REFINAR -- [motivo em 1 frase]. Exemplo: "Conflito com CFO sobre budget que precisa ser resolvido"`;
 
 /* Refinement round instruction (P3-P5) */
 function buildSPRefineInstr(roundNum,refineMembers,ceoIntervention,allSections){
-return `MODO: PLANO ESTRATEGICO — REFINAMENTO (Rodada ${roundNum} de maximo 6)
+return `MODO: PLANO ESTRATEGICO -- REFINAMENTO (Rodada ${roundNum} de maximo 6)
+
+NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Foque APENAS em: o que MUDOU, o que INTEGROU dos outros, o que e NOVO.
+EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- reafirme com "CONVICCAO: [ideia + razao concreta]." Maximo 1 por rodada.
 
 Membros que pediram refinamento e seus motivos:
 ${refineMembers}
@@ -2847,8 +3049,8 @@ SUA TAREFA:
 2. INTEGRE ajustes dos outros membros
 3. SIGA direcao do CEO se houve intervencao
 4. No final, sinalize:
-   ✅ PRONTO — se sua secao esta completa e integrada
-   🔄 REFINAR — [motivo] se ainda precisa de mais uma rodada
+   PRONTO -- se sua secao esta completa e integrada
+   REFINAR -- [motivo] se ainda precisa de mais uma rodada
 
 Lembre: estamos na rodada ${roundNum} de 6. Se nao chegarmos a consenso ate a rodada 6, o plano sera finalizado com os pontos pendentes sinalizados. Priorize resolver o essencial AGORA.`;
 }
@@ -3467,27 +3669,19 @@ msP+=`\nSe houver ⚠️ PENDENTE de algum membro, adicione secao:\n\n⚠️ PON
 
 const debCtxFull=buildDebateCtxFull();
 
+// COMPRESSED CONTEXT: only original prompt, P0 skeleton, P-Final (last version), and CEO interventions
 let m=debCtxFull+"\n\n";
 m+="= P0 - ESQUELETO (CVO) =\n\n"+sp0+"\n\n";
+// CEO interventions only
 if(ce0)m+=`Alan (pos P0): ${ce0}\n\n`;
-m+="= P1 - CONSTRUCAO =\n\n";
-ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${sp1[k]}\n\n`});
 if(ce1)m+=`Alan (pos P1): ${ce1}\n\n`;
-m+="= P2 - INTEGRACAO =\n\n";
-ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${sp2[k]}\n\n`});
 if(ce2)m+=`Alan (pos P2): ${ce2}\n\n`;
-// Add dynamic rounds if any
 for(let r=3;r<=6;r++){
-if(spRoundData[r]&&Object.keys(spRoundData[r]).length>0){
-const rLabel=r===6?"FINAL FORCADA":`REFINAMENTO ${r}`;
-m+=`= P${r} - ${rLabel} =\n\n`;
-ag.forEach(k=>{if(spRoundData[r][k]){const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${spRoundData[r][k]}\n\n`}});
 const ceTid=`spc_dyn_r${r}`;
 const ceT=document.getElementById(ceTid)?.value.trim()||"";
 if(ceT) m+=`Alan (pos P${r}): ${ceT}\n\n`;
 }
-}
-// Final round
+// LAST version of each member (P-Final only)
 m+="= VERSAO FINAL =\n\n";
 ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${sp3[k]}\n\n`});
 m+="Organize o plano estrategico no formato especificado.";
@@ -3842,6 +4036,7 @@ URL.revokeObjectURL(a.href);
 
 function generatePDF(filename,content){
 try{
+if(window.jspdf){
 const{jsPDF}=window.jspdf;
 const doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
 const margin=15;const pageW=210-2*margin;
@@ -3851,13 +4046,11 @@ doc.setFont("helvetica","normal");doc.setFontSize(9);
 doc.text(getDateDisplay(),margin,27);
 doc.setDrawColor(184,148,60);doc.setLineWidth(0.5);
 doc.line(margin,30,210-margin,30);
-// Content
 doc.setFontSize(10);
 const lines=doc.splitTextToSize(content,pageW);
 let y=36;
 lines.forEach(line=>{
 if(y>280){doc.addPage();y=20}
-// Bold for headers (lines starting with === or all caps short lines)
 if(line.match(/^===/)|| (line.length<60&&line===line.toUpperCase()&&line.length>3)){
 doc.setFont("helvetica","bold");
 doc.text(line.replace(/^=+\s*/,"").replace(/\s*=+$/,""),margin,y);
@@ -3868,6 +4061,15 @@ doc.text(line,margin,y);
 y+=4.5;
 });
 doc.save(filename+".pdf");
+}else if(window.html2pdf){
+const el=document.createElement("div");
+el.style.cssText="font-family:Helvetica,sans-serif;font-size:10px;line-height:1.6;padding:15mm;max-width:180mm;white-space:pre-wrap;word-wrap:break-word;";
+el.innerHTML="<h2 style='margin:0 0 4px'>Conselho</h2><p style='font-size:9px;color:#666;margin:0 0 8px'>"+getDateDisplay()+"</p><hr style='border:none;border-top:1px solid #B8943C;margin-bottom:12px'>"+content.replace(/\n/g,"<br>");
+document.body.appendChild(el);
+html2pdf().set({margin:10,filename:filename+".pdf",image:{type:"jpeg",quality:0.98},html2canvas:{scale:2},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}}).from(el).save().then(()=>{document.body.removeChild(el)});
+}else{
+alert("Erro ao gerar PDF. Tente copiar ou baixar .md.");
+}
 }catch(e){
 console.error("PDF generation error:",e);
 alert("Erro ao gerar PDF. Tente copiar ou baixar .md.");
