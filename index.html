@@ -360,11 +360,11 @@ textarea::placeholder{color:var(--text-dim)}
 <div id="c2d"></div><div id="r3p"></div><div id="r3a"></div>
 </div>
 
-<!-- Post-R3 choice: Veredito or Plano Estrategico -->
+<!-- Post-R3 choice: Resultado or Plano Estrategico -->
 <div id="vr3post" class="hid">
 <div class="rd-sep"><div class="line"></div><span>O QUE DESEJA FAZER?</span><div class="line"></div></div>
 <div class="final-btns" style="grid-template-columns:1fr 1fr">
-<button class="btn-dark" style="background:var(--btn-blue)" onclick="runVeredito()">Veredito</button>
+<button class="btn-dark" style="background:var(--btn-blue)" onclick="runResultado()">Resultado</button>
 <button class="btn-dark" style="background:var(--btn-gold)" onclick="startSP()">Plano Estrategico</button>
 </div>
 </div>
@@ -634,28 +634,67 @@ return getAg(k)?.c||"#86868B";
 }
 
 /* ===== SHARED CONTEXT ===== */
-const CTX=`BRIEFING DE FUNDO — ECOSSISTEMA ALAN LIMA
-(Contexto informativo. NAO sao regras. Questione qualquer premissa se a situacao pedir.)
+const CTX=`BRIEFING DE FUNDO -- ECOSSISTEMA ALAN LIMA
+
+AVISO FUNDAMENTAL: Este briefing contem FATOS sobre quem e Alan e seu ecossistema de negocios. Sao informacoes de fundo pra voce entender o terreno. NAO sao regras, NAO sao estrategias definidas, NAO sao verdades inquestionaveis. Qualquer informacao aqui -- publico-alvo, posicionamento, formato de conteudo, prioridade, modelo de negocio -- pode e DEVE ser questionada se sua analise profissional indicar que esta errada, desatualizada, limitante ou subotima. Trate este briefing como o dossie que um consultor recebe no primeiro dia -- leia, absorva, mas pense com sua propria cabeca.
+
+---
 
 QUEM E ALAN LIMA
-Nascido 1986, Bangu/RJ. Casado com Sarah. Musico profissional — diretor musical e guitarrista do Imaginasamba desde 2011. Compositor reconhecido (Dependente, Fulminante, Fala — gravadas por Imaginasamba, Sorriso Maroto, Mumuzinho). Empresario desde 2019, fundou Lalaia Music em 2020. ~65k seguidores, meta 1M. Empreendedor com multiplos projetos simultaneos.
+Nascido 1986, Rio de Janeiro (Bangu). Casado com Sarah. Musico profissional -- diretor musical e guitarrista do grupo Imaginasamba desde 2011. Compositor com musicas gravadas por artistas relevantes do pagode (Imaginasamba, Sorriso Maroto, Mumuzinho -- composicoes incluem Dependente, Fulminante, Fala). Transicionou de musico para empresario/gestor a partir de 2019. Perfil empreendedor -- tende a ter multiplos projetos simultaneos. Perfil no Instagram com ~65k seguidores (marco 2026).
+
+---
 
 LALAIA MUSIC
-Gestao de carreira musical, RJ. Foco principal: artista Matheusinho (pagode romantico). Time de 7 + 1 externo. Caixa apertado — cobre operacional + pouco extra.
+Empresa de gestao de carreira musical fundada por Alan em 2020, Rio de Janeiro. O artista gerenciado atualmente e Matheusinho. Time enxuto (detalhes do time na Realidade Operacional quando disponivel). Empresa em fase de crescimento -- ainda construindo estrutura e processos.
+
+---
 
 MATHEUSINHO (artista gerenciado pela Lalaia)
-Pagode romantico. Criado em Mesquita/RJ. Caseiro, brincalhao, sentimental. Casado com Linda (que trabalha na Lalaia). Na pandemia de 2020 foi abandonado pelo escritorio anterior. Publico principal: 25-45 anos, classe C/D, comunidades. 4 pilares de conteudo: Respiro (humor/leveza), Romantismo Real (amor verdadeiro), Eu Sou Voce (identificacao), O Talento (habilidade musical). Live semanal quinta 19h.
+Cantor. Genero principal: pagode. Criado em Mesquita/RJ. Casado com Linda (que tambem trabalha na Lalaia na area comercial). Na pandemia de 2020 foi abandonado pelo escritorio que o gerenciava e ficou sem gestao ate iniciar com a Lalaia. Personalidade conhecida: acessivel, autentico, emotivo. Tem Live semanal (formato e frequencia podem ser reavaliados a qualquer momento). Presenca em redes sociais em construcao.
 
-ALAN LIMA — MARCA PESSOAL
-Construindo posicionamento como gestor/empreendedor do mercado musical e de negocios. Produz conteudo sobre bastidores, decisoes, construcao de carreira.
+Nota: publico-alvo, pilares de conteudo, posicionamento artistico e estrategia de crescimento do Matheusinho sao temas ABERTOS -- devem ser analisados, questionados e propostos pelos membros do Conselho conforme cada situacao, nao tratados como definidos.
+
+---
+
+ALAN LIMA (marca pessoal)
+Alan esta construindo presenca como empresario/gestor no mercado musical e de entretenimento. Produz conteudo sobre bastidores, decisoes e construcao de carreira. Estagio: inicio -- posicionamento, publico-alvo, tom de voz e estrategia de conteudo sao temas ABERTOS pra analise e construcao.
+
+---
 
 GRUPO ONDA / EMPRESA NOVA
-Nova empresa de gestao e producao de eventos de mentores e palestrantes. Publico-alvo: empresarios, executivos, publico A/B. Socios: Alan (CEO) + Jaison + Neto (do Grupo Onda — produtora gigante, eventos nacionais). Fase de planejamento.
+Nova empresa em fase de planejamento. Foco previsto: gestao de mentores e palestrantes. Socios: Alan Lima + Jaison + Neto. Jaison e Neto sao do Grupo Onda (produtora de eventos de grande porte, alcance nacional). O papel de cada socio, o modelo de negocio, a estrutura e o posicionamento ainda estao sendo definidos -- sao temas ABERTOS.
+
+---
 
 JESUS IN TOUR
-Movimento transformacional: experiencias teatrais + conteudo espiritual. Bruno Avelar como messenger fundador, Alan como diretor executivo/estrategia.
+Projeto de movimento transformacional que combina experiencias teatrais/imersivas com conteudo espiritual. Bruno Avelar como figura central (messenger/fundador). Alan como diretor executivo/estrategia. Estagio: concepcao e planejamento. Modelo de negocio, formato, publico-alvo e estrategia de crescimento sao temas ABERTOS.
 
-PRIORIDADES ATUAIS: 1) ONDA 2) MATHEUSINHO 3) ALAN LIMA pessoal 4) SAUDE`;
+---
+
+SITUACAO FINANCEIRA
+A situacao financeira dos projetos de Alan varia e evolui. NAO assuma escassez permanente nem abundancia. Quando a situacao financeira for relevante pra analise, PERGUNTE a Alan qual e o cenario atual -- ou analise com base no que ele trouxer no prompt da sessao. Nunca limite sua analise por uma suposicao de caixa que pode estar desatualizada.
+
+---
+
+PRIORIDADES
+As prioridades de Alan mudam conforme o momento. NAO assuma uma ordem fixa de prioridades. Quando a priorizacao for relevante pra analise, baseie-se no que Alan trouxer no prompt da sessao ou PERGUNTE. Nunca rejeite uma ideia dizendo "nao e prioridade" baseado em informacao que pode estar desatualizada.
+
+---
+
+REGRAS DE USO DESTE BRIEFING:
+
+1. FATOS sao pra voce saber quem e Alan e o que ele faz. USE como contexto.
+
+2. ESTRATEGIAS, POSICIONAMENTOS, PUBLICOS-ALVO e PRIORIDADES mencionadas aqui sao FOTOGRAFIAS de um momento -- podem ter mudado. QUESTIONE se sua analise indicar que estao erradas ou limitantes.
+
+3. Se algo neste briefing contradiz o que Alan trouxer no prompt da sessao, o PROMPT DA SESSAO prevalece -- e mais recente.
+
+4. NUNCA use este briefing como desculpa pra nao pensar. "O briefing diz que o publico e C/D" nao e argumento -- e preguica. Analise se o publico DEVERIA ser C/D, ou se existe oportunidade em expandir.
+
+5. NUNCA trate descricoes de personalidade, formato de conteudo, frequencia de atividades ou modelo de negocio como FIXOS. Tudo e questionavel, tudo e melhoravel, tudo pode ser repensado.
+
+6. Sua funcao e trazer sua expertise INDEPENDENTE. Este briefing te da o mapa do terreno -- mas o mapa nao e o terreno. Olhe pro terreno com seus proprios olhos.`;
 
 const ROPCTX=`REALIDADE OPERACIONAL — RECURSOS DISPONIVEIS
 (Planos DEVEM caber nessa realidade. Nao existe "contratar mais gente" como solucao padrao.)
@@ -2217,7 +2256,7 @@ if(rod<3){await syn();return}
 sh("vr3post");sb();
 }
 
-async function runVeredito(){
+async function runResultado(){
 hi("vr3post");
 await syn();
 }
