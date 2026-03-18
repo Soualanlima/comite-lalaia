@@ -8,6 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
 <style>
 /* ===== CSS VARIABLES ===== */
 :root{
@@ -152,7 +153,13 @@ textarea::placeholder{color:var(--text-dim)}
 .bubble .bub-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
 .bub-name{font-size:13px;font-weight:700;color:var(--text)}
 .bub-tag{font-size:10px;font-weight:400;color:var(--text3);margin-left:4px}
-.bub-text{font-size:14px;line-height:1.7;color:var(--text2);font-weight:400;white-space:pre-wrap}
+.bub-text{font-size:14px;line-height:1.7;color:var(--text2);font-weight:400}
+.bub-text p{margin:0 0 8px}
+.bub-text p:last-child{margin-bottom:0}
+.bub-text ul,.bub-text ol{margin:4px 0 8px 20px;padding:0}
+.bub-text li{margin-bottom:2px}
+.bub-text strong{font-weight:600}
+.bub-text h1,.bub-text h2,.bub-text h3{font-size:14px;font-weight:700;margin:10px 0 4px}
 .bub-ld{display:flex;align-items:center;gap:8px;color:var(--text-dim);font-size:12px}
 .ld{width:6px;height:6px;border-radius:50%;animation:p 1.5s ease-in-out infinite;display:inline-block}
 @keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
@@ -186,7 +193,12 @@ textarea::placeholder{color:var(--text-dim)}
 .syn-tomorrow{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
 .syn-tomorrow-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.08em;margin-bottom:4px}
 .syn-tomorrow-text{font-size:14px;color:var(--text);font-weight:600;line-height:1.4;margin:0}
-.syn-raw{font-size:14px;line-height:1.7;color:var(--text2);white-space:pre-wrap}
+.syn-raw{font-size:14px;line-height:1.7;color:var(--text2)}
+.syn-raw p{margin:0 0 8px}
+.syn-raw p:last-child{margin-bottom:0}
+.syn-raw ul,.syn-raw ol{margin:4px 0 8px 20px;padding:0}
+.syn-raw li{margin-bottom:2px}
+.syn-raw strong{font-weight:600}
 
 /* Progress */
 .pb{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 12px;background:var(--pb-bg);border-radius:6px}
@@ -658,12 +670,33 @@ Criar pasta
 <div id="sp0p"></div><div id="sp0a"></div>
 </div>
 
-<!-- CEO Pause after P0 -->
+<!-- CEO Pause after P0 (initial review before P0.5) -->
 <div id="vspp0" class="hid">
 <div class="ceo-pause">
 <div class="ceo-label">Intervencao do CEO</div>
 <textarea id="spc0" rows="3" placeholder="Ajuste o esqueleto, redirecione, adicione contexto..."></textarea>
 <div class="ceo-btn-row" id="spp0btns"></div>
+</div>
+</div>
+
+<!-- P0.5 — Collective Skeleton Review -->
+<div id="vsp05" class="hid">
+<div class="rd-sep rd-sep-gold"><div class="line"></div><span>PLANO ESTRATEGICO — REVISAO DO ESQUELETO</span><div class="line"></div></div>
+<div id="sp05p"></div><div id="sp05a"></div>
+</div>
+
+<!-- P0.5 Rewrite — CVO rewrites skeleton -->
+<div id="vsp05r" class="hid">
+<div class="rd-sep rd-sep-gold"><div class="line"></div><span>PLANO ESTRATEGICO — ESQUELETO CORRIGIDO (CVO)</span><div class="line"></div></div>
+<div id="sp05rp"></div><div id="sp05ra"></div>
+</div>
+
+<!-- CEO Pause after P0.5 corrected skeleton -->
+<div id="vspp05" class="hid">
+<div class="ceo-pause">
+<div class="ceo-label">Intervencao do CEO</div>
+<textarea id="spc05" rows="3" placeholder="Aprovar ou ajustar o esqueleto corrigido..."></textarea>
+<div class="ceo-btn-row" id="spp05btns"></div>
 </div>
 </div>
 
@@ -851,6 +884,9 @@ Criar pasta
 </div><!-- /appWrap -->
 
 <script>
+/* ===== MARKED CONFIG ===== */
+if(window.marked){marked.setOptions({breaks:true,gfm:true})}
+
 /* ===== THEME TOGGLE ===== */
 const THEMES=["dark","sala","light"];
 function toggleDark(){
@@ -1028,7 +1064,7 @@ PONTO CRITICO: sao executores, nao estrategistas. Luke e quem deve receber o pla
 FERRAMENTAS: ClickUp (Luke), Conta Azul (Luciana), Kommo CRM (Dinho), CapCut/Canva (Alice).
 CONTEXTO BRASIL: atraso e norma, "vou fazer amanha" = nunca sem cobranca. Instrucoes cirurgicas.`;
 
-const ANTICUT=`REGRA CRITICA DE FORMATO: Voce tem espaco limitado. Distribua suas ideias proporcionalmente no espaco disponivel. NUNCA deixe frase incompleta ou argumento cortado no meio. Se estiver chegando no limite, feche o raciocinio com uma conclusao clara — melhor cobrir 3 pontos completos do que 5 pontos cortados. Trate seu espaco como um paragrafo de jornal: a informacao mais importante primeiro, detalhes depois, e sempre com ponto final.`;
+const ANTICUT=`REGRA CRITICA DE FORMATO: Gerencie seu espaco como um CEO gerencia budget -- cada frase e um investimento. Quando sentir que usou 70% do espaco, PARE de adicionar ideias novas e FECHE tudo que abriu. E MELHOR entregar 3 pontos completos e poderosos do que 5 cortados no meio. NUNCA termine com frase incompleta. Ultima palavra SEMPRE seguida de ponto final. Se o espaco acabou, finalize com uma conclusao de 1 frase e PARE. Importante primeiro, detalhe depois, ponto final SEMPRE.`;
 
 /* ===== AGENTS — ROLE-BASED NAMES ===== */
 const AG={
@@ -1211,11 +1247,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -1223,8 +1256,15 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
+
+PROJECOES NUMERICAS: NUNCA apresente numero como fato. TODO numero projetado DEVE ter uma tag:
+- CONSERVADOR: cenario base, alta probabilidade
+- REALISTA: cenario mais provavel
+- AGRESSIVO: depende de tudo dar certo
+Exemplo correto: "Receita mes 6: R$50k (CONSERVADOR) a R$120k (AGRESSIVO)."
+Exemplo PROIBIDO: "Receita mes 6: R$120k." (sem tag = proibido)
+Se projetar LTV, CAC, ou ratio, LISTE as premissas que precisam ser verdade.
 
 ${ANTICUT}`},
 
@@ -1417,11 +1457,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -1429,8 +1466,7 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
 ${ANTICUT}`},
 
@@ -1591,11 +1627,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -1603,8 +1636,7 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
 ${ANTICUT}`},
 
@@ -1736,11 +1768,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -1748,8 +1777,7 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
 ${ANTICUT}`},
 
@@ -1903,11 +1931,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -1915,8 +1940,7 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
 ${ANTICUT}`},
 
@@ -2064,11 +2088,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -2076,8 +2097,7 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
 ${ANTICUT}`,
 // C/D
@@ -2188,11 +2208,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -2200,8 +2217,7 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
 ${ANTICUT}`,
 // A/B+
@@ -2305,11 +2321,8 @@ OBJETIVIDADE ABSOLUTA:
 - Pense como tweet de CEO, nao como artigo de blog. Denso, direto, sem enrolacao.
 - Va DIRETO ao conteudo como se ja estivesse no meio da reuniao.
 
-FORMATACAO LIMPA:
-- Responda em texto corrido. NAO use markdown (##, **, \`\`\`, ---, etc).
-- Use CAIXA ALTA para dar enfase quando necessario.
-- Use numeros (1, 2, 3) para listas quando necessario.
-- Separe secoes com uma linha em branco -- sem caracteres especiais.
+FORMATACAO:
+Use formatacao quando ajudar a organizar: CAIXA ALTA pra enfase, listas numeradas pra sequencias, negrito pra termos-chave. O app renderiza formatacao -- use com inteligencia, nao com excesso.
 
 ANTI-REPETICAO (a partir da P2 ou R2):
 - NAO repita o que ja disse em rodadas anteriores. O CEO ja leu. Repetir e desperdicar o tempo dele.
@@ -2317,8 +2330,7 @@ ANTI-REPETICAO (a partir da P2 ou R2):
 - EXCECAO UNICA -- CONVICCAO INABALAVEL: se existe UMA ideia/acao/direcao que voce acredita ser ABSOLUTAMENTE CRUCIAL pro sucesso do projeto -- algo nos 20% dos 20% mais importantes -- voce pode e DEVE reafirmar. Mas sinalize claramente: "CONVICCAO: [ideia]. Reafirmo porque [razao concreta de por que isso e inegociavel]." Isso mostra que nao e repeticao por preguica -- e conviccao por importancia. Use com EXTREMA parcimonia: se tudo e "conviccao", nada e. Maximo 1 por rodada. E esteja preparado pra ser confrontado pelos outros se sua conviccao nao se sustentar com argumentos novos.
 
 RESPEITAR O ESCOPO:
-- LEIA com atencao o que Alan pediu. Se disse que algo e pra fase posterior (ex: "branding detalha depois"), NAO detalhe agora. Mencione que existe e diga "sera desenvolvido na proxima fase." Foque 100% dos seus tokens no que foi PEDIDO.
-- Se Alan disse "estamos no MACRO", nao entre em micro. Se disse "quero detalhado", entre no detalhe.
+LEIA com atencao o que Alan pediu. Se disse "MACRO", entregue MACRO -- NAO entre em cores, tipografia, formatos de conteudo, calendario semanal, ou detalhes operacionais. Se precisar mencionar algo detalhado, diga EM UMA FRASE "sera desenvolvido na proxima fase" e siga em frente. Cada token gasto em detalhe que Alan nao pediu e um token ROUBADO de conteudo que ele precisa. Se Alan disse "estamos no macro", QUALQUER paragrafo sobre identidade visual, paleta de cores ou formato de post e desperdicio.
 
 ${ANTICUT}`}
 };
@@ -2484,7 +2496,7 @@ r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Vote na DECISAO: 
 
 /* ===== TOKENS ===== */
 const TK={q:100,r1:200,r2:200,r3:150,med:600};
-const SPTK={q:100,p0:500,p1:400,p2:400,p3:400,p4:400,p5:400,pFinal:500,med:3000};
+const SPTK={q:100,p0:500,p05:200,p05r:500,p1:400,p2:400,p3:400,p4:400,p5:400,pFinal:500,med:3000};
 const ETK={obj:{r1:300,r2:300,r3:250,med:1000},det:{r1:300,r2:300,r3:250,med:1500}};
 
 /* ===== STATE ===== */
@@ -2500,7 +2512,7 @@ let debateHistory=[],debateNum=1,continueText="";
 /* question phase state */
 let qPhase="",qRound=0,qAnswers={},qCallback=null;
 /* strategic plan state */
-let sp0="",sp1={},sp2={},sp3={},sp4={},sp5={},sp6={},spmt="",spQAnswers={};
+let sp0="",sp05={},sp0corrected="",sp1={},sp2={},sp3={},sp4={},sp5={},sp6={},spmt="",spQAnswers={};
 let spFromExec=false;
 let directPlan=false; /* true when user clicked "Iniciar planejamento" */
 let spCurrentRound=0; /* current SP round number (1-6) */
@@ -2618,7 +2630,7 @@ const hasConflict=isSP&&txt&&(txt.includes("\u26a0\ufe0f")||txt.includes("\ud83d
 const borderColor=hasConflict?"#D45B5B":cc;
 h+=`<div class="bubble" style="border-left:3px solid ${borderColor}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div><span style="font-size:10px;color:var(--text-muted)">${rlabel||""}</span></div>`;
 if(!txt)h+=`<div class="bub-ld"><div class="ld" style="background:${cc}"></div>Analisando...</div>`;
-else h+=`<div class="bub-text">${esc(txt)}</div>`;
+else h+=`<div class="bub-text">${marked.parse(txt)}</div>`;
 h+=`</div>`;
 });
 el.innerHTML=h;
@@ -2628,7 +2640,7 @@ function bubble(cid,k,txt,loading,rlabel){
 const cc=agColor(k),el=document.getElementById(cid);
 let h=`<div class="bubble" style="border-left:3px solid ${cc}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div><span style="font-size:10px;color:var(--text-muted)">${rlabel||""}</span></div>`;
 if(loading)h+=`<div class="bub-ld"><div class="ld" style="background:${cc}"></div>Analisando...</div>`;
-else if(txt)h+=`<div class="bub-text">${esc(txt)}</div>`;
+else if(txt)h+=`<div class="bub-text">${marked.parse(txt)}</div>`;
 h+=`</div>`;el.innerHTML+=h;
 }
 
@@ -2700,28 +2712,28 @@ let h=`<div class="syn-card"><div class="syn-title">${isExec?"Plano de Acao Fina
 if(loading){
 h+=`<div class="bub-ld" style="justify-content:center;padding:20px"><div class="ld" style="background:var(--text-dim)"></div>${isExec?"Montando plano...":"Sintetizando..."}</div>`;
 }else if(isExec){
-h+=`<div class="syn-raw">${esc(txt)}</div>`;
+h+=`<div class="syn-raw">${marked.parse(txt)}</div>`;
 }else{
 const s=parseSynthesis(txt);
 if(s){
 // Convergencia + Divergencia side by side
 if(s.conv||s.div){
 h+=`<div class="syn-grid">`;
-h+=`<div class="syn-conv"><div class="syn-label">CONVERGÊNCIA</div><p class="syn-text">${esc(s.conv)}</p></div>`;
-h+=`<div class="syn-div"><div class="syn-label">DIVERGÊNCIA</div><p class="syn-text">${esc(s.div)}</p></div>`;
+h+=`<div class="syn-conv"><div class="syn-label">CONVERGÊNCIA</div><p class="syn-text">${marked.parse(s.conv)}</p></div>`;
+h+=`<div class="syn-div"><div class="syn-label">DIVERGÊNCIA</div><p class="syn-text">${marked.parse(s.div)}</p></div>`;
 h+=`</div>`;
 }
 // Veredicto
 if(s.verdict){
 h+=`<div class="syn-verdict"><div class="syn-verdict-label">VEREDICTO</div><div class="syn-verdict-big">${esc(s.verdict)}</div>`;
-if(s.verdictReason)h+=`<div class="syn-verdict-reason">${esc(s.verdictReason)}</div>`;
+if(s.verdictReason)h+=`<div class="syn-verdict-reason">${marked.parse(s.verdictReason)}</div>`;
 h+=`</div>`;
 }
 // O que ficou decidido
 if(s.actions.length){
 h+=`<div style="margin-bottom:18px"><div class="syn-section-label">O QUE FICOU DECIDIDO</div>`;
 s.actions.forEach((a,i)=>{
-h+=`<div class="syn-action"><span class="syn-action-num">${i+1}.</span><span class="syn-action-text">${esc(a)}</span></div>`;
+h+=`<div class="syn-action"><span class="syn-action-num">${i+1}.</span><span class="syn-action-text">${marked.parse(a)}</span></div>`;
 });
 h+=`</div>`;
 }
@@ -2730,20 +2742,20 @@ if(s.killed.length){
 h+=`<div style="margin-bottom:18px"><div class="syn-section-label">O QUE O CONSELHO MATOU</div>`;
 s.killed.forEach(k=>{
 const item=Array.isArray(k)?k[0]:k,reason=Array.isArray(k)&&k[1]?k[1]:"";
-h+=`<div class="syn-killed"><span class="struck">${esc(item)}</span>${reason?`<span class="reason"> — ${esc(reason)}</span>`:""}</div>`;
+h+=`<div class="syn-killed"><span class="struck">${esc(item)}</span>${reason?`<span class="reason"> -- ${esc(reason)}</span>`:""}</div>`;
 });
 h+=`</div>`;
 }
 // Risco aberto
 if(s.risk){
-h+=`<div style="margin-bottom:18px"><div class="syn-section-label">RISCO ABERTO</div><p class="syn-risk">${esc(s.risk)}</p></div>`;
+h+=`<div style="margin-bottom:18px"><div class="syn-section-label">RISCO ABERTO</div><p class="syn-risk">${marked.parse(s.risk)}</p></div>`;
 }
 // Amanha de manha
 if(s.tomorrow){
-h+=`<div class="syn-tomorrow"><div class="syn-tomorrow-label">AMANHÃ DE MANHÃ</div><p class="syn-tomorrow-text">${esc(s.tomorrow)}</p></div>`;
+h+=`<div class="syn-tomorrow"><div class="syn-tomorrow-label">AMANHA DE MANHA</div><p class="syn-tomorrow-text">${marked.parse(s.tomorrow)}</p></div>`;
 }
 }else{
-h+=`<div class="syn-raw">${esc(txt)}</div>`;
+h+=`<div class="syn-raw">${marked.parse(txt)}</div>`;
 }
 }
 h+=`</div>`;el.innerHTML=h;
@@ -2760,8 +2772,8 @@ const fn=fnMap[btnContId]||'fp1()';
 // Custom labels for SP pause buttons
 if(btnContId==="spp0btns"){
 document.getElementById(btnContId).innerHTML=c?
-`<button class="btn-go" onclick="${fn}">Ajustar e iniciar construcao</button>`:
-`<button class="btn-skip" onclick="${fn}">Aprovar e iniciar construcao</button>`;
+`<button class="btn-go" onclick="${fn}">Ajustar e revisar esqueleto</button>`:
+`<button class="btn-skip" onclick="${fn}">Aprovar e revisar esqueleto</button>`;
 return;
 }
 if(btnContId==="spp1btns"){
@@ -2785,7 +2797,8 @@ if(e.target.id==="c1")updatePauseBtn("c1","p1btns","debate");
 if(e.target.id==="c2")updatePauseBtn("c2","p2btns",rod===3?"voto final":"sintese");
 if(e.target.id==="ec1")updatePauseBtn("ec1","ep1btns","confronto");
 if(e.target.id==="ec2")updatePauseBtn("ec2","ep2btns","versao final");
-if(e.target.id==="spc0")updatePauseBtn("spc0","spp0btns","construcao");
+if(e.target.id==="spc0")updatePauseBtn("spc0","spp0btns","revisao do esqueleto");
+if(e.target.id==="spc05")updateP05PauseBtn();
 if(e.target.id==="spc1")updatePauseBtn("spc1","spp1btns","integracao");
 if(e.target.id==="spc2")updatePauseBtn("spc2","spp2btns","versao final");
 });
@@ -2856,7 +2869,7 @@ allKeys.forEach(k=>{
 const cc=agColor(k);
 const isClear=questions[k]==="CLARO";
 const opacity=isClear?"opacity:0.5":"";
-container.innerHTML+=`<div class="bubble" style="border-left:3px solid ${cc};${opacity}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div></div><div class="bub-text">${isClear?'<em style="color:var(--text-dim)">CLARO — sem duvidas</em>':esc(questions[k])}</div></div>`;
+container.innerHTML+=`<div class="bubble" style="border-left:3px solid ${cc};${opacity}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div></div><div class="bub-text">${isClear?'<em style="color:var(--text-dim)">CLARO -- sem duvidas</em>':marked.parse(questions[k])}</div></div>`;
 });
 // Only show response area if there are actual questions
 if(qKeys.length>0) sh(respId);
@@ -2885,12 +2898,12 @@ debateHistory=[];debateNum=1;continueText="";directPlan=false;
 showDebate();
 }else{debateNum++}
 r0={};r0resp="";r1={};r2={};r3={};mt="";qAnswers={};
-sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};
+sp0="";sp05={};sp0corrected="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};
 const ag=selAg;
 document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">${prof==="obj"?"Rapido":"Detalhado"} \u00b7 ${rod} rodada${rod>1?"s":""} \u00b7 ${ag.length} membros</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
 document.getElementById("dbnum").textContent=debateNum>1?`Debate ${debateNum}`:"";
 ["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
-["vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd","vsp","vsp0","vspp0","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_q3","vsp3","vspsy","vspd"].forEach(id=>hi(id));
+["vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd","vsp","vsp0","vspp0","vsp05","vsp05r","vspp05","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_q3","vsp3","vspsy","vspd"].forEach(id=>hi(id));
 
 // Questions before R1 (both modes)
 if(!cont){
@@ -2917,7 +2930,7 @@ idea=document.getElementById("ii").value.trim();if(!idea)return;
 debateHistory=[];debateNum=1;continueText="";
 directPlan=true;
 r0={};r0resp="";r1={};r2={};r3={};mt="";qAnswers={};
-sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};
+sp0="";sp05={};sp0corrected="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};
 spCurrentRound=0;spConsensus={};spRefineReasons={};
 const ag=selAg;
 showDebate();
@@ -3184,6 +3197,29 @@ REGRAS:
 - Foque em DIRECAO e ARQUITETURA, nao em execucao
 - O CEO vai revisar antes de passar pros outros membros`;
 
+const SP_P05_INSTR=`MODO: PLANO ESTRATEGICO -- REVISAO DO ESQUELETO (P0.5)
+
+O CVO criou o esqueleto do plano:
+{P0_CTX}
+
+SUA TAREFA: Revise o esqueleto APENAS pela sua lente de expertise. NAO construa sua secao ainda -- so avalie a FUNDACAO.
+
+Responda SOMENTE:
+1. O que esta ERRADO ou IRREALISTA no esqueleto? (premissas, numeros, sequencia, modelo)
+2. O que esta FALTANDO que impacta sua area?
+3. Qual CORRECAO ESPECIFICA voce propoe?
+
+Se o esqueleto esta solido pela sua lente, diga: "Esqueleto aprovado pela minha area. Sem correcoes."
+
+Seja cirurgico. Nao repita o que o esqueleto ja diz. So aponte o que precisa MUDAR.`;
+
+const SP_P05R_INSTR=`MODO: PLANO ESTRATEGICO -- ESQUELETO CORRIGIDO
+
+Correcoes dos membros sobre seu esqueleto:
+{P05_CTX}
+
+Reescreva o esqueleto incorporando as correcoes que fazem sentido. Se discordar de alguma correcao, sinalize: "MANTIVE [ponto] apesar da objecao do [membro] porque [razao]." O CEO vai arbitrar na pausa.`;
+
 const SP_MEMBER_GUIDES={
 cvo:"Sua frente: VISAO E DIRECAO ESTRATEGICA. Cobrir: visao do negocio, modelo de receita detalhado (margem+recorrencia+escala), flywheel, moat, milestones por fase, premissas a validar. Nao detalhe marketing, marca, conteudo ou financas.",
 cmo:"Sua frente: ESTRATEGIA DE CRESCIMENTO E COMERCIAL. Cobrir: ICP, go-to-market, funil completo (atracao>conversao>retencao), canais prioritarios, estrategia comercial (parcerias, patrocinios, precificacao), campanhas iniciais 30-60-90 dias, KPIs por etapa. Respeite o modelo de receita do CVO.",
@@ -3393,10 +3429,10 @@ PROXIMOS PASSOS ESTRATEGICOS
 async function startSP(){
 hi("vr3post");
 sh("vsp");
-sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};
+sp0="";sp05={};sp0corrected="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};
 spFromExec=false;spCurrentRound=0;spConsensus={};spRefineReasons={};
-["sp0a","sp0p","sp1a","sp2a","sp1p","sp2p","spmc","sp_q1_cards","sp_q2_cards"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
-["vsp0","vspp0","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_final","vspp_final","vspsy","vspd","sp_q1_resp","sp_q2_resp"].forEach(id=>hi(id));
+["sp0a","sp0p","sp05a","sp05p","sp05ra","sp05rp","sp1a","sp2a","sp1p","sp2p","spmc","sp_q1_cards","sp_q2_cards"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
+["vsp0","vspp0","vsp05","vsp05r","vspp05","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_final","vspp_final","vspsy","vspd","sp_q1_resp","sp_q2_resp"].forEach(id=>hi(id));
 // Clear dynamic rounds
 const dynContainer=document.getElementById("vsp_dynamic");
 if(dynContainer) dynContainer.innerHTML="";
@@ -3432,12 +3468,76 @@ if(ce0){
 const sp0el=document.getElementById("sp0a");
 sp0el.innerHTML+=`<div class="ceo-bubble" style="border-left-color:#48484A"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:6px"><span class="bub-name">Alan</span><span class="bub-tag">(CEO)</span></div></div><div class="bub-text">${esc(ce0)}</div></div>`;
 }
+// Run P0.5: all members review skeleton
+await runSP05();
+}
+
+async function runSP05(){
+const ag=selAg;
+sh("vsp05");
+sp05={};
+renderRound("sp05a",ag,sp05,"P0.5",false);rp("sp05p",0,ag.length);sb();
+const ce0=document.getElementById("spc0")?.value.trim()||"";
+let p0ctx=sp0;
+if(ce0)p0ctx+="\n\nAJUSTE DO CEO: "+ce0;
+let dn=0;
+await Promise.all(ag.map(async k=>{
+try{
+const msg=SP_P05_INSTR.replace("{P0_CTX}",p0ctx);
+sp05[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p05);
+}catch(e){sp05[k]=`Erro: ${e.message}`}
+dn++;renderRound("sp05a",ag,sp05,"P0.5",false);rp("sp05p",dn,ag.length);sb();
+}));
+document.getElementById("sp05p").innerHTML="";
+// Now CVO rewrites skeleton incorporating corrections
+await runSP05Rewrite();
+}
+
+async function runSP05Rewrite(){
+const ag=selAg;
+sh("vsp05r");
+const cvoData={cvo:""};
+renderRound("sp05ra",["cvo"],cvoData,"P0.5R",false);rp("sp05rp",0,1);sb();
+// Build corrections context
+let p05ctx="";
+ag.forEach(k=>{const a=getAgDisplay(k);p05ctx+=`${a.tag} (${a.n}):\n${sp05[k]}\n\n`});
+const ce0=document.getElementById("spc0")?.value.trim()||"";
+let p0ctx=sp0;
+if(ce0)p0ctx+="\n\nAJUSTE DO CEO: "+ce0;
+try{
+const msg=SP_P05R_INSTR.replace("{P05_CTX}",p05ctx)+"\n\nESQUELETO ORIGINAL:\n"+p0ctx;
+sp0corrected=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p05r);
+cvoData.cvo=sp0corrected;
+}catch(e){sp0corrected=`Erro: ${e.message}`;cvoData.cvo=sp0corrected}
+renderRound("sp05ra",["cvo"],cvoData,"P0.5R",false);
+document.getElementById("sp05rp").innerHTML="";
+// Show CEO pause for corrected skeleton
+sh("vspp05");
+updateP05PauseBtn();
+sb();
+}
+
+function updateP05PauseBtn(){
+const c=document.getElementById("spc05").value.trim();
+document.getElementById("spp05btns").innerHTML=c?
+`<button class="btn-go" onclick="spfp05()">Ajustar e iniciar construcao</button>`:
+`<button class="btn-skip" onclick="spfp05()">Aprovar e iniciar construcao</button>`;
+}
+
+async function spfp05(){
+hi("vspp05");
+const ce05=document.getElementById("spc05").value.trim();
+if(ce05){
+const sp05rel=document.getElementById("sp05ra");
+sp05rel.innerHTML+=`<div class="ceo-bubble" style="border-left-color:#48484A"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:6px"><span class="bub-name">Alan</span><span class="bub-tag">(CEO)</span></div></div><div class="bub-text">${esc(ce05)}</div></div>`;
+}
 const ag=selAg;
 
 // Questions before P1
 const qInstr=prof==="obj"?SPQI.obj.q1:SPQI.det.q1;
 const debCtxFull=buildDebateCtxFull();
-const result=await runQuestions(ag,1,qInstr,idea+"\n\nCONTEXTO DO DEBATE:\n"+debCtxFull+"\n\nESQUELETO DO CVO:\n"+sp0,async()=>{
+const skeletonToUse=sp0corrected||sp0;
+const result=await runQuestions(ag,1,qInstr,idea+"\n\nCONTEXTO DO DEBATE:\n"+debCtxFull+"\n\nESQUELETO CORRIGIDO DO CVO:\n"+skeletonToUse,async()=>{
 await runSP1();
 });
 if(result.hasQuestions){
@@ -3457,8 +3557,10 @@ renderRound("sp1a",ag,sp1,"P1",false);rp("sp1p",0,ag.length);sb();
 let dn=0;
 const debCtxFull=buildDebateCtxFull();
 const ce0=document.getElementById("spc0")?.value.trim()||"";
-let p0ctx=sp0;
-if(ce0)p0ctx+="\n\nAJUSTE DO CEO: "+ce0;
+const ce05=document.getElementById("spc05")?.value.trim()||"";
+let p0ctx=sp0corrected||sp0;
+if(ce0)p0ctx+="\n\nAJUSTE DO CEO (pos esqueleto): "+ce0;
+if(ce05)p0ctx+="\n\nAJUSTE DO CEO (pos revisao): "+ce05;
 let qCtx="";
 if(spQAnswers.r1)qCtx+="\n\nRespostas de Alan antes da P1: "+spQAnswers.r1;
 
@@ -3514,8 +3616,10 @@ if(spQAnswers.r2)qCtx+="\n\nRespostas de Alan antes da P2: "+spQAnswers.r2;
 
 const debCtxFull=buildDebateCtxFull();
 const ce0_p2=document.getElementById("spc0")?.value.trim()||"";
-let p0ctx_p2=sp0;
-if(ce0_p2)p0ctx_p2+="\n\nAJUSTE DO CEO: "+ce0_p2;
+const ce05_p2=document.getElementById("spc05")?.value.trim()||"";
+let p0ctx_p2=sp0corrected||sp0;
+if(ce0_p2)p0ctx_p2+="\n\nAJUSTE DO CEO (pos esqueleto): "+ce0_p2;
+if(ce05_p2)p0ctx_p2+="\n\nAJUSTE DO CEO (pos revisao): "+ce05_p2;
 await Promise.all(ag.map(async k=>{
 try{
 const msg=SP_P2_INSTR.replace("{P1_CTX}",p1ctx).replace("{P0_CTX}",p0ctx_p2)+qCtx;
@@ -3862,7 +3966,7 @@ return;
 }
 const sections=parseSPlan(txt);
 if(!sections.length){
-el.innerHTML=`<div class="syn-card"><div class="syn-title">Plano Estrategico</div><div class="syn-raw">${esc(txt)}</div></div>`;
+el.innerHTML=`<div class="syn-card"><div class="syn-title">Plano Estrategico</div><div class="syn-raw">${marked.parse(txt)}</div></div>`;
 return;
 }
 let h="";
@@ -3870,14 +3974,14 @@ sections.forEach(s=>{
 if(s.type==="title"){
 h+=`<div style="text-align:center;margin-bottom:20px"><div style="font-size:10px;font-weight:600;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">PLANO ESTRATEGICO</div><div style="font-size:20px;font-weight:700;color:var(--text)">${esc(s.fullLabel)}</div></div>`;
 }else if(s.type==="verdict"){
-h+=`<div class="syn-verdict" style="margin-bottom:16px"><div class="syn-verdict-label">DECISOES APROVADAS PELO CONSELHO</div><div style="font-size:14px;color:var(--text);line-height:1.7;text-align:left;white-space:pre-wrap;margin-top:10px">${esc(s.content)}</div></div>`;
+h+=`<div class="syn-verdict" style="margin-bottom:16px"><div class="syn-verdict-label">DECISOES APROVADAS PELO CONSELHO</div><div style="font-size:14px;color:var(--text);line-height:1.7;text-align:left;margin-top:10px">${marked.parse(s.content)}</div></div>`;
 }else if(s.type==="member"){
 const cc=s.color?`var(${s.color})`:"var(--text-dim)";
-h+=`<div class="bubble" style="border-left:3px solid ${cc};margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.08em;margin-bottom:8px">${esc(s.label)}</div><div class="bub-text">${esc(s.content)}</div></div>`;
+h+=`<div class="bubble" style="border-left:3px solid ${cc};margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.08em;margin-bottom:8px">${esc(s.label)}</div><div class="bub-text">${marked.parse(s.content)}</div></div>`;
 }else if(s.type==="risk"){
-h+=`<div class="bubble" style="border-left:3px solid #A05A3A;margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.08em;margin-bottom:8px">RISCOS E SALVAGUARDAS</div><div class="bub-text">${esc(s.content)}</div></div>`;
+h+=`<div class="bubble" style="border-left:3px solid #A05A3A;margin-bottom:10px"><div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:0.08em;margin-bottom:8px">RISCOS E SALVAGUARDAS</div><div class="bub-text">${marked.parse(s.content)}</div></div>`;
 }else if(s.type==="tomorrow"){
-h+=`<div class="syn-tomorrow" style="margin-bottom:10px"><div class="syn-tomorrow-label">PROXIMOS PASSOS ESTRATEGICOS</div><p class="syn-tomorrow-text" style="white-space:pre-wrap;font-weight:400;font-size:13px">${esc(s.content)}</p></div>`;
+h+=`<div class="syn-tomorrow" style="margin-bottom:10px"><div class="syn-tomorrow-label">PROXIMOS PASSOS ESTRATEGICOS</div><p class="syn-tomorrow-text" style="font-weight:400;font-size:13px">${marked.parse(s.content)}</p></div>`;
 }
 });
 el.innerHTML=h;
@@ -3887,6 +3991,7 @@ async function spSyn(isForced){
 sh("vspsy");renderSPlan("spmc","",true);sb();
 const ag=selAg;
 const ce0=document.getElementById("spc0")?.value.trim()||"";
+const ce05=document.getElementById("spc05")?.value.trim()||"";
 const ce1=document.getElementById("spc1")?.value.trim()||"";
 const ce2=document.getElementById("spc2")?.value.trim()||"";
 let msP=buildSPMediatorPrompt();
@@ -3906,11 +4011,12 @@ msP+=`\nSe houver ⚠️ PENDENTE de algum membro, adicione secao:\n\n⚠️ PON
 
 const debCtxFull=buildDebateCtxFull();
 
-// COMPRESSED CONTEXT: only original prompt, P0 skeleton, P-Final (last version), and CEO interventions
+// COMPRESSED CONTEXT: only original prompt, CORRECTED skeleton (from P0.5), P-Final, and CEO interventions
 let m=debCtxFull+"\n\n";
-m+="= P0 - ESQUELETO (CVO) =\n\n"+sp0+"\n\n";
+m+="= ESQUELETO CORRIGIDO (CVO) =\n\n"+(sp0corrected||sp0)+"\n\n";
 // CEO interventions only
 if(ce0)m+=`Alan (pos P0): ${ce0}\n\n`;
+if(ce05)m+=`Alan (pos revisao esqueleto): ${ce05}\n\n`;
 if(ce1)m+=`Alan (pos P1): ${ce1}\n\n`;
 if(ce2)m+=`Alan (pos P2): ${ce2}\n\n`;
 for(let r=3;r<=6;r++){
@@ -4205,6 +4311,13 @@ if(r0resp)t+=`Alan: ${r0resp}\n\n`;
 }
 t+=`\n=== PLANO ESTRATEGICO ===\n\n`;
 t+=`P0 — Esqueleto (CVO):\n${sp0}\n\n`;
+if(Object.keys(sp05).length>0){
+t+=`P0.5 — Revisao do Esqueleto:\n`;
+const ag2=selAg;ag2.forEach(k=>{if(sp05[k]){const a=getAgDisplay(k);t+=`${a.tag} (${a.n}):\n${sp05[k]}\n\n`}});
+}
+if(sp0corrected){
+t+=`P0.5R — Esqueleto Corrigido (CVO):\n${sp0corrected}\n\n`;
+}
 const ag=selAg;
 t+=`P1 — Construcao:\n`;ag.forEach(k=>{const a=getAgDisplay(k);t+=`${a.tag} (${a.n}):\n${sp1[k]||""}\n\n`});
 t+=`P2 — Integracao:\n`;ag.forEach(k=>{const a=getAgDisplay(k);t+=`${a.tag} (${a.n}):\n${sp2[k]||""}\n\n`});
@@ -4271,42 +4384,25 @@ a.download=filename+"."+ext;document.body.appendChild(a);a.click();document.body
 URL.revokeObjectURL(a.href);
 }
 
-function generatePDF(filename,content){
+async function generatePDF(filename,content){
 try{
-if(window.jspdf){
-const{jsPDF}=window.jspdf;
-const doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
-const margin=15;const pageW=210-2*margin;
-doc.setFont("helvetica","bold");doc.setFontSize(16);
-doc.text("Conselho",margin,20);
-doc.setFont("helvetica","normal");doc.setFontSize(9);
-doc.text(getDateDisplay(),margin,27);
-doc.setDrawColor(184,148,60);doc.setLineWidth(0.5);
-doc.line(margin,30,210-margin,30);
-doc.setFontSize(10);
-const lines=doc.splitTextToSize(content,pageW);
-let y=36;
-lines.forEach(line=>{
-if(y>280){doc.addPage();y=20}
-if(line.match(/^===/)|| (line.length<60&&line===line.toUpperCase()&&line.length>3)){
-doc.setFont("helvetica","bold");
-doc.text(line.replace(/^=+\s*/,"").replace(/\s*=+$/,""),margin,y);
-doc.setFont("helvetica","normal");
-}else{
-doc.text(line,margin,y);
-}
-y+=4.5;
-});
-doc.save(filename+".pdf");
-}else if(window.html2pdf){
-const el=document.createElement("div");
-el.style.cssText="font-family:Helvetica,sans-serif;font-size:10px;line-height:1.6;padding:15mm;max-width:180mm;white-space:pre-wrap;word-wrap:break-word;";
-el.innerHTML="<h2 style='margin:0 0 4px'>Conselho</h2><p style='font-size:9px;color:#666;margin:0 0 8px'>"+getDateDisplay()+"</p><hr style='border:none;border-top:1px solid #B8943C;margin-bottom:12px'>"+content.replace(/\n/g,"<br>");
-document.body.appendChild(el);
-html2pdf().set({margin:10,filename:filename+".pdf",image:{type:"jpeg",quality:0.98},html2canvas:{scale:2},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}}).from(el).save().then(()=>{document.body.removeChild(el)});
-}else{
-alert("Erro ao gerar PDF. Tente copiar ou baixar .md.");
-}
+const tempDiv=document.createElement("div");
+tempDiv.style.padding="40px";
+tempDiv.style.maxWidth="800px";
+tempDiv.style.fontFamily="Arial, sans-serif";
+tempDiv.style.fontSize="12px";
+tempDiv.style.lineHeight="1.6";
+tempDiv.style.color="#1d1d1f";
+tempDiv.innerHTML=marked.parse(content);
+document.body.appendChild(tempDiv);
+const opt={
+margin:[15,15,15,15],
+filename:filename+".pdf",
+html2canvas:{scale:2,useCORS:true},
+jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
+};
+await html2pdf().set(opt).from(tempDiv).save();
+document.body.removeChild(tempDiv);
 }catch(e){
 console.error("PDF generation error:",e);
 alert("Erro ao gerar PDF. Tente copiar ou baixar .md.");
@@ -4331,16 +4427,16 @@ generatePDF(fname,txt);
 
 function rst(){
 r0={};r0resp="";r1={};r2={};r3={};mt="";er1={};er2={};er3={};emt="";
-sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};qAnswers={};spFromExec=false;
+sp0="";sp05={};sp0corrected="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};qAnswers={};spFromExec=false;
 spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};directPlan=false;
 idea="";debateHistory=[];debateNum=1;continueText="";
 selAg=["cvo","cmo","cfo","cbo"];prof="obj";rod=3;eprof="obj";erod=3;pubFilter=null;
-["ii","c1","c2","cdi","vq_input","ec1","ec2","spc0","spc1","spc2","sp_q1_input","sp_q2_input"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
-["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc","sp0a","sp0p","sp1a","sp2a","sp1p","sp2p","spmc","sp_q1_cards","sp_q2_cards","spfa","spfp"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
+["ii","c1","c2","cdi","vq_input","ec1","ec2","spc0","spc05","spc1","spc2","sp_q1_input","sp_q2_input"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc","sp0a","sp0p","sp05a","sp05p","sp05ra","sp05rp","sp1a","sp2a","sp1p","sp2p","spmc","sp_q1_cards","sp_q2_cards","spfa","spfp"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 // Clear dynamic rounds
 const dynContainer=document.getElementById("vsp_dynamic");
 if(dynContainer) dynContainer.innerHTML="";
-["va","vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd","vexCfg","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved","vsp","vsp0","vspp0","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_final","vspp_final","vspsy","vspd"].forEach(id=>hi(id));
+["va","vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd","vexCfg","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved","vsp","vsp0","vspp0","vsp05","vsp05r","vspp05","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_final","vspp_final","vspsy","vspd"].forEach(id=>hi(id));
 renderAgToggles();setProf("obj");setRod(3);
 showConfig();
 window.scrollTo(0,0);
