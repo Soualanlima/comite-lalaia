@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 /* ===== CSS VARIABLES ===== */
 :root{
@@ -248,6 +249,103 @@ textarea::placeholder{color:var(--text-dim)}
 .pin-key{width:64px;height:48px;font-size:20px}
 .pin-pad{max-width:212px;gap:8px}
 }
+
+/* ===== SIDEBAR ===== */
+.sidebar-hamburger{background:none;border:none;cursor:pointer;padding:4px 8px;margin-right:12px;display:flex;align-items:center;flex-shrink:0}
+.sidebar-hamburger svg{width:22px;height:22px}
+.sidebar-hamburger svg line{stroke:var(--text);stroke-width:2;stroke-linecap:round}
+[data-theme="sala"] .sidebar-hamburger svg line{stroke:#E8D4B0}
+
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8000;opacity:0;pointer-events:none;transition:opacity .3s}
+.sidebar-overlay.open{opacity:1;pointer-events:auto}
+
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:280px;z-index:8500;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;overflow:hidden;
+background:#F5F5F5;border-right:1px solid #E0E0E0;color:#1d1d1f}
+.sidebar.open{transform:translateX(0)}
+[data-theme="dark"] .sidebar{background:#2C2C2E;border-right-color:#3A3A3C;color:#F2F2F7}
+[data-theme="sala"] .sidebar{background:#2A1E12;border-right-color:#5A3E20;color:#E8D4B0}
+
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #E0E0E0;flex-shrink:0}
+[data-theme="dark"] .sidebar-head{border-bottom-color:#3A3A3C}
+[data-theme="sala"] .sidebar-head{border-bottom-color:#5A3E20}
+.sidebar-title{font-size:14px;font-weight:700;letter-spacing:-0.01em}
+.sidebar-close{background:none;border:none;cursor:pointer;padding:4px;color:inherit;font-size:18px;line-height:1}
+
+.sidebar-new-btn{margin:12px 12px 8px;padding:10px;font-size:13px;font-weight:600;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;
+background:#2E7A42;color:#fff;text-align:center}
+.sidebar-new-btn:hover{opacity:.9}
+
+.sidebar-list{flex:1;overflow-y:auto;padding:4px 0}
+.sidebar-list::-webkit-scrollbar{width:4px}
+.sidebar-list::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+[data-theme="dark"] .sidebar-list::-webkit-scrollbar-thumb{background:#48484A}
+[data-theme="sala"] .sidebar-list::-webkit-scrollbar-thumb{background:#5A3E20}
+
+.sb-folder{margin-bottom:2px}
+.sb-folder-head{display:flex;align-items:center;gap:6px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;user-select:none;transition:background .15s}
+.sb-folder-head:hover{background:#ECECEC}
+[data-theme="dark"] .sb-folder-head:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-folder-head:hover{background:#332210}
+.sb-folder-arrow{font-size:10px;transition:transform .2s;flex-shrink:0;width:14px;text-align:center}
+.sb-folder-arrow.collapsed{transform:rotate(-90deg)}
+.sb-folder-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sb-folder-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-folder-items{padding-left:8px}
+.sb-folder-items.collapsed{display:none}
+.sb-folder-empty{padding:4px 12px 4px 32px;font-size:11px;color:#aaa;font-style:italic}
+
+.sb-session{display:flex;align-items:center;gap:6px;padding:7px 12px 7px 20px;cursor:pointer;font-size:12px;transition:background .15s;border-radius:4px;margin:1px 4px}
+.sb-session:hover{background:#ECECEC}
+[data-theme="dark"] .sb-session:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-session:hover{background:#332210}
+.sb-session.active{background:#E8E8E8;font-weight:600}
+[data-theme="dark"] .sb-session.active{background:#48484A}
+[data-theme="sala"] .sb-session.active{background:#3D2A15}
+.sb-session-icon{flex-shrink:0;font-size:11px;opacity:.6}
+.sb-session-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-session-date{flex-shrink:0;font-size:10px;opacity:.5}
+.sb-loose-label{padding:10px 12px 4px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.5}
+
+.sidebar-bottom{padding:8px 12px 14px;border-top:1px solid #E0E0E0;flex-shrink:0}
+[data-theme="dark"] .sidebar-bottom{border-top-color:#3A3A3C}
+[data-theme="sala"] .sidebar-bottom{border-top-color:#5A3E20}
+.sidebar-create-folder{width:100%;padding:8px;font-size:12px;font-weight:500;border:1px dashed #ccc;border-radius:6px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;
+background:transparent;color:inherit;text-align:center}
+.sidebar-create-folder:hover{border-color:#999}
+[data-theme="dark"] .sidebar-create-folder{border-color:#48484A}
+[data-theme="sala"] .sidebar-create-folder{border-color:#5A3E20}
+
+.sidebar-msg{padding:16px;font-size:12px;color:#999;text-align:center;font-style:italic}
+
+/* Sidebar context menu */
+.sb-ctx-menu{position:fixed;z-index:9500;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.15);padding:4px 0;min-width:170px}
+.sb-ctx-item{padding:7px 14px;font-size:12px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;color:var(--text)}
+.sb-ctx-item:hover{background:var(--tog-bg)}
+.sb-ctx-item.danger{color:#D45B5B}
+.sb-ctx-sep{height:1px;background:var(--border);margin:3px 8px}
+
+/* Sidebar inline edit */
+.sb-inline-input{width:100%;padding:4px 8px;font-size:12px;border:1px solid var(--border);border-radius:4px;background:var(--input);color:var(--text);font-family:'Inter',-apple-system,sans-serif;outline:none}
+
+/* Sidebar color picker */
+.sb-color-picker{display:flex;gap:6px;padding:8px 14px;flex-wrap:wrap}
+.sb-color-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
+.sb-color-dot:hover,.sb-color-dot.sel{border-color:var(--text)}
+
+/* Desktop: push content when sidebar open */
+@media(min-width:1025px){
+body.sidebar-open #appWrap{margin-left:280px;transition:margin-left .3s ease}
+body:not(.sidebar-open) #appWrap{margin-left:0;transition:margin-left .3s ease}
+body.sidebar-open .header{padding-left:280px;transition:padding-left .3s ease}
+body:not(.sidebar-open) .header{padding-left:0;transition:padding-left .3s ease}
+body.sidebar-open .pin-screen{padding-left:280px}
+.sidebar-overlay{display:none!important}
+}
+
+/* Mobile: overlay mode */
+@media(max-width:1024px){
+.sidebar{box-shadow:4px 0 20px rgba(0,0,0,0.2)}
+}
 </style>
 </head>
 <body>
@@ -274,13 +372,34 @@ textarea::placeholder{color:var(--text-dim)}
 </div>
 </div>
 
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+<div class="sidebar-head">
+<span class="sidebar-title">Sessoes</span>
+<button class="sidebar-close" onclick="closeSidebar()">&times;</button>
+</div>
+<button class="sidebar-new-btn" onclick="newSession()">+ Nova sessao</button>
+<div class="sidebar-list" id="sidebarList">
+<div class="sidebar-msg" id="sidebarMsg">Carregando...</div>
+</div>
+<div class="sidebar-bottom">
+<button class="sidebar-create-folder" onclick="createFolderInline()">+ Criar pasta</button>
+</div>
+</div>
+
 <!-- APP WRAPPER (hidden until PIN verified) -->
 <div id="appWrap" style="display:none">
 
 <!-- HEADER -->
 <div class="header">
 <div class="header-inner">
+<div style="display:flex;align-items:center">
+<button class="sidebar-hamburger" onclick="toggleSidebar()" aria-label="Menu"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
 <h1>Conselho</h1>
+</div>
 <button class="dm-toggle" id="dmToggle" onclick="toggleDark()" aria-label="Dark mode"><div class="dm-circle"></div></button>
 </div>
 </div>
@@ -4108,6 +4227,681 @@ renderAgToggles();setProf("obj");setRod(3);
 showConfig();
 window.scrollTo(0,0);
 }
+
+/* ===== SIDEBAR + SUPABASE SESSION MANAGEMENT ===== */
+let supabaseClient=null;
+let sbFolders=[];
+let sbSessions=[];
+let currentSessionId=null;
+let sidebarOpen=false;
+
+function toggleSidebar(){sidebarOpen?closeSidebar():openSidebar()}
+function openSidebar(){
+sidebarOpen=true;
+document.getElementById("sidebar").classList.add("open");
+document.getElementById("sidebarOverlay").classList.add("open");
+document.body.classList.add("sidebar-open");
+}
+function closeSidebar(){
+sidebarOpen=false;
+document.getElementById("sidebar").classList.remove("open");
+document.getElementById("sidebarOverlay").classList.remove("open");
+document.body.classList.remove("sidebar-open");
+closeCtxMenu();
+}
+
+/* ===== SUPABASE INIT ===== */
+async function initSupabase(){
+try{
+const res=await fetch("/api/supabase-config");
+if(!res.ok)return;
+const cfg=await res.json();
+if(cfg.url&&cfg.anonKey){
+supabaseClient=window.supabase.createClient(cfg.url,cfg.anonKey);
+await loadFolders();
+await loadSessions();
+renderSidebarList();
+}
+}catch(e){
+console.warn("Supabase not available:",e);
+supabaseClient=null;
+document.getElementById("sidebarMsg").textContent="Configure Supabase para salvar sessoes";
+}
+}
+
+/* ===== DEFAULT FOLDERS ===== */
+const DEFAULT_FOLDERS=[
+{name:"Onda (empresa nova)",color:"#B8943C",position:0},
+{name:"Matheusinho / Lalaia",color:"#4A6FA5",position:1},
+{name:"Alan Lima (pessoal)",color:"#6BAF6B",position:2},
+{name:"Geral",color:"#A07848",position:3}
+];
+
+async function ensureDefaultFolders(){
+if(!supabaseClient)return;
+try{
+const{data}=await supabaseClient.from("folders").select("id").limit(1);
+if(data&&data.length===0){
+await supabaseClient.from("folders").insert(DEFAULT_FOLDERS);
+await loadFolders();
+}
+}catch(e){console.warn("Default folders error:",e)}
+}
+
+/* ===== LOAD DATA ===== */
+async function loadFolders(){
+if(!supabaseClient)return;
+try{
+const{data,error}=await supabaseClient.from("folders").select("*").order("position",{ascending:true});
+if(!error&&data)sbFolders=data;
+await ensureDefaultFolders();
+if(sbFolders.length===0){
+const{data:d2}=await supabaseClient.from("folders").select("*").order("position",{ascending:true});
+if(d2)sbFolders=d2;
+}
+}catch(e){console.warn("Load folders error:",e)}
+}
+
+async function loadSessions(){
+if(!supabaseClient)return;
+try{
+const{data,error}=await supabaseClient.from("sessions").select("id,folder_id,title,mode,status,created_at,updated_at").neq("status","arquivada").order("updated_at",{ascending:false}).limit(50);
+if(!error&&data)sbSessions=data;
+}catch(e){console.warn("Load sessions error:",e)}
+}
+
+/* ===== RENDER SIDEBAR LIST ===== */
+function renderSidebarList(){
+const list=document.getElementById("sidebarList");
+if(!supabaseClient){
+list.innerHTML='<div class="sidebar-msg">Configure Supabase para salvar sessoes</div>';
+return;
+}
+if(sbFolders.length===0&&sbSessions.length===0){
+list.innerHTML='<div class="sidebar-msg">Nenhuma sessao ainda</div>';
+return;
+}
+let html="";
+// Render folders
+const expandState=JSON.parse(localStorage.getItem("sbFolderState")||"{}");
+sbFolders.forEach(f=>{
+const collapsed=expandState[f.id]===false;
+const sessionsInFolder=sbSessions.filter(s=>s.folder_id===f.id);
+html+=`<div class="sb-folder" data-folder-id="${f.id}">
+<div class="sb-folder-head" onclick="toggleFolder('${f.id}')" oncontextmenu="folderCtx(event,'${f.id}')">
+<span class="sb-folder-arrow ${collapsed?"collapsed":""}">&#9660;</span>
+<span class="sb-folder-dot" style="background:${f.color||"#B8943C"}"></span>
+<span class="sb-folder-name">${escHtml(f.name)}</span>
+</div>
+<div class="sb-folder-items ${collapsed?"collapsed":""}">`;
+if(sessionsInFolder.length===0){
+html+=`<div class="sb-folder-empty">(vazio)</div>`;
+}else{
+sessionsInFolder.forEach(s=>{
+const active=s.id===currentSessionId?"active":"";
+const dt=fmtDate(s.created_at);
+html+=`<div class="sb-session ${active}" onclick="loadSession('${s.id}')" oncontextmenu="sessionCtx(event,'${s.id}')">
+<span class="sb-session-icon">&#128203;</span>
+<span class="sb-session-title">${escHtml(s.title)}</span>
+<span class="sb-session-date">${dt}</span>
+</div>`;
+});
+}
+html+=`</div></div>`;
+});
+// Loose sessions (no folder)
+const loose=sbSessions.filter(s=>!s.folder_id);
+if(loose.length>0){
+html+=`<div class="sb-loose-label">Sem pasta</div>`;
+loose.forEach(s=>{
+const active=s.id===currentSessionId?"active":"";
+const dt=fmtDate(s.created_at);
+html+=`<div class="sb-session ${active}" onclick="loadSession('${s.id}')" oncontextmenu="sessionCtx(event,'${s.id}')" style="padding-left:12px">
+<span class="sb-session-icon">&#128196;</span>
+<span class="sb-session-title">${escHtml(s.title)}</span>
+<span class="sb-session-date">${dt}</span>
+</div>`;
+});
+}
+list.innerHTML=html;
+}
+
+function escHtml(s){return s?s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"):""}
+function fmtDate(iso){
+if(!iso)return"";
+const d=new Date(iso);
+return d.getDate().toString().padStart(2,"0")+"/"+(d.getMonth()+1).toString().padStart(2,"0");
+}
+
+function toggleFolder(fid){
+const state=JSON.parse(localStorage.getItem("sbFolderState")||"{}");
+state[fid]=state[fid]===false?true:false;
+localStorage.setItem("sbFolderState",JSON.stringify(state));
+renderSidebarList();
+}
+
+/* ===== NEW SESSION ===== */
+function newSession(){
+closeSidebar();
+rst();
+renderSidebarList();
+}
+
+/* ===== CREATE SESSION IN SUPABASE ===== */
+async function createSession(mode){
+if(!supabaseClient)return null;
+try{
+const title=idea.length>55?idea.slice(0,55).replace(/\s+\S*$/,""):idea;
+const members=selAg.map(k=>{const a=getAg(k);return a?a.tag:k});
+const ctxMode=prof==="obj"?"rapido":"detalhado";
+const{data,error}=await supabaseClient.from("sessions").insert({
+title:title||"Sessao sem titulo",
+mode:mode,
+members:members,
+context_mode:ctxMode,
+rounds:rod,
+original_prompt:idea,
+messages:[],
+status:"ativa"
+}).select("id").single();
+if(!error&&data){
+currentSessionId=data.id;
+await loadSessions();
+renderSidebarList();
+return data.id;
+}
+}catch(e){console.warn("Create session error:",e)}
+return null;
+}
+
+/* ===== SAVE MESSAGES ===== */
+function buildSessionMessages(){
+const msgs=[];
+const ts=()=>new Date().toISOString();
+// R0 questions
+Object.keys(r0).forEach(k=>{
+if(r0[k]&&r0[k]!=="CLARO"){
+const a=getAg(k);
+msgs.push({type:"esclarecimento",round:"R0",member:a?a.tag:k,content:r0[k],timestamp:ts(),signals:null});
+}
+});
+if(r0resp)msgs.push({type:"esclarecimento",round:"R0",member:"CEO",content:r0resp,timestamp:ts(),signals:null});
+// R1
+selAg.forEach(k=>{
+if(r1[k]){const a=getAg(k);msgs.push({type:"rodada",round:"R1",member:a?a.tag:k,content:r1[k],timestamp:ts(),signals:null})}
+});
+// CEO intervention 1
+const ce1=document.getElementById("c1")?.value?.trim();
+if(ce1)msgs.push({type:"intervencao_ceo",round:"R1",member:"CEO",content:ce1,timestamp:ts(),signals:null});
+// R2
+selAg.forEach(k=>{
+if(r2[k]){const a=getAg(k);msgs.push({type:"rodada",round:"R2",member:a?a.tag:k,content:r2[k],timestamp:ts(),signals:null})}
+});
+// CEO intervention 2
+const ce2=document.getElementById("c2")?.value?.trim();
+if(ce2)msgs.push({type:"intervencao_ceo",round:"R2",member:"CEO",content:ce2,timestamp:ts(),signals:null});
+// R3
+selAg.forEach(k=>{
+if(r3[k]){const a=getAg(k);msgs.push({type:"rodada",round:"R3",member:a?a.tag:k,content:r3[k],timestamp:ts(),signals:null})}
+});
+// Mediator
+if(mt)msgs.push({type:"resultado",round:"mediador",member:"Mediador",content:mt,timestamp:ts(),signals:null});
+// SP P0
+if(sp0)msgs.push({type:"esqueleto",round:"P0",member:"CVO",content:sp0,timestamp:ts(),signals:null});
+// SP rounds
+Object.keys(spRoundData||{}).forEach(rk=>{
+const rd=spRoundData[rk];
+if(rd){Object.keys(rd).forEach(mk=>{
+if(rd[mk]){const a=getAg(mk);msgs.push({type:"rodada",round:rk.toUpperCase(),member:a?a.tag:mk,content:rd[mk],timestamp:ts(),signals:null})}
+})}
+});
+// SP P1
+selAg.forEach(k=>{
+if(sp1[k]){const a=getAg(k);msgs.push({type:"rodada",round:"P1",member:a?a.tag:k,content:sp1[k],timestamp:ts(),signals:null})}
+});
+// SP P2
+selAg.forEach(k=>{
+if(sp2[k]){const a=getAg(k);msgs.push({type:"rodada",round:"P2",member:a?a.tag:k,content:sp2[k],timestamp:ts(),signals:null})}
+});
+// SP Final
+selAg.forEach(k=>{
+if(sp3&&sp3[k]){const a=getAg(k);msgs.push({type:"rodada",round:"P-Final",member:a?a.tag:k,content:sp3[k],timestamp:ts(),signals:null})}
+});
+// SP Mediator
+if(spmt)msgs.push({type:"plano_final",round:"mediador",member:"Mediador",content:spmt,timestamp:ts(),signals:null});
+// Exec
+const EKS_REF=typeof EKS!=="undefined"?EKS:[];
+const EAG_REF=typeof EAG!=="undefined"?EAG:{};
+EKS_REF.forEach(k=>{
+if(er1&&er1[k])msgs.push({type:"execucao",round:"E1",member:EAG_REF[k]?EAG_REF[k].tag:k,content:er1[k],timestamp:ts(),signals:null});
+});
+EKS_REF.forEach(k=>{
+if(er2&&er2[k])msgs.push({type:"execucao",round:"E2",member:EAG_REF[k]?EAG_REF[k].tag:k,content:er2[k],timestamp:ts(),signals:null});
+});
+EKS_REF.forEach(k=>{
+if(er3&&er3[k])msgs.push({type:"execucao",round:"E3",member:EAG_REF[k]?EAG_REF[k].tag:k,content:er3[k],timestamp:ts(),signals:null});
+});
+if(emt)msgs.push({type:"execucao",round:"mediador",member:"Mediador",content:emt,timestamp:ts(),signals:null});
+return msgs;
+}
+
+async function saveMessages(){
+if(!supabaseClient||!currentSessionId)return;
+try{
+const msgs=buildSessionMessages();
+await supabaseClient.from("sessions").update({
+messages:msgs,
+updated_at:new Date().toISOString()
+}).eq("id",currentSessionId);
+}catch(e){console.warn("Save messages error:",e)}
+}
+
+async function saveSessionStatus(status){
+if(!supabaseClient||!currentSessionId)return;
+try{
+await supabaseClient.from("sessions").update({status:status,updated_at:new Date().toISOString()}).eq("id",currentSessionId);
+}catch(e){console.warn("Save status error:",e)}
+}
+
+/* ===== LOAD SESSION ===== */
+async function loadSession(sid){
+if(!supabaseClient)return;
+closeSidebar();
+try{
+const{data,error}=await supabaseClient.from("sessions").select("*").eq("id",sid).single();
+if(error||!data)return;
+currentSessionId=sid;
+// Restore config state
+idea=data.original_prompt||"";
+const modeIsDebate=data.mode==="debate";
+directPlan=!modeIsDebate;
+prof=data.context_mode==="rapido"?"obj":"det";
+rod=data.rounds||3;
+// Restore members from tags
+const memberMap={};
+Object.keys(AG).forEach(k=>{memberMap[AG[k].tag.toLowerCase()]=k});
+if(typeof EAG!=="undefined")Object.keys(EAG).forEach(k=>{memberMap[EAG[k].tag.toLowerCase()]=k});
+if(data.members&&data.members.length>0){
+selAg=data.members.map(m=>memberMap[m.toLowerCase()]||m).filter(k=>AG[k]);
+}
+renderAgToggles();setProf(prof);setRod(rod);
+document.getElementById("ii").value=idea;
+// Show debate area and render messages
+showDebate();
+document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">${directPlan?"Planejamento Direto":"Debate"} \u00b7 ${prof==="obj"?"Rapido":"Detalhado"} \u00b7 ${rod} rodada${rod>1?"s":""} \u00b7 ${selAg.length} membros</div><div class="session-idea">"${escHtml(data.title)}"</div>`;
+// Restore message data from saved messages
+const msgs=data.messages||[];
+r0={};r0resp="";r1={};r2={};r3={};mt="";
+sp0="";sp1={};sp2={};sp3={};spmt="";
+er1={};er2={};er3={};emt="";
+const tagToKey={};
+Object.keys(AG).forEach(k=>{tagToKey[AG[k].tag]=k});
+if(typeof EAG!=="undefined")Object.keys(EAG).forEach(k=>{tagToKey[EAG[k].tag]=k});
+msgs.forEach(m=>{
+const mk=tagToKey[m.member]||m.member;
+switch(m.round){
+case "R0":
+if(m.member==="CEO")r0resp=m.content;
+else r0[mk]=m.content;
+break;
+case "R1":
+if(m.type==="intervencao_ceo"||m.member==="CEO"){if(document.getElementById("c1"))document.getElementById("c1").value=m.content}
+else r1[mk]=m.content;
+break;
+case "R2":
+if(m.type==="intervencao_ceo"||m.member==="CEO"){if(document.getElementById("c2"))document.getElementById("c2").value=m.content}
+else r2[mk]=m.content;
+break;
+case "R3": r3[mk]=m.content; break;
+case "mediador":
+if(m.type==="resultado")mt=m.content;
+else if(m.type==="plano_final")spmt=m.content;
+else if(m.type==="execucao")emt=m.content;
+break;
+case "P0": sp0=m.content; break;
+case "P1": sp1[mk]=m.content; break;
+case "P2": sp2[mk]=m.content; break;
+case "P-Final": if(!sp3)sp3={};sp3[mk]=m.content; break;
+case "E1": er1[mk]=m.content; break;
+case "E2": er2[mk]=m.content; break;
+case "E3": er3[mk]=m.content; break;
+}
+});
+// Render restored rounds
+["vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vsp","vsp0","vspp0","vsp1","vspp1","vsp2","vspp2","vsp_final","vspp_final","vspsy","vspd","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved"].forEach(id=>hi(id));
+const hasR0=Object.keys(r0).length>0;
+const hasR1=Object.keys(r1).length>0;
+const hasR2=Object.keys(r2).length>0;
+const hasR3=Object.keys(r3).length>0;
+if(hasR0){
+sh("vq");
+document.getElementById("vq_label").textContent="ESCLARECIMENTO";
+let qhtml="";
+Object.keys(r0).forEach(k=>{
+const a=getAgDisplay(k);
+const col=agColor(k);
+qhtml+=`<div class="bubble" style="border-left:3px solid ${col}"><div class="bub-hdr"><span class="bub-name" style="color:${col}">${a.tag}</span><span class="bub-tag">${a.n}</span></div><div class="bub-text">${esc(r0[k])}</div></div>`;
+});
+if(r0resp)qhtml+=`<div class="ceo-bubble"><div class="bub-hdr"><span class="bub-name">CEO</span><span class="bub-tag">Alan</span></div><div class="bub-text">${esc(r0resp)}</div></div>`;
+document.getElementById("vq_cards").innerHTML=qhtml;
+}
+if(hasR1){sh("vr1");renderRound("r1a",selAg,r1,"R1",false);document.getElementById("r1p").innerHTML=""}
+if(hasR2){sh("vr2");renderRound("r2a",selAg,r2,"R2",false);document.getElementById("r2p").innerHTML="";
+const ce1v=document.getElementById("c1")?.value?.trim();if(ce1v)ceoMsg("c1d",ce1v)}
+if(hasR3){sh("vr3");renderRound("r3a",selAg,r3,"R3",true);document.getElementById("r3p").innerHTML="";
+const ce2v=document.getElementById("c2")?.value?.trim();if(ce2v)ceoMsg("c2d",ce2v)}
+if(mt){sh("vsy");renderSyn("mc",mt,false,false);sh("vd")}
+if(sp0){sh("vsp");sh("vsp0");
+const cvoD={cvo:sp0};renderRound("sp0a",["cvo"],cvoD,"P0",false);document.getElementById("sp0p").innerHTML=""}
+if(Object.keys(sp1).length>0){sh("vsp1");renderRound("sp1a",selAg,sp1,"P1",false);document.getElementById("sp1p").innerHTML=""}
+if(Object.keys(sp2).length>0){sh("vsp2");renderRound("sp2a",selAg,sp2,"P2",false);document.getElementById("sp2p").innerHTML=""}
+if(sp3&&Object.keys(sp3).length>0){sh("vsp_final");renderRound("spfa",selAg,sp3,"P-Final",false);document.getElementById("spfp").innerHTML=""}
+if(spmt){sh("vspsy");renderSPlan("spmc",spmt,false);sh("vspd")}
+if(Object.keys(er1||{}).length>0){sh("vex");sh("ver1");renderRound("er1a",EKS,er1,"R1",false);document.getElementById("er1p").innerHTML=""}
+if(Object.keys(er2||{}).length>0){sh("ver2");renderRound("er2a",EKS,er2,"R2",false);document.getElementById("er2p").innerHTML=""}
+if(Object.keys(er3||{}).length>0){sh("ver3");renderRound("er3a",EKS,er3,"R3",false);document.getElementById("er3p").innerHTML=""}
+if(emt){sh("vesy");renderSyn("emc",emt,false,true);sh("ved")}
+renderSidebarList();
+sb();
+}catch(e){console.warn("Load session error:",e)}
+}
+
+/* ===== CONTEXT MENUS ===== */
+let ctxMenuEl=null;
+function closeCtxMenu(){
+if(ctxMenuEl){ctxMenuEl.remove();ctxMenuEl=null}
+}
+document.addEventListener("click",()=>closeCtxMenu());
+
+function sessionCtx(e,sid){
+e.preventDefault();e.stopPropagation();
+closeCtxMenu();
+const s=sbSessions.find(x=>x.id===sid);if(!s)return;
+let html=`<div class="sb-ctx-item" onclick="renameSession('${sid}')">Renomear</div>`;
+html+=`<div class="sb-ctx-item" onclick="moveSessionMenu('${sid}')">Mover para pasta...</div>`;
+html+=`<div class="sb-ctx-sep"></div>`;
+html+=`<div class="sb-ctx-item" onclick="archiveSession('${sid}')">Arquivar</div>`;
+html+=`<div class="sb-ctx-item danger" onclick="deleteSession('${sid}')">Excluir</div>`;
+showCtxMenu(e,html);
+}
+
+function folderCtx(e,fid){
+e.preventDefault();e.stopPropagation();
+let html=`<div class="sb-ctx-item" onclick="renameFolder('${fid}')">Renomear</div>`;
+html+=`<div class="sb-ctx-item" onclick="changeFolderColor('${fid}')">Mudar cor</div>`;
+html+=`<div class="sb-ctx-sep"></div>`;
+html+=`<div class="sb-ctx-item danger" onclick="deleteFolder('${fid}')">Excluir pasta</div>`;
+showCtxMenu(e,html);
+}
+
+function showCtxMenu(e,html){
+const menu=document.createElement("div");
+menu.className="sb-ctx-menu";
+menu.innerHTML=html;
+menu.style.left=Math.min(e.clientX,window.innerWidth-180)+"px";
+menu.style.top=Math.min(e.clientY,window.innerHeight-150)+"px";
+document.body.appendChild(menu);
+ctxMenuEl=menu;
+}
+
+/* ===== SESSION ACTIONS ===== */
+async function renameSession(sid){
+closeCtxMenu();
+const s=sbSessions.find(x=>x.id===sid);if(!s)return;
+const name=prompt("Novo nome:",s.title);
+if(!name||!name.trim())return;
+if(!supabaseClient)return;
+try{
+await supabaseClient.from("sessions").update({title:name.trim()}).eq("id",sid);
+s.title=name.trim();
+renderSidebarList();
+}catch(e){console.warn("Rename error:",e)}
+}
+
+async function moveSessionMenu(sid){
+closeCtxMenu();
+if(sbFolders.length===0){alert("Nenhuma pasta disponivel");return}
+let opts=sbFolders.map((f,i)=>`${i+1}. ${f.name}`).join("\n");
+opts+=`\n0. Sem pasta`;
+const choice=prompt("Mover para qual pasta?\n\n"+opts);
+if(choice===null)return;
+const idx=parseInt(choice);
+let folderId=null;
+if(idx>0&&idx<=sbFolders.length)folderId=sbFolders[idx-1].id;
+if(!supabaseClient)return;
+try{
+await supabaseClient.from("sessions").update({folder_id:folderId}).eq("id",sid);
+const s=sbSessions.find(x=>x.id===sid);
+if(s)s.folder_id=folderId;
+renderSidebarList();
+}catch(e){console.warn("Move error:",e)}
+}
+
+async function archiveSession(sid){
+closeCtxMenu();
+if(!confirm("Arquivar esta sessao?"))return;
+if(!supabaseClient)return;
+try{
+await supabaseClient.from("sessions").update({status:"arquivada"}).eq("id",sid);
+sbSessions=sbSessions.filter(s=>s.id!==sid);
+if(currentSessionId===sid)currentSessionId=null;
+renderSidebarList();
+}catch(e){console.warn("Archive error:",e)}
+}
+
+async function deleteSession(sid){
+closeCtxMenu();
+if(!confirm("Excluir esta sessao permanentemente?"))return;
+if(!supabaseClient)return;
+try{
+await supabaseClient.from("sessions").delete().eq("id",sid);
+sbSessions=sbSessions.filter(s=>s.id!==sid);
+if(currentSessionId===sid)currentSessionId=null;
+renderSidebarList();
+}catch(e){console.warn("Delete error:",e)}
+}
+
+/* ===== FOLDER ACTIONS ===== */
+async function createFolderInline(){
+const name=prompt("Nome da pasta:");
+if(!name||!name.trim())return;
+if(!supabaseClient){alert("Supabase nao configurado");return}
+try{
+const pos=sbFolders.length;
+const{data,error}=await supabaseClient.from("folders").insert({name:name.trim(),position:pos}).select("*").single();
+if(!error&&data){
+sbFolders.push(data);
+renderSidebarList();
+}
+}catch(e){console.warn("Create folder error:",e)}
+}
+
+async function renameFolder(fid){
+closeCtxMenu();
+const f=sbFolders.find(x=>x.id===fid);if(!f)return;
+const name=prompt("Novo nome:",f.name);
+if(!name||!name.trim())return;
+if(!supabaseClient)return;
+try{
+await supabaseClient.from("folders").update({name:name.trim()}).eq("id",fid);
+f.name=name.trim();
+renderSidebarList();
+}catch(e){console.warn("Rename folder error:",e)}
+}
+
+async function changeFolderColor(fid){
+closeCtxMenu();
+const colors=["#B8943C","#4A6FA5","#6BAF6B","#A07848","#D45B5B","#D4618C","#5A9EA6","#A88DB5"];
+const f=sbFolders.find(x=>x.id===fid);if(!f)return;
+// Show inline color picker
+const el=document.querySelector(`.sb-folder[data-folder-id="${fid}"] .sb-folder-head`);
+if(!el)return;
+const picker=document.createElement("div");
+picker.className="sb-color-picker";
+colors.forEach(c=>{
+const dot=document.createElement("div");
+dot.className="sb-color-dot"+(f.color===c?" sel":"");
+dot.style.background=c;
+dot.onclick=async(e)=>{
+e.stopPropagation();
+if(!supabaseClient)return;
+try{
+await supabaseClient.from("folders").update({color:c}).eq("id",fid);
+f.color=c;
+picker.remove();
+renderSidebarList();
+}catch(er){console.warn("Color error:",er)}
+};
+picker.appendChild(dot);
+});
+el.insertAdjacentElement("afterend",picker);
+}
+
+async function deleteFolder(fid){
+closeCtxMenu();
+if(!confirm("Excluir pasta? Sessoes voltam para sem pasta."))return;
+if(!supabaseClient)return;
+try{
+// Move sessions to no folder
+await supabaseClient.from("sessions").update({folder_id:null}).eq("folder_id",fid);
+sbSessions.forEach(s=>{if(s.folder_id===fid)s.folder_id=null});
+await supabaseClient.from("folders").delete().eq("id",fid);
+sbFolders=sbFolders.filter(f=>f.id!==fid);
+renderSidebarList();
+}catch(e){console.warn("Delete folder error:",e)}
+}
+
+/* ===== HOOK: AUTO-SAVE after key steps ===== */
+// Wrapped non-blocking save
+function bgSave(){
+if(!supabaseClient||!currentSessionId)return;
+setTimeout(()=>saveMessages(),100);
+}
+
+// Monkey-patch go() to create session + save after rounds
+const _origGo=go;
+go=async function(cont){
+await _origGo(cont);
+// After go completes, create session if new, then save
+if(!cont&&!currentSessionId){
+await createSession(directPlan?"planejamento":"debate");
+}
+bgSave();
+};
+
+const _origGoPlan=goPlan;
+goPlan=async function(){
+await _origGoPlan();
+if(!currentSessionId){
+await createSession("planejamento");
+}
+bgSave();
+};
+
+// Patch round completions
+const _origRunR1=runR1;
+runR1=async function(ag,cont){await _origRunR1(ag,cont);bgSave()};
+
+const _origFp1=fp1;
+fp1=async function(){await _origFp1();bgSave()};
+
+const _origRunR2=runR2;
+runR2=async function(){await _origRunR2();bgSave()};
+
+const _origFp2=fp2;
+fp2=async function(){await _origFp2();bgSave()};
+
+const _origRr3=rr3;
+rr3=async function(){await _origRr3();bgSave()};
+
+const _origSyn=syn;
+syn=async function(){await _origSyn();bgSave()};
+
+const _origStartSP=startSP;
+startSP=async function(){await _origStartSP();bgSave()};
+
+const _origRunSP0=runSP0;
+runSP0=async function(){await _origRunSP0();bgSave()};
+
+const _origFinishQ=finishQ;
+finishQ=async function(){await _origFinishQ();bgSave()};
+
+const _origRunResultado=runResultado;
+runResultado=async function(){await _origRunResultado();bgSave()};
+
+// Patch SP sub-functions
+if(typeof runSP0Direct==="function"){
+const _origRunSP0Direct=runSP0Direct;
+runSP0Direct=async function(){await _origRunSP0Direct();bgSave()};
+}
+if(typeof runSP1==="function"){
+const _origRunSP1=runSP1;
+runSP1=async function(){await _origRunSP1();bgSave()};
+}
+if(typeof runSP2==="function"){
+const _origRunSP2=runSP2;
+runSP2=async function(){await _origRunSP2();bgSave()};
+}
+if(typeof runSPDynamicRound==="function"){
+const _origRunSPDyn=runSPDynamicRound;
+runSPDynamicRound=async function(rn){await _origRunSPDyn(rn);bgSave()};
+}
+if(typeof runSPFinal==="function"){
+const _origRunSPFinal=runSPFinal;
+runSPFinal=async function(f){await _origRunSPFinal(f);bgSave()};
+}
+if(typeof spSyn==="function"){
+const _origSpSyn=spSyn;
+spSyn=async function(f){await _origSpSyn(f);bgSave()};
+}
+if(typeof finishSPQ==="function"){
+const _origFinishSPQ=finishSPQ;
+finishSPQ=async function(r){await _origFinishSPQ(r);bgSave()};
+}
+
+// Patch exec functions
+const _origRunExec=runExec;
+runExec=function(){_origRunExec();setTimeout(()=>bgSave(),2000)};
+
+if(typeof efp1==="function"){
+const _origEfp1=efp1;
+efp1=async function(){await _origEfp1();bgSave()};
+}
+if(typeof efp2==="function"){
+const _origEfp2=efp2;
+efp2=async function(){await _origEfp2();bgSave()};
+}
+if(typeof err3==="function"){
+const _origErr3=err3;
+err3=async function(){await _origErr3();bgSave()};
+}
+if(typeof esyn==="function"){
+const _origEsyn=esyn;
+esyn=async function(){await _origEsyn();bgSave()};
+}
+
+// Patch rst to clear session and save status
+const _origRst=rst;
+rst=function(){
+if(currentSessionId)saveSessionStatus("concluida");
+currentSessionId=null;
+_origRst();
+loadSessions().then(()=>renderSidebarList()).catch(()=>{});
+};
+
+// Init on load (after PIN verified)
+const _origPinVerify=verifyPin;
+verifyPin=async function(){
+await _origPinVerify.call(this);
+if(sessionStorage.getItem("auth_token")){
+setTimeout(()=>initSupabase(),200);
+}
+};
+// Also init if already authenticated
+if(sessionStorage.getItem("auth_token")){
+setTimeout(()=>initSupabase(),300);
+}
+
 </script>
 </body>
 </html>
