@@ -4453,6 +4453,7 @@ sh('promptPreview');
 
 function rst(){
 hi('promptPreview');
+const lsb=document.getElementById("loadedSessionBtns");if(lsb)lsb.remove();
 r0={};r0resp="";r1={};r2={};r3={};mt="";er1={};er2={};er3={};emt="";
 sp0="";sp05={};sp0corrected="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};qAnswers={};spFromExec=false;
 spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};directPlan=false;
@@ -4973,10 +4974,26 @@ if(Object.keys(er1||{}).length>0){sh("vex");sh("ver1");renderRound("er1a",EKS,er
 if(Object.keys(er2||{}).length>0){sh("vex");sh("ver2");renderRound("er2a",EKS,er2,"R2",false);document.getElementById("er2p").innerHTML=""}
 if(Object.keys(er3||{}).length>0){sh("vex");sh("ver3");renderRound("er3a",EKS,er3,"R3",false);document.getElementById("er3p").innerHTML=""}
 if(emt){sh("vex");sh("vesy");renderSyn("emc",emt,false,true)}
-// Show only the final action buttons for the last completed stage
-if(emt){sh("ved")}
-else if(spmt){sh("vspd")}
-else if(mt){sh("vd")}
+// Show action buttons for loaded session - always show generic ones
+const isSpSession=sp0||Object.keys(sp1).length>0;
+const isExecSession=Object.keys(er1||{}).length>0;
+// Remove any previous loaded-session buttons
+const prevLsb=document.getElementById("loadedSessionBtns");if(prevLsb)prevLsb.remove();
+// Create action buttons dynamically at the end of visible content
+const lsb=document.createElement("div");
+lsb.id="loadedSessionBtns";
+lsb.className="final-btns";
+lsb.style.cssText="grid-template-columns:1fr 1fr;margin-top:20px";
+if(isSpSession){
+lsb.innerHTML=`<button class="btn-dark" style="background:var(--btn-orange)" onclick="startExecFromSP()">Plano de Execucao</button><button class="btn-dark" style="background:var(--btn-blue)" onclick="continuePlanning()">Continuar planejamento</button><button class="btn-light" onclick="rst()">Nova analise</button><div class="export-wrap" style="grid-column:span 1"><button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_loaded')">&#x1F4CB; Baixar &#x25BE;</button><div class="export-dd" id="exp_loaded"><div class="export-dd-item" onclick="exportAction('copy','tudo_plano')">Copiar tudo</div><div class="export-dd-item" onclick="exportAction('md','tudo_plano')">Baixar .md</div><div class="export-dd-item" onclick="exportAction('pdf','tudo_plano')">Baixar PDF</div></div></div>`;
+}else if(isExecSession){
+lsb.innerHTML=`<button class="btn-light" onclick="rst()">Nova analise</button><div class="export-wrap" style="grid-column:span 1"><button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_loaded')">&#x1F4CB; Baixar &#x25BE;</button><div class="export-dd" id="exp_loaded"><div class="export-dd-item" onclick="exportAction('copy','tudo_exec')">Copiar tudo</div><div class="export-dd-item" onclick="exportAction('md','tudo_exec')">Baixar .md</div><div class="export-dd-item" onclick="exportAction('pdf','tudo_exec')">Baixar PDF</div></div></div>`;
+}else{
+lsb.innerHTML=`<button class="btn-dark" style="background:var(--btn-blue)" onclick="startCd()">Continuar debate</button><button class="btn-dark" style="background:var(--btn-gold)" onclick="startSP()">Plano Estrategico</button><button class="btn-light" onclick="rst()">Nova analise</button><div class="export-wrap" style="grid-column:span 1"><button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_loaded')">&#x1F4CB; Baixar &#x25BE;</button><div class="export-dd" id="exp_loaded"><div class="export-dd-item" onclick="exportAction('copy','tudo_resultado')">Copiar tudo</div><div class="export-dd-item" onclick="exportAction('md','tudo_resultado')">Baixar .md</div><div class="export-dd-item" onclick="exportAction('pdf','tudo_resultado')">Baixar PDF</div></div></div>`;
+}
+// Append to the last visible container
+const container=document.querySelector(".container");
+container.appendChild(lsb);
 renderSidebarList();
 sb();
 }catch(e){console.warn("Load session error:",e)}
