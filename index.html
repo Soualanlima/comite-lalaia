@@ -142,6 +142,11 @@ textarea::placeholder{color:var(--text-dim)}
 .session-hdr{background:var(--card);border:1px solid var(--border-subtle);border-radius:10px;padding:10px 16px;margin-bottom:20px;text-align:center}
 .session-mode{font-size:12px;font-weight:500;color:var(--text-dim)}
 .session-idea{font-size:12px;color:var(--text3);margin-top:4px;font-style:italic}
+.prompt-preview{background:var(--surface);border:1px solid var(--border-subtle);border-radius:10px;padding:12px 16px;margin-bottom:16px;cursor:pointer;position:relative}
+.prompt-preview .prompt-text{font-size:12px;color:var(--text3);line-height:1.5;overflow:hidden}
+.prompt-preview .prompt-text.collapsed{max-height:2.8em;overflow:hidden}
+.prompt-preview .prompt-toggle{font-size:11px;color:var(--text-dim);margin-top:4px;font-weight:500}
+.prompt-preview .prompt-label{font-size:10px;font-weight:600;color:var(--text-dim);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px}
 
 /* Round separator */
 .rd-sep{display:flex;align-items:center;gap:12px;margin:20px 0 14px}
@@ -575,6 +580,12 @@ Criar pasta
 <div id="va" class="hid">
 <div id="sessionHdr" class="session-hdr"></div>
 <div id="dbnum" class="dbg"></div>
+
+<div id="promptPreview" class="hid prompt-preview" onclick="togglePromptPreview()">
+<div class="prompt-label">Prompt original</div>
+<div class="prompt-text collapsed" id="promptText"></div>
+<div class="prompt-toggle" id="promptToggle">Ver prompt completo &#x25BE;</div>
+</div>
 
 <!-- Questions before rounds -->
 <div id="vq" class="hid">
@@ -2901,6 +2912,7 @@ r0={};r0resp="";r1={};r2={};r3={};mt="";qAnswers={};
 sp0="";sp05={};sp0corrected="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};
 const ag=selAg;
 document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">${prof==="obj"?"Rapido":"Detalhado"} \u00b7 ${rod} rodada${rod>1?"s":""} \u00b7 ${ag.length} membros</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
+if(!cont)showPromptPreview(idea);
 document.getElementById("dbnum").textContent=debateNum>1?`Debate ${debateNum}`:"";
 ["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 ["vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd","vsp","vsp0","vspp0","vsp05","vsp05r","vspp05","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_q3","vsp3","vspsy","vspd"].forEach(id=>hi(id));
@@ -2935,6 +2947,7 @@ spCurrentRound=0;spConsensus={};spRefineReasons={};
 const ag=selAg;
 showDebate();
 document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">Planejamento Direto \u00b7 ${prof==="obj"?"Rapido":"Detalhado"} \u00b7 ${ag.length} membros</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
+showPromptPreview(idea);
 document.getElementById("dbnum").textContent="";
 ["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 ["vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd"].forEach(id=>hi(id));
@@ -4425,7 +4438,21 @@ generatePDF(fname,txt);
 }
 }
 
+function togglePromptPreview(){
+var t=document.getElementById('promptText');
+var tog=document.getElementById('promptToggle');
+if(t.classList.contains('collapsed')){t.classList.remove('collapsed');tog.innerHTML='Minimizar &#x25B4;';}
+else{t.classList.add('collapsed');tog.innerHTML='Ver prompt completo &#x25BE;';}
+}
+function showPromptPreview(text){
+document.getElementById('promptText').textContent=text;
+document.getElementById('promptText').classList.add('collapsed');
+document.getElementById('promptToggle').innerHTML='Ver prompt completo &#x25BE;';
+sh('promptPreview');
+}
+
 function rst(){
+hi('promptPreview');
 r0={};r0resp="";r1={};r2={};r3={};mt="";er1={};er2={};er3={};emt="";
 sp0="";sp05={};sp0corrected="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};qAnswers={};spFromExec=false;
 spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};directPlan=false;
@@ -4873,6 +4900,7 @@ document.getElementById("ii").value=idea;
 // Show debate area and render messages
 showDebate();
 document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">${directPlan?"Planejamento Direto":"Debate"} \u00b7 ${prof==="obj"?"Rapido":"Detalhado"} \u00b7 ${rod} rodada${rod>1?"s":""} \u00b7 ${selAg.length} membros</div><div class="session-idea">"${escHtml(data.title)}"</div>`;
+if(idea)showPromptPreview(idea);
 // Restore message data from saved messages
 const msgs=data.messages||[];
 r0={};r0resp="";r1={};r2={};r3={};mt="";
@@ -4934,17 +4962,21 @@ if(hasR2){sh("vr2");renderRound("r2a",selAg,r2,"R2",false);document.getElementBy
 const ce1v=document.getElementById("c1")?.value?.trim();if(ce1v)ceoMsg("c1d",ce1v)}
 if(hasR3){sh("vr3");renderRound("r3a",selAg,r3,"R3",true);document.getElementById("r3p").innerHTML="";
 const ce2v=document.getElementById("c2")?.value?.trim();if(ce2v)ceoMsg("c2d",ce2v)}
-if(mt){sh("vsy");renderSyn("mc",mt,false,false);sh("vd")}
+if(mt){sh("vsy");renderSyn("mc",mt,false,false)}
 if(sp0){sh("vsp");sh("vsp0");
 const cvoD={cvo:sp0};renderRound("sp0a",["cvo"],cvoD,"P0",false);document.getElementById("sp0p").innerHTML=""}
-if(Object.keys(sp1).length>0){sh("vsp1");renderRound("sp1a",selAg,sp1,"P1",false);document.getElementById("sp1p").innerHTML=""}
-if(Object.keys(sp2).length>0){sh("vsp2");renderRound("sp2a",selAg,sp2,"P2",false);document.getElementById("sp2p").innerHTML=""}
-if(sp3&&Object.keys(sp3).length>0){sh("vsp_final");renderRound("spfa",selAg,sp3,"P-Final",false);document.getElementById("spfp").innerHTML=""}
-if(spmt){sh("vspsy");renderSPlan("spmc",spmt,false);sh("vspd")}
+if(Object.keys(sp1).length>0){sh("vsp");sh("vsp1");renderRound("sp1a",selAg,sp1,"P1",false);document.getElementById("sp1p").innerHTML=""}
+if(Object.keys(sp2).length>0){sh("vsp");sh("vsp2");renderRound("sp2a",selAg,sp2,"P2",false);document.getElementById("sp2p").innerHTML=""}
+if(sp3&&Object.keys(sp3).length>0){sh("vsp");sh("vsp_final");renderRound("spfa",selAg,sp3,"P-Final",false);document.getElementById("spfp").innerHTML=""}
+if(spmt){sh("vsp");sh("vspsy");renderSPlan("spmc",spmt,false)}
 if(Object.keys(er1||{}).length>0){sh("vex");sh("ver1");renderRound("er1a",EKS,er1,"R1",false);document.getElementById("er1p").innerHTML=""}
-if(Object.keys(er2||{}).length>0){sh("ver2");renderRound("er2a",EKS,er2,"R2",false);document.getElementById("er2p").innerHTML=""}
-if(Object.keys(er3||{}).length>0){sh("ver3");renderRound("er3a",EKS,er3,"R3",false);document.getElementById("er3p").innerHTML=""}
-if(emt){sh("vesy");renderSyn("emc",emt,false,true);sh("ved")}
+if(Object.keys(er2||{}).length>0){sh("vex");sh("ver2");renderRound("er2a",EKS,er2,"R2",false);document.getElementById("er2p").innerHTML=""}
+if(Object.keys(er3||{}).length>0){sh("vex");sh("ver3");renderRound("er3a",EKS,er3,"R3",false);document.getElementById("er3p").innerHTML=""}
+if(emt){sh("vex");sh("vesy");renderSyn("emc",emt,false,true)}
+// Show only the final action buttons for the last completed stage
+if(emt){sh("ved")}
+else if(spmt){sh("vspd")}
+else if(mt){sh("vd")}
 renderSidebarList();
 sb();
 }catch(e){console.warn("Load session error:",e)}
