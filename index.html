@@ -251,86 +251,165 @@ textarea::placeholder{color:var(--text-dim)}
 }
 
 /* ===== SIDEBAR ===== */
-.sidebar-hamburger{background:none;border:none;cursor:pointer;padding:4px 8px;margin-right:12px;display:flex;align-items:center;flex-shrink:0}
+.sidebar-hamburger{background:none;border:none;cursor:pointer;padding:4px 8px;margin-right:16px;display:flex;align-items:center;flex-shrink:0}
 .sidebar-hamburger svg{width:22px;height:22px}
 .sidebar-hamburger svg line{stroke:var(--text);stroke-width:2;stroke-linecap:round}
 [data-theme="sala"] .sidebar-hamburger svg line{stroke:#E8D4B0}
 
-.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:8000;opacity:0;pointer-events:none;transition:opacity .3s}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:8000;opacity:0;pointer-events:none;transition:opacity .3s}
 .sidebar-overlay.open{opacity:1;pointer-events:auto}
 
 .sidebar{position:fixed;top:0;left:0;bottom:0;width:280px;z-index:8500;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;overflow:hidden;
-background:#F5F5F5;border-right:1px solid #E0E0E0;color:#1d1d1f}
+background:#FFFFFF;border-right:1px solid #E5E5E5;color:#1d1d1f}
 .sidebar.open{transform:translateX(0)}
 [data-theme="dark"] .sidebar{background:#2C2C2E;border-right-color:#3A3A3C;color:#F2F2F7}
-[data-theme="sala"] .sidebar{background:#2A1E12;border-right-color:#5A3E20;color:#E8D4B0}
+[data-theme="sala"] .sidebar{background:#2A1E12;border-right-color:#3D2A15;color:#E8D4B0}
 
-.sidebar-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #E0E0E0;flex-shrink:0}
-[data-theme="dark"] .sidebar-head{border-bottom-color:#3A3A3C}
-[data-theme="sala"] .sidebar-head{border-bottom-color:#5A3E20}
+/* Sidebar header */
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;flex-shrink:0}
 .sidebar-title{font-size:14px;font-weight:700;letter-spacing:-0.01em}
-.sidebar-close{background:none;border:none;cursor:pointer;padding:4px;color:inherit;font-size:18px;line-height:1}
+.sidebar-close{background:none;border:none;cursor:pointer;padding:4px;color:#86868b;font-size:18px;line-height:1}
+[data-theme="dark"] .sidebar-close{color:#8E8E93}
+[data-theme="sala"] .sidebar-close{color:#A07848}
 
-.sidebar-new-btn{margin:12px 12px 8px;padding:10px;font-size:13px;font-weight:600;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;
-background:#2E7A42;color:#fff;text-align:center}
-.sidebar-new-btn:hover{opacity:.9}
+/* Top actions: Nova sessao, Procurar, Pastas */
+.sb-top-actions{padding:0 10px 8px;flex-shrink:0}
+.sb-action-btn{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;background:none;border:none;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;font-size:13px;font-weight:500;color:#1d1d1f;border-radius:6px;transition:background .15s}
+.sb-action-btn:hover{background:#F5F5F5}
+[data-theme="dark"] .sb-action-btn{color:#F2F2F7}
+[data-theme="dark"] .sb-action-btn:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-action-btn{color:#E8D4B0}
+[data-theme="sala"] .sb-action-btn:hover{background:#332210}
+.sb-action-btn svg{width:16px;height:16px;flex-shrink:0;color:#86868b}
+[data-theme="dark"] .sb-action-btn svg{color:#8E8E93}
+[data-theme="sala"] .sb-action-btn svg{color:#A07848}
 
-.sidebar-list{flex:1;overflow-y:auto;padding:4px 0}
+/* Search bar */
+.sb-search-wrap{padding:0 10px 8px;display:none;flex-shrink:0}
+.sb-search-wrap.open{display:flex}
+.sb-search-inner{display:flex;align-items:center;gap:6px;width:100%;padding:7px 10px;background:#F5F5F5;border:1px solid #E5E5E5;border-radius:8px}
+[data-theme="dark"] .sb-search-inner{background:#3A3A3C;border-color:#48484A}
+[data-theme="sala"] .sb-search-inner{background:#332210;border-color:#3D2A15}
+.sb-search-inner svg{width:14px;height:14px;color:#86868b;flex-shrink:0}
+[data-theme="dark"] .sb-search-inner svg{color:#8E8E93}
+[data-theme="sala"] .sb-search-inner svg{color:#A07848}
+.sb-search-input{flex:1;border:none;background:none;font-size:13px;font-family:'Inter',-apple-system,sans-serif;color:#1d1d1f;outline:none}
+.sb-search-input::placeholder{color:#86868b}
+[data-theme="dark"] .sb-search-input{color:#F2F2F7}
+[data-theme="dark"] .sb-search-input::placeholder{color:#8E8E93}
+[data-theme="sala"] .sb-search-input{color:#E8D4B0}
+[data-theme="sala"] .sb-search-input::placeholder{color:#A07848}
+.sb-search-close{background:none;border:none;cursor:pointer;padding:2px;color:#86868b;font-size:14px;line-height:1}
+[data-theme="dark"] .sb-search-close{color:#8E8E93}
+[data-theme="sala"] .sb-search-close{color:#A07848}
+
+/* Separator */
+.sb-sep{height:1px;background:#E5E5E5;margin:4px 16px}
+[data-theme="dark"] .sb-sep{background:#3A3A3C}
+[data-theme="sala"] .sb-sep{background:#3D2A15}
+
+/* Section label */
+.sb-section-label{padding:10px 16px 6px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#86868b}
+[data-theme="dark"] .sb-section-label{color:#8E8E93}
+[data-theme="sala"] .sb-section-label{color:#A07848}
+
+/* Session list */
+.sidebar-list{flex:1;overflow-y:auto;padding:0}
 .sidebar-list::-webkit-scrollbar{width:4px}
-.sidebar-list::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
+.sidebar-list::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
 [data-theme="dark"] .sidebar-list::-webkit-scrollbar-thumb{background:#48484A}
 [data-theme="sala"] .sidebar-list::-webkit-scrollbar-thumb{background:#5A3E20}
 
-.sb-folder{margin-bottom:2px}
-.sb-folder-head{display:flex;align-items:center;gap:6px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;user-select:none;transition:background .15s}
-.sb-folder-head:hover{background:#ECECEC}
-[data-theme="dark"] .sb-folder-head:hover{background:#3A3A3C}
-[data-theme="sala"] .sb-folder-head:hover{background:#332210}
-.sb-folder-arrow{font-size:10px;transition:transform .2s;flex-shrink:0;width:14px;text-align:center}
-.sb-folder-arrow.collapsed{transform:rotate(-90deg)}
-.sb-folder-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sb-folder-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sb-folder-items{padding-left:8px}
-.sb-folder-items.collapsed{display:none}
-.sb-folder-empty{padding:4px 12px 4px 32px;font-size:11px;color:#aaa;font-style:italic}
-
-.sb-session{display:flex;align-items:center;gap:6px;padding:7px 12px 7px 20px;cursor:pointer;font-size:12px;transition:background .15s;border-radius:4px;margin:1px 4px}
-.sb-session:hover{background:#ECECEC}
+/* Session item */
+.sb-session{display:flex;align-items:center;gap:6px;padding:8px 12px 8px 16px;cursor:pointer;font-size:13px;color:#1d1d1f;transition:background .15s;border-radius:0;margin:0;position:relative}
+.sb-session:hover{background:#F5F5F5}
+[data-theme="dark"] .sb-session{color:#F2F2F7}
 [data-theme="dark"] .sb-session:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-session{color:#E8D4B0}
 [data-theme="sala"] .sb-session:hover{background:#332210}
-.sb-session.active{background:#E8E8E8;font-weight:600}
+.sb-session.active{background:#F0F0F0;font-weight:600}
 [data-theme="dark"] .sb-session.active{background:#48484A}
 [data-theme="sala"] .sb-session.active{background:#3D2A15}
-.sb-session-icon{flex-shrink:0;font-size:11px;opacity:.6}
-.sb-session-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sb-session-date{flex-shrink:0;font-size:10px;opacity:.5}
-.sb-loose-label{padding:10px 12px 4px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.5}
+.sb-session-fav{flex-shrink:0;font-size:12px;color:#B8943C;margin-right:2px}
+.sb-session-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400;line-height:1.3}
+.sb-session.active .sb-session-title{font-weight:600}
+.sb-session-date{flex-shrink:0;font-size:10px;color:#86868b}
+[data-theme="dark"] .sb-session-date{color:#8E8E93}
+[data-theme="sala"] .sb-session-date{color:#A07848}
 
-.sidebar-bottom{padding:8px 12px 14px;border-top:1px solid #E0E0E0;flex-shrink:0}
-[data-theme="dark"] .sidebar-bottom{border-top-color:#3A3A3C}
-[data-theme="sala"] .sidebar-bottom{border-top-color:#5A3E20}
-.sidebar-create-folder{width:100%;padding:8px;font-size:12px;font-weight:500;border:1px dashed #ccc;border-radius:6px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;
-background:transparent;color:inherit;text-align:center}
-.sidebar-create-folder:hover{border-color:#999}
-[data-theme="dark"] .sidebar-create-folder{border-color:#48484A}
-[data-theme="sala"] .sidebar-create-folder{border-color:#5A3E20}
+/* "..." more button on sessions */
+.sb-session-more{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:2px 4px;font-size:16px;color:#86868b;border-radius:4px;opacity:0;transition:opacity .15s}
+.sb-session:hover .sb-session-more{opacity:1}
+[data-theme="dark"] .sb-session-more{color:#8E8E93}
+[data-theme="sala"] .sb-session-more{color:#A07848}
+.sb-session-more:hover{background:rgba(0,0,0,0.06)}
+[data-theme="dark"] .sb-session-more:hover{background:rgba(255,255,255,0.08)}
+[data-theme="sala"] .sb-session-more:hover{background:rgba(232,212,176,0.1)}
 
-.sidebar-msg{padding:16px;font-size:12px;color:#999;text-align:center;font-style:italic}
+/* Dropdown menu (replaces context menu) */
+.sb-dropdown{position:fixed;z-index:9500;background:#FFFFFF;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.12);padding:4px 0;min-width:180px}
+[data-theme="dark"] .sb-dropdown{background:#2C2C2E;border-color:#3A3A3C;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+[data-theme="sala"] .sb-dropdown{background:#2A1E12;border-color:#3D2A15;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.sb-dd-item{padding:8px 14px;font-size:12px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;color:#1d1d1f;display:flex;align-items:center;gap:8px}
+.sb-dd-item:hover{background:#F5F5F5}
+[data-theme="dark"] .sb-dd-item{color:#F2F2F7}
+[data-theme="dark"] .sb-dd-item:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-dd-item{color:#E8D4B0}
+[data-theme="sala"] .sb-dd-item:hover{background:#332210}
+.sb-dd-item.danger{color:#D45B5B}
+.sb-dd-item svg{width:14px;height:14px;flex-shrink:0;color:#86868b}
+[data-theme="dark"] .sb-dd-item svg{color:#8E8E93}
+[data-theme="sala"] .sb-dd-item svg{color:#A07848}
+.sb-dd-sep{height:1px;background:#E5E5E5;margin:3px 8px}
+[data-theme="dark"] .sb-dd-sep{background:#3A3A3C}
+[data-theme="sala"] .sb-dd-sep{background:#3D2A15}
+.sb-dd-sub-label{padding:6px 14px 4px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#86868b}
+[data-theme="dark"] .sb-dd-sub-label{color:#8E8E93}
+[data-theme="sala"] .sb-dd-sub-label{color:#A07848}
+.sb-dd-item.sub{padding-left:24px;font-size:11px}
+.sb-dd-item.sub.selected{font-weight:600}
 
-/* Sidebar context menu */
-.sb-ctx-menu{position:fixed;z-index:9500;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.15);padding:4px 0;min-width:170px}
-.sb-ctx-item{padding:7px 14px;font-size:12px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;color:var(--text)}
-.sb-ctx-item:hover{background:var(--tog-bg)}
-.sb-ctx-item.danger{color:#D45B5B}
-.sb-ctx-sep{height:1px;background:var(--border);margin:3px 8px}
+/* Folder view */
+.sb-folder-view{display:none;flex:1;flex-direction:column;overflow:hidden}
+.sb-folder-view.open{display:flex}
+.sb-folder-back{display:flex;align-items:center;gap:6px;padding:10px 16px;cursor:pointer;font-size:13px;font-weight:500;color:#86868b;border:none;background:none;font-family:'Inter',-apple-system,sans-serif;width:100%;text-align:left}
+.sb-folder-back:hover{background:#F5F5F5}
+[data-theme="dark"] .sb-folder-back{color:#8E8E93}
+[data-theme="dark"] .sb-folder-back:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-folder-back{color:#A07848}
+[data-theme="sala"] .sb-folder-back:hover{background:#332210}
+.sb-folder-list{flex:1;overflow-y:auto;padding:0}
+.sb-folder-item{display:flex;align-items:center;gap:8px;padding:9px 16px;cursor:pointer;font-size:13px;transition:background .15s;position:relative}
+.sb-folder-item:hover{background:#F5F5F5}
+[data-theme="dark"] .sb-folder-item:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-folder-item:hover{background:#332210}
+.sb-folder-item svg{width:16px;height:16px;color:#86868b;flex-shrink:0}
+[data-theme="dark"] .sb-folder-item svg{color:#8E8E93}
+[data-theme="sala"] .sb-folder-item svg{color:#A07848}
+.sb-folder-item-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-folder-item-count{font-size:11px;color:#86868b}
+[data-theme="dark"] .sb-folder-item-count{color:#8E8E93}
+[data-theme="sala"] .sb-folder-item-count{color:#A07848}
+.sb-folder-item-more{background:none;border:none;cursor:pointer;padding:2px 4px;font-size:16px;color:#86868b;border-radius:4px;opacity:0;transition:opacity .15s}
+.sb-folder-item:hover .sb-folder-item-more{opacity:1}
+[data-theme="dark"] .sb-folder-item-more{color:#8E8E93}
+[data-theme="sala"] .sb-folder-item-more{color:#A07848}
+.sb-folder-create-btn{display:flex;align-items:center;gap:8px;width:100%;padding:9px 16px;background:none;border:none;border-top:1px solid #E5E5E5;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;font-size:12px;color:#86868b;margin-top:auto;flex-shrink:0}
+.sb-folder-create-btn:hover{background:#F5F5F5}
+[data-theme="dark"] .sb-folder-create-btn{border-top-color:#3A3A3C;color:#8E8E93}
+[data-theme="dark"] .sb-folder-create-btn:hover{background:#3A3A3C}
+[data-theme="sala"] .sb-folder-create-btn{border-top-color:#3D2A15;color:#A07848}
+[data-theme="sala"] .sb-folder-create-btn:hover{background:#332210}
 
-/* Sidebar inline edit */
-.sb-inline-input{width:100%;padding:4px 8px;font-size:12px;border:1px solid var(--border);border-radius:4px;background:var(--input);color:var(--text);font-family:'Inter',-apple-system,sans-serif;outline:none}
+/* Empty state */
+.sidebar-msg{padding:24px 16px;font-size:12px;color:#86868b;text-align:center;font-style:italic}
+[data-theme="dark"] .sidebar-msg{color:#8E8E93}
+[data-theme="sala"] .sidebar-msg{color:#A07848}
 
-/* Sidebar color picker */
-.sb-color-picker{display:flex;gap:6px;padding:8px 14px;flex-wrap:wrap}
-.sb-color-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
-.sb-color-dot:hover,.sb-color-dot.sel{border-color:var(--text)}
+/* Mobile: always show "..." */
+@media(max-width:1024px){
+.sb-session-more,.sb-folder-item-more{opacity:1!important}
+}
 
 /* Desktop: push content when sidebar open */
 @media(min-width:1025px){
@@ -344,7 +423,7 @@ body.sidebar-open .pin-screen{padding-left:280px}
 
 /* Mobile: overlay mode */
 @media(max-width:1024px){
-.sidebar{box-shadow:4px 0 20px rgba(0,0,0,0.2)}
+.sidebar{box-shadow:4px 0 20px rgba(0,0,0,0.15)}
 }
 </style>
 </head>
@@ -381,12 +460,51 @@ body.sidebar-open .pin-screen{padding-left:280px}
 <span class="sidebar-title">Sessoes</span>
 <button class="sidebar-close" onclick="closeSidebar()">&times;</button>
 </div>
-<button class="sidebar-new-btn" onclick="newSession()">+ Nova sessao</button>
+
+<!-- Top actions -->
+<div class="sb-top-actions">
+<button class="sb-action-btn" onclick="newSession()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+Nova sessao
+</button>
+<button class="sb-action-btn" onclick="sbToggleSearch()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+Procurar
+</button>
+<button class="sb-action-btn" onclick="sbShowFolderView()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+Pastas
+</button>
+</div>
+
+<!-- Search bar (hidden by default) -->
+<div class="sb-search-wrap" id="sbSearchWrap">
+<div class="sb-search-inner">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+<input class="sb-search-input" id="sbSearchInput" type="text" placeholder="Buscar sessoes..." oninput="sbFilterSessions()">
+<button class="sb-search-close" onclick="sbCloseSearch()">&times;</button>
+</div>
+</div>
+
+<div class="sb-sep"></div>
+
+<!-- Main session list view -->
 <div class="sidebar-list" id="sidebarList">
 <div class="sidebar-msg" id="sidebarMsg">Carregando...</div>
 </div>
-<div class="sidebar-bottom">
-<button class="sidebar-create-folder" onclick="createFolderInline()">+ Criar pasta</button>
+
+<!-- Folder view (hidden by default) -->
+<div class="sb-folder-view" id="sbFolderView">
+<button class="sb-folder-back" onclick="sbHideFolderView()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="15 18 9 12 15 6"/></svg>
+Voltar
+</button>
+<div class="sb-sep"></div>
+<div class="sb-folder-list" id="sbFolderList"></div>
+<button class="sb-folder-create-btn" onclick="createFolderInline()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+Criar pasta
+</button>
 </div>
 </div>
 
@@ -4234,6 +4352,10 @@ let sbFolders=[];
 let sbSessions=[];
 let currentSessionId=null;
 let sidebarOpen=false;
+let sbFolderViewOpen=false;
+let sbFolderViewInside=null; // folder id when viewing sessions inside a folder
+let sbSearchQuery="";
+let sbDropdownEl=null;
 
 function toggleSidebar(){sidebarOpen?closeSidebar():openSidebar()}
 function openSidebar(){
@@ -4247,7 +4369,125 @@ sidebarOpen=false;
 document.getElementById("sidebar").classList.remove("open");
 document.getElementById("sidebarOverlay").classList.remove("open");
 document.body.classList.remove("sidebar-open");
-closeCtxMenu();
+sbCloseDropdown();
+sbHideFolderView();
+sbCloseSearch();
+}
+
+/* ===== DROPDOWN MENU (replaces context menu) ===== */
+function sbCloseDropdown(){
+if(sbDropdownEl){sbDropdownEl.remove();sbDropdownEl=null}
+}
+document.addEventListener("click",()=>sbCloseDropdown());
+
+function sbShowDropdown(anchor,html){
+sbCloseDropdown();
+const menu=document.createElement("div");
+menu.className="sb-dropdown";
+menu.innerHTML=html;
+menu.onclick=e=>e.stopPropagation();
+document.body.appendChild(menu);
+// Position near anchor
+const rect=anchor.getBoundingClientRect();
+let top=rect.bottom+4;
+let left=rect.right-180;
+if(left<8)left=8;
+if(top+200>window.innerHeight)top=rect.top-200;
+menu.style.left=left+"px";
+menu.style.top=top+"px";
+sbDropdownEl=menu;
+}
+
+/* ===== SEARCH ===== */
+function sbToggleSearch(){
+const wrap=document.getElementById("sbSearchWrap");
+if(wrap.classList.contains("open")){sbCloseSearch()}
+else{wrap.classList.add("open");document.getElementById("sbSearchInput").focus()}
+}
+function sbCloseSearch(){
+const wrap=document.getElementById("sbSearchWrap");
+wrap.classList.remove("open");
+document.getElementById("sbSearchInput").value="";
+sbSearchQuery="";
+renderSidebarList();
+}
+function sbFilterSessions(){
+sbSearchQuery=document.getElementById("sbSearchInput").value.trim().toLowerCase();
+renderSidebarList();
+}
+
+/* ===== FOLDER VIEW ===== */
+function sbShowFolderView(){
+sbFolderViewOpen=true;
+sbFolderViewInside=null;
+document.getElementById("sidebarList").style.display="none";
+const fv=document.getElementById("sbFolderView");
+fv.classList.add("open");
+renderFolderView();
+}
+function sbHideFolderView(){
+sbFolderViewOpen=false;
+sbFolderViewInside=null;
+document.getElementById("sidebarList").style.display="";
+document.getElementById("sbFolderView").classList.remove("open");
+}
+function sbOpenFolderInside(fid){
+sbFolderViewInside=fid;
+renderFolderView();
+}
+function sbBackFromFolderInside(){
+sbFolderViewInside=null;
+renderFolderView();
+}
+function renderFolderView(){
+const list=document.getElementById("sbFolderList");
+if(sbFolderViewInside){
+// Show sessions inside a folder
+const f=sbFolders.find(x=>x.id===sbFolderViewInside);
+const sessions=sbSessions.filter(s=>s.folder_id===sbFolderViewInside);
+let html=`<button class="sb-folder-back" onclick="sbBackFromFolderInside()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="15 18 9 12 15 6"/></svg>
+${escHtml(f?f.name:"Pasta")}
+</button><div class="sb-sep"></div>`;
+if(sessions.length===0){
+html+=`<div class="sidebar-msg">(vazio)</div>`;
+}else{
+sessions.forEach(s=>{
+const active=s.id===currentSessionId?"active":"";
+const dt=fmtDate(s.updated_at||s.created_at);
+html+=`<div class="sb-session ${active}" onclick="loadSession('${s.id}')">
+<span class="sb-session-title">${escHtml(s.title)}</span>
+<span class="sb-session-date">${dt}</span>
+</div>`;
+});
+}
+list.innerHTML=html;
+}else{
+// Show all folders
+let html="";
+if(sbFolders.length===0){
+html=`<div class="sidebar-msg">Nenhuma pasta ainda</div>`;
+}else{
+sbFolders.forEach(f=>{
+const count=sbSessions.filter(s=>s.folder_id===f.id).length;
+html+=`<div class="sb-folder-item" onclick="sbOpenFolderInside('${f.id}')">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+<span class="sb-folder-item-name">${escHtml(f.name)}</span>
+<span class="sb-folder-item-count">${count}</span>
+<button class="sb-folder-item-more" onclick="event.stopPropagation();sbFolderMenu(event,'${f.id}')">&#8230;</button>
+</div>`;
+});
+}
+list.innerHTML=html;
+}
+}
+
+function sbFolderMenu(e,fid){
+const anchor=e.currentTarget;
+let html=`<div class="sb-dd-item" onclick="renameFolder('${fid}')">Renomear</div>`;
+html+=`<div class="sb-dd-sep"></div>`;
+html+=`<div class="sb-dd-item danger" onclick="deleteFolder('${fid}')">Excluir pasta</div>`;
+sbShowDropdown(anchor,html);
 }
 
 /* ===== SUPABASE INIT ===== */
@@ -4269,44 +4509,26 @@ document.getElementById("sidebarMsg").textContent="Configure Supabase para salva
 }
 }
 
-/* ===== DEFAULT FOLDERS ===== */
-const DEFAULT_FOLDERS=[
-{name:"Onda (empresa nova)",color:"#B8943C",position:0},
-{name:"Matheusinho / Lalaia",color:"#4A6FA5",position:1},
-{name:"Alan Lima (pessoal)",color:"#6BAF6B",position:2},
-{name:"Geral",color:"#A07848",position:3}
-];
-
-async function ensureDefaultFolders(){
-if(!supabaseClient)return;
-try{
-const{data}=await supabaseClient.from("folders").select("id").limit(1);
-if(data&&data.length===0){
-await supabaseClient.from("folders").insert(DEFAULT_FOLDERS);
-await loadFolders();
-}
-}catch(e){console.warn("Default folders error:",e)}
-}
-
 /* ===== LOAD DATA ===== */
 async function loadFolders(){
 if(!supabaseClient)return;
 try{
 const{data,error}=await supabaseClient.from("folders").select("*").order("position",{ascending:true});
 if(!error&&data)sbFolders=data;
-await ensureDefaultFolders();
-if(sbFolders.length===0){
-const{data:d2}=await supabaseClient.from("folders").select("*").order("position",{ascending:true});
-if(d2)sbFolders=d2;
-}
 }catch(e){console.warn("Load folders error:",e)}
 }
 
 async function loadSessions(){
 if(!supabaseClient)return;
 try{
-const{data,error}=await supabaseClient.from("sessions").select("id,folder_id,title,mode,status,created_at,updated_at").neq("status","arquivada").order("updated_at",{ascending:false}).limit(50);
+const cols="id,folder_id,title,mode,status,created_at,updated_at,is_favorite";
+const{data,error}=await supabaseClient.from("sessions").select(cols).neq("status","arquivada").order("updated_at",{ascending:false}).limit(50);
 if(!error&&data)sbSessions=data;
+else{
+// Fallback if is_favorite column doesn't exist
+const{data:d2,error:e2}=await supabaseClient.from("sessions").select("id,folder_id,title,mode,status,created_at,updated_at").neq("status","arquivada").order("updated_at",{ascending:false}).limit(50);
+if(!e2&&d2)sbSessions=d2;
+}
 }catch(e){console.warn("Load sessions error:",e)}
 }
 
@@ -4317,53 +4539,70 @@ if(!supabaseClient){
 list.innerHTML='<div class="sidebar-msg">Configure Supabase para salvar sessoes</div>';
 return;
 }
-if(sbFolders.length===0&&sbSessions.length===0){
+if(sbSessions.length===0){
 list.innerHTML='<div class="sidebar-msg">Nenhuma sessao ainda</div>';
 return;
 }
+// Filter by search
+let filtered=sbSessions;
+if(sbSearchQuery){
+filtered=sbSessions.filter(s=>(s.title||"").toLowerCase().includes(sbSearchQuery));
+}
 let html="";
-// Render folders
-const expandState=JSON.parse(localStorage.getItem("sbFolderState")||"{}");
-sbFolders.forEach(f=>{
-const collapsed=expandState[f.id]===false;
-const sessionsInFolder=sbSessions.filter(s=>s.folder_id===f.id);
-html+=`<div class="sb-folder" data-folder-id="${f.id}">
-<div class="sb-folder-head" onclick="toggleFolder('${f.id}')" oncontextmenu="folderCtx(event,'${f.id}')">
-<span class="sb-folder-arrow ${collapsed?"collapsed":""}">&#9660;</span>
-<span class="sb-folder-dot" style="background:${f.color||"#B8943C"}"></span>
-<span class="sb-folder-name">${escHtml(f.name)}</span>
-</div>
-<div class="sb-folder-items ${collapsed?"collapsed":""}">`;
-if(sessionsInFolder.length===0){
-html+=`<div class="sb-folder-empty">(vazio)</div>`;
-}else{
-sessionsInFolder.forEach(s=>{
+// Favoritos section
+const favs=filtered.filter(s=>s.is_favorite);
+if(favs.length>0){
+html+=`<div class="sb-section-label">Favoritos</div>`;
+favs.forEach(s=>{
 const active=s.id===currentSessionId?"active":"";
-const dt=fmtDate(s.created_at);
-html+=`<div class="sb-session ${active}" onclick="loadSession('${s.id}')" oncontextmenu="sessionCtx(event,'${s.id}')">
-<span class="sb-session-icon">&#128203;</span>
-<span class="sb-session-title">${escHtml(s.title)}</span>
-<span class="sb-session-date">${dt}</span>
-</div>`;
+const dt=fmtDate(s.updated_at||s.created_at);
+html+=sbSessionHTML(s,active,dt,true);
+});
+html+=`<div class="sb-sep"></div>`;
+}
+// Recentes section
+const recentes=filtered.slice(0,20);
+if(recentes.length>0){
+html+=`<div class="sb-section-label">Recentes</div>`;
+recentes.forEach(s=>{
+const active=s.id===currentSessionId?"active":"";
+const dt=fmtDate(s.updated_at||s.created_at);
+html+=sbSessionHTML(s,active,dt,false);
 });
 }
-html+=`</div></div>`;
-});
-// Loose sessions (no folder)
-const loose=sbSessions.filter(s=>!s.folder_id);
-if(loose.length>0){
-html+=`<div class="sb-loose-label">Sem pasta</div>`;
-loose.forEach(s=>{
-const active=s.id===currentSessionId?"active":"";
-const dt=fmtDate(s.created_at);
-html+=`<div class="sb-session ${active}" onclick="loadSession('${s.id}')" oncontextmenu="sessionCtx(event,'${s.id}')" style="padding-left:12px">
-<span class="sb-session-icon">&#128196;</span>
-<span class="sb-session-title">${escHtml(s.title)}</span>
-<span class="sb-session-date">${dt}</span>
-</div>`;
-});
-}
+if(!html)html='<div class="sidebar-msg">Nenhum resultado</div>';
 list.innerHTML=html;
+}
+
+function sbSessionHTML(s,active,dt,showStar){
+return `<div class="sb-session ${active}" onclick="loadSession('${s.id}')">
+${showStar?'<span class="sb-session-fav">&#9733;</span>':''}
+<span class="sb-session-title">${escHtml(s.title)}</span>
+<span class="sb-session-date">${dt}</span>
+<button class="sb-session-more" onclick="event.stopPropagation();sbSessionMenu(event,'${s.id}')">&#8230;</button>
+</div>`;
+}
+
+function sbSessionMenu(e,sid){
+const anchor=e.currentTarget;
+const s=sbSessions.find(x=>x.id===sid);if(!s)return;
+const favLabel=s.is_favorite?"Remover favorito":"Favoritar";
+const favIcon=s.is_favorite
+?'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
+:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+let html=`<div class="sb-dd-item" onclick="sbToggleFavorite('${sid}')">${favIcon} ${favLabel}</div>`;
+html+=`<div class="sb-dd-item" onclick="renameSession('${sid}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Renomear</div>`;
+html+=`<div class="sb-dd-sep"></div>`;
+// Move to folder sub-menu
+html+=`<div class="sb-dd-sub-label">Mover para</div>`;
+html+=`<div class="sb-dd-item sub${!s.folder_id?' selected':''}" onclick="sbMoveSession('${sid}',null)">Sem pasta</div>`;
+sbFolders.forEach(f=>{
+const sel=s.folder_id===f.id?' selected':'';
+html+=`<div class="sb-dd-item sub${sel}" onclick="sbMoveSession('${sid}','${f.id}')">${escHtml(f.name)}</div>`;
+});
+html+=`<div class="sb-dd-sep"></div>`;
+html+=`<div class="sb-dd-item danger" onclick="deleteSession('${sid}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Apagar</div>`;
+sbShowDropdown(anchor,html);
 }
 
 function escHtml(s){return s?s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"):""}
@@ -4373,11 +4612,20 @@ const d=new Date(iso);
 return d.getDate().toString().padStart(2,"0")+"/"+(d.getMonth()+1).toString().padStart(2,"0");
 }
 
-function toggleFolder(fid){
-const state=JSON.parse(localStorage.getItem("sbFolderState")||"{}");
-state[fid]=state[fid]===false?true:false;
-localStorage.setItem("sbFolderState",JSON.stringify(state));
+/* ===== FAVORITES ===== */
+async function sbToggleFavorite(sid){
+sbCloseDropdown();
+const s=sbSessions.find(x=>x.id===sid);if(!s)return;
+const newVal=!s.is_favorite;
+s.is_favorite=newVal;
 renderSidebarList();
+if(!supabaseClient)return;
+try{
+await supabaseClient.from("sessions").update({is_favorite:newVal}).eq("id",sid);
+}catch(e){
+// Column may not exist — silently ignore
+console.warn("Favorite toggle (column may not exist):",e);
+}
 }
 
 /* ===== NEW SESSION ===== */
@@ -4606,47 +4854,9 @@ sb();
 }catch(e){console.warn("Load session error:",e)}
 }
 
-/* ===== CONTEXT MENUS ===== */
-let ctxMenuEl=null;
-function closeCtxMenu(){
-if(ctxMenuEl){ctxMenuEl.remove();ctxMenuEl=null}
-}
-document.addEventListener("click",()=>closeCtxMenu());
-
-function sessionCtx(e,sid){
-e.preventDefault();e.stopPropagation();
-closeCtxMenu();
-const s=sbSessions.find(x=>x.id===sid);if(!s)return;
-let html=`<div class="sb-ctx-item" onclick="renameSession('${sid}')">Renomear</div>`;
-html+=`<div class="sb-ctx-item" onclick="moveSessionMenu('${sid}')">Mover para pasta...</div>`;
-html+=`<div class="sb-ctx-sep"></div>`;
-html+=`<div class="sb-ctx-item" onclick="archiveSession('${sid}')">Arquivar</div>`;
-html+=`<div class="sb-ctx-item danger" onclick="deleteSession('${sid}')">Excluir</div>`;
-showCtxMenu(e,html);
-}
-
-function folderCtx(e,fid){
-e.preventDefault();e.stopPropagation();
-let html=`<div class="sb-ctx-item" onclick="renameFolder('${fid}')">Renomear</div>`;
-html+=`<div class="sb-ctx-item" onclick="changeFolderColor('${fid}')">Mudar cor</div>`;
-html+=`<div class="sb-ctx-sep"></div>`;
-html+=`<div class="sb-ctx-item danger" onclick="deleteFolder('${fid}')">Excluir pasta</div>`;
-showCtxMenu(e,html);
-}
-
-function showCtxMenu(e,html){
-const menu=document.createElement("div");
-menu.className="sb-ctx-menu";
-menu.innerHTML=html;
-menu.style.left=Math.min(e.clientX,window.innerWidth-180)+"px";
-menu.style.top=Math.min(e.clientY,window.innerHeight-150)+"px";
-document.body.appendChild(menu);
-ctxMenuEl=menu;
-}
-
 /* ===== SESSION ACTIONS ===== */
 async function renameSession(sid){
-closeCtxMenu();
+sbCloseDropdown();
 const s=sbSessions.find(x=>x.id===sid);if(!s)return;
 const name=prompt("Novo nome:",s.title);
 if(!name||!name.trim())return;
@@ -4658,16 +4868,8 @@ renderSidebarList();
 }catch(e){console.warn("Rename error:",e)}
 }
 
-async function moveSessionMenu(sid){
-closeCtxMenu();
-if(sbFolders.length===0){alert("Nenhuma pasta disponivel");return}
-let opts=sbFolders.map((f,i)=>`${i+1}. ${f.name}`).join("\n");
-opts+=`\n0. Sem pasta`;
-const choice=prompt("Mover para qual pasta?\n\n"+opts);
-if(choice===null)return;
-const idx=parseInt(choice);
-let folderId=null;
-if(idx>0&&idx<=sbFolders.length)folderId=sbFolders[idx-1].id;
+async function sbMoveSession(sid,folderId){
+sbCloseDropdown();
 if(!supabaseClient)return;
 try{
 await supabaseClient.from("sessions").update({folder_id:folderId}).eq("id",sid);
@@ -4677,20 +4879,8 @@ renderSidebarList();
 }catch(e){console.warn("Move error:",e)}
 }
 
-async function archiveSession(sid){
-closeCtxMenu();
-if(!confirm("Arquivar esta sessao?"))return;
-if(!supabaseClient)return;
-try{
-await supabaseClient.from("sessions").update({status:"arquivada"}).eq("id",sid);
-sbSessions=sbSessions.filter(s=>s.id!==sid);
-if(currentSessionId===sid)currentSessionId=null;
-renderSidebarList();
-}catch(e){console.warn("Archive error:",e)}
-}
-
 async function deleteSession(sid){
-closeCtxMenu();
+sbCloseDropdown();
 if(!confirm("Excluir esta sessao permanentemente?"))return;
 if(!supabaseClient)return;
 try{
@@ -4711,13 +4901,13 @@ const pos=sbFolders.length;
 const{data,error}=await supabaseClient.from("folders").insert({name:name.trim(),position:pos}).select("*").single();
 if(!error&&data){
 sbFolders.push(data);
-renderSidebarList();
+renderFolderView();
 }
 }catch(e){console.warn("Create folder error:",e)}
 }
 
 async function renameFolder(fid){
-closeCtxMenu();
+sbCloseDropdown();
 const f=sbFolders.find(x=>x.id===fid);if(!f)return;
 const name=prompt("Novo nome:",f.name);
 if(!name||!name.trim())return;
@@ -4725,41 +4915,14 @@ if(!supabaseClient)return;
 try{
 await supabaseClient.from("folders").update({name:name.trim()}).eq("id",fid);
 f.name=name.trim();
+renderFolderView();
 renderSidebarList();
 }catch(e){console.warn("Rename folder error:",e)}
 }
 
-async function changeFolderColor(fid){
-closeCtxMenu();
-const colors=["#B8943C","#4A6FA5","#6BAF6B","#A07848","#D45B5B","#D4618C","#5A9EA6","#A88DB5"];
-const f=sbFolders.find(x=>x.id===fid);if(!f)return;
-// Show inline color picker
-const el=document.querySelector(`.sb-folder[data-folder-id="${fid}"] .sb-folder-head`);
-if(!el)return;
-const picker=document.createElement("div");
-picker.className="sb-color-picker";
-colors.forEach(c=>{
-const dot=document.createElement("div");
-dot.className="sb-color-dot"+(f.color===c?" sel":"");
-dot.style.background=c;
-dot.onclick=async(e)=>{
-e.stopPropagation();
-if(!supabaseClient)return;
-try{
-await supabaseClient.from("folders").update({color:c}).eq("id",fid);
-f.color=c;
-picker.remove();
-renderSidebarList();
-}catch(er){console.warn("Color error:",er)}
-};
-picker.appendChild(dot);
-});
-el.insertAdjacentElement("afterend",picker);
-}
-
 async function deleteFolder(fid){
-closeCtxMenu();
-if(!confirm("Excluir pasta? Sessoes voltam para sem pasta."))return;
+sbCloseDropdown();
+if(!confirm("Excluir pasta? Sessoes voltam para Recentes."))return;
 if(!supabaseClient)return;
 try{
 // Move sessions to no folder
@@ -4767,6 +4930,7 @@ await supabaseClient.from("sessions").update({folder_id:null}).eq("folder_id",fi
 sbSessions.forEach(s=>{if(s.folder_id===fid)s.folder_id=null});
 await supabaseClient.from("folders").delete().eq("id",fid);
 sbFolders=sbFolders.filter(f=>f.id!==fid);
+renderFolderView();
 renderSidebarList();
 }catch(e){console.warn("Delete folder error:",e)}
 }
