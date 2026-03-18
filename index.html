@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Conselho</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <style>
 /* ===== CSS VARIABLES ===== */
 :root{
@@ -201,6 +202,16 @@ textarea::placeholder{color:var(--text-dim)}
 .rd-sep-gold .line{background:var(--btn-gold);opacity:.4}
 .dbg{font-size:10px;color:var(--text-dim);text-align:center;margin-bottom:8px;font-style:italic}
 
+/* Export dropdown */
+.export-wrap{position:relative;display:inline-block}
+.export-btn{padding:10px 16px;font-size:12px;font-weight:500;background:var(--btn-light-bg);color:var(--btn-light-txt);border:1px solid var(--btn-light-border);border-radius:10px;cursor:pointer;font-family:'Inter',-apple-system,sans-serif;display:flex;align-items:center;gap:6px}
+.export-btn:hover{border-color:var(--text3)}
+.export-dd{position:absolute;bottom:calc(100% + 6px);right:0;min-width:220px;background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.12);z-index:100;padding:6px 0;display:none}
+.export-dd.show{display:block}
+.export-dd-item{padding:8px 16px;font-size:12px;color:var(--text);cursor:pointer;font-family:'Inter',-apple-system,sans-serif;white-space:nowrap}
+.export-dd-item:hover{background:var(--tog-bg)}
+.export-dd-sep{height:1px;background:var(--border);margin:4px 12px}
+
 /* CEO bubble in debate */
 .ceo-bubble{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--ceo-border);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:10px}
 .ceo-bubble .bub-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
@@ -304,6 +315,8 @@ textarea::placeholder{color:var(--text-dim)}
 
 <textarea id="ii" rows="4" placeholder="Descreva sua ideia, duvida ou decisao..." style="margin-bottom:14px"></textarea>
 <button class="btn-primary" onclick="go()">Iniciar sessao</button>
+<div style="height:8px"></div>
+<button class="btn-primary" style="background:var(--btn-gold)" onclick="goPlan()">Iniciar planejamento</button>
 <div id="selCount" class="sel-count"></div>
 </div>
 
@@ -377,11 +390,24 @@ textarea::placeholder{color:var(--text-dim)}
 </div>
 
 <!-- Final buttons (after veredito) -->
-<div id="vd" class="hid final-btns">
+<div id="vd" class="hid final-btns" style="grid-template-columns:1fr 1fr">
+<button class="btn-dark" style="background:var(--btn-gold)" onclick="startSPFromResultado()">Plano Estrategico</button>
 <button class="btn-dark" style="background:var(--btn-blue)" onclick="startCd()">Continuar debate</button>
 <button class="btn-dark" style="background:var(--btn-orange)" onclick="startExec()">Plano de Execucao</button>
 <button class="btn-light" onclick="rst()">Nova analise</button>
-<button class="btn-light" onclick="copyAll()">&#x1F4CB; Copiar tudo</button>
+<div class="export-wrap" style="grid-column:1/-1">
+<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_resultado')">&#x1F4CB; Exportar &#x25BE;</button>
+<div class="export-dd" id="exp_resultado">
+<div class="export-dd-item" onclick="exportAction('copy','resultado')">Copiar resultado</div>
+<div class="export-dd-item" onclick="exportAction('copy','tudo_resultado')">Copiar tudo (debate + resultado)</div>
+<div class="export-dd-sep"></div>
+<div class="export-dd-item" onclick="exportAction('md','resultado')">Baixar resultado (.md)</div>
+<div class="export-dd-item" onclick="exportAction('md','tudo_resultado')">Baixar tudo (.md)</div>
+<div class="export-dd-sep"></div>
+<div class="export-dd-item" onclick="exportAction('pdf','resultado')">Baixar resultado (PDF)</div>
+<div class="export-dd-item" onclick="exportAction('pdf','tudo_resultado')">Baixar tudo (PDF)</div>
+</div>
+</div>
 </div>
 
 <!-- STRATEGIC PLAN FLOW -->
@@ -446,6 +472,7 @@ textarea::placeholder{color:var(--text-dim)}
 <!-- P2 -->
 <div id="vsp2" class="hid">
 <div class="rd-sep rd-sep-gold"><div class="line"></div><span>PLANO ESTRATEGICO — RODADA 2 · Integracao</span><div class="line"></div></div>
+<div id="sp2_progress" style="text-align:center;font-size:11px;color:var(--text-dim);margin-bottom:10px"></div>
 <div id="sp2p"></div><div id="sp2a"></div>
 </div>
 
@@ -458,24 +485,18 @@ textarea::placeholder{color:var(--text-dim)}
 </div>
 </div>
 
-<!-- SP Questions before P3 -->
-<div id="vsp_q3" class="hid">
-<div class="rd-sep rd-sep-gold"><div class="line"></div><span>ESCLARECIMENTO — RODADA 3</span><div class="line"></div></div>
-<div id="sp_q3_cards"></div>
-<div id="sp_q3_resp" class="hid">
-<div class="ceo-pause">
-<div class="ceo-label">Responda as duvidas</div>
-<textarea id="sp_q3_input" rows="3" placeholder="Responda as duvidas dos membros..."></textarea>
-<div class="ceo-btn-row"><button class="btn-go" onclick="finishSPQ(3)">Responder e continuar</button></div>
-</div>
-</div>
+<!-- Dynamic rounds container (P3-P6 created dynamically) -->
+<div id="vsp_dynamic"></div>
+
+<!-- P-Final (triggered by consensus or P6 forced) -->
+<div id="vsp_final" class="hid">
+<div class="rd-sep rd-sep-gold"><div class="line"></div><span id="vsp_final_label">PLANO ESTRATEGICO · Versao Final</span><div class="line"></div></div>
+<div id="sp_final_progress" style="text-align:center;font-size:11px;color:var(--text-dim);margin-bottom:10px"></div>
+<div id="spfp"></div><div id="spfa"></div>
 </div>
 
-<!-- P3 -->
-<div id="vsp3" class="hid">
-<div class="rd-sep rd-sep-gold"><div class="line"></div><span>PLANO ESTRATEGICO — RODADA 3 · Versao Final</span><div class="line"></div></div>
-<div id="sp3p"></div><div id="sp3a"></div>
-</div>
+<!-- CEO Pause after P-Final -->
+<div id="vspp_final" class="hid"></div>
 
 <!-- SP Synthesis -->
 <div id="vspsy" class="hid">
@@ -484,11 +505,23 @@ textarea::placeholder{color:var(--text-dim)}
 </div>
 
 <!-- SP Final buttons -->
-<div id="vspd" class="hid final-btns">
+<div id="vspd" class="hid final-btns" style="grid-template-columns:1fr 1fr">
 <button class="btn-dark" style="background:var(--btn-orange)" onclick="startExecFromSP()">Plano de Execucao</button>
-<button class="btn-dark" style="background:var(--btn-blue)" onclick="startCd()">Continuar debate</button>
+<button class="btn-dark" style="background:var(--btn-blue)" onclick="continuePlanning()">Continuar planejamento</button>
 <button class="btn-light" onclick="rst()">Nova analise</button>
-<button class="btn-light" onclick="copySP()">&#x1F4CB; Copiar plano</button>
+<div class="export-wrap" style="grid-column:1/-1">
+<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_plano')">&#x1F4CB; Exportar &#x25BE;</button>
+<div class="export-dd" id="exp_plano">
+<div class="export-dd-item" onclick="exportAction('copy','plano')">Copiar plano</div>
+<div class="export-dd-item" onclick="exportAction('copy','tudo_plano')">Copiar tudo</div>
+<div class="export-dd-sep"></div>
+<div class="export-dd-item" onclick="exportAction('md','plano')">Baixar plano (.md)</div>
+<div class="export-dd-item" onclick="exportAction('md','tudo_plano')">Baixar tudo (.md)</div>
+<div class="export-dd-sep"></div>
+<div class="export-dd-item" onclick="exportAction('pdf','plano')">Baixar plano (PDF)</div>
+<div class="export-dd-item" onclick="exportAction('pdf','tudo_plano')">Baixar tudo (PDF)</div>
+</div>
+</div>
 </div>
 
 </div><!-- /vsp -->
@@ -558,7 +591,19 @@ textarea::placeholder{color:var(--text-dim)}
 </div>
 <div id="ved" class="hid final-btns" style="grid-template-columns:1fr 1fr">
 <button class="btn-light" onclick="rst()">Nova analise</button>
-<button class="btn-dark" onclick="copyPlan()">Copiar plano</button>
+<div class="export-wrap">
+<button class="export-btn" style="width:100%;justify-content:center" onclick="toggleExportDD('exp_exec')">&#x1F4CB; Exportar &#x25BE;</button>
+<div class="export-dd" id="exp_exec">
+<div class="export-dd-item" onclick="exportAction('copy','execucao')">Copiar execucao</div>
+<div class="export-dd-item" onclick="exportAction('copy','tudo_exec')">Copiar tudo</div>
+<div class="export-dd-sep"></div>
+<div class="export-dd-item" onclick="exportAction('md','execucao')">Baixar execucao (.md)</div>
+<div class="export-dd-item" onclick="exportAction('md','tudo_exec')">Baixar tudo (.md)</div>
+<div class="export-dd-sep"></div>
+<div class="export-dd-item" onclick="exportAction('pdf','execucao')">Baixar execucao (PDF)</div>
+<div class="export-dd-item" onclick="exportAction('pdf','tudo_exec')">Baixar tudo (PDF)</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -1958,20 +2003,42 @@ r3:"Vote na DECISAO: AVANCA / AVANCA COM AJUSTES / NAO AVANCA. NAO vote em outro
 
 /* Question instructions per mode */
 const QI={obj:{
-q1:`Leia a questao abaixo. Antes de analisar, voce tem 1 oportunidade de fazer UMA pergunta para esclarecer algo que MUDARIA sua analise. Se falta uma informacao critica sem a qual sua analise seria superficial ou errada, pergunte em 1 frase objetiva. Se o contexto ja e suficiente pra voce analisar bem, responda apenas: CLARO`
+q1:`Antes de analisar, leia as perguntas que os OUTROS membros ja fizeram. Se outro membro ja perguntou o que voce queria saber, NAO repita — aproveite a resposta de Alan ao outro membro. So pergunte algo NOVO que ninguem ainda perguntou e que e essencial pra SUA analise especifica. Maximo 1 pergunta em 1 frase. Se o contexto ja e suficiente (incluindo as respostas que Alan deu aos outros), responda: CLARO`
 },det:{
-q1:`Leia a questao abaixo. Antes de analisar, voce pode fazer ate 2 perguntas para extrair contexto que melhoraria significativamente sua analise. Pergunte SOMENTE o que e essencial -- informacao sem a qual sua analise ficaria incompleta ou errada. Perguntas objetivas, 1 frase cada. Se o contexto ja e suficiente, responda apenas: CLARO`,
-q2:`Voce leu as analises dos outros membros na R1. Antes de reagir, voce pode fazer ate 2 perguntas para Alan -- duvidas que surgiram ao ouvir os outros membros e que mudariam sua analise. Se nao tem duvida relevante, responda apenas: CLARO`,
-q3:`Ultimo momento para esclarecer. Antes do voto final, voce pode fazer ate 2 perguntas que impactariam sua posicao. Se ja tem clareza suficiente, responda apenas: CLARO`
+q1:`Antes de analisar, leia as perguntas que os OUTROS membros ja fizeram E as respostas de Alan. Se outro membro ja perguntou o que voce queria saber, NAO repita — aproveite a resposta. So pergunte algo NOVO que ninguem ainda perguntou e que e essencial pra SUA analise. Ate 2 perguntas, 1 frase cada. Se o contexto ja e suficiente (incluindo as respostas que Alan deu aos outros), responda: CLARO`,
+q2:`Antes de analisar, leia as perguntas que os OUTROS membros ja fizeram E as respostas de Alan. Se outro membro ja perguntou o que voce queria saber, NAO repita — aproveite a resposta. So pergunte algo NOVO que ninguem ainda perguntou e que e essencial pra SUA analise. Ate 2 perguntas, 1 frase cada. Se o contexto ja e suficiente (incluindo as respostas que Alan deu aos outros), responda: CLARO`,
+q3:`Antes de analisar, leia as perguntas que os OUTROS membros ja fizeram E as respostas de Alan. Se outro membro ja perguntou o que voce queria saber, NAO repita — aproveite a resposta. So pergunte algo NOVO que ninguem ainda perguntou e que e essencial pra SUA analise. Ate 2 perguntas, 1 frase cada. Se o contexto ja e suficiente (incluindo as respostas que Alan deu aos outros), responda: CLARO`
 }};
 
 /* Strategic plan question instructions */
 const SPQI={obj:{
-q1:`Antes de construir o plano, voce pode fazer 1 pergunta para esclarecer algo que impactaria sua contribuicao. Se ja tem clareza, responda: CLARO`
+q1:`Alan quer construir um PLANO ESTRATEGICO. Antes de comecar, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca 1 pergunta focada em informacao ESSENCIAL pra voce construir sua secao do plano com profundidade. Pergunte sobre dados, contexto, restricoes ou objetivos que impactam diretamente SUA AREA de expertise. Se o contexto ja e suficiente: CLARO`
 },det:{
-q1:`Antes de construir o plano, voce pode fazer ate 2 perguntas para extrair contexto essencial. Se ja tem clareza, responda: CLARO`,
-q2:`Apos ler as contribuicoes dos outros e a intervencao do CEO, voce pode fazer ate 2 perguntas que surgiram e que mudariam sua contribuicao. Se nao tem duvida, responda: CLARO`,
-q3:`Ultimo momento para esclarecer antes da versao final. Ate 2 perguntas. Se ja tem clareza: CLARO`
+q1:`Alan quer construir um PLANO ESTRATEGICO. Antes de cada rodada, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca ate 2 perguntas focadas em extrair contexto pra SUA AREA. Exemplos do tipo de pergunta que agrega:
+- CVO: "Qual o horizonte do plano? Existe budget definido?"
+- CMO: "Ja tem base de clientes ou comeca do zero? Quais canais ja testou?"
+- CFO: "Qual o caixa disponivel pra investimento inicial? Tem receita entrando?"
+- CBO: "Existe algum posicionamento ja definido? Tem identidade visual?"
+- Social Media: "Ja tem perfis ativos? Qual a frequencia atual de postagem?"
+- Publico: "Quem e o cliente hoje? Tem feedback de clientes atuais?"
+Se o contexto ja e suficiente: CLARO`,
+q2:`Alan quer construir um PLANO ESTRATEGICO. Antes de cada rodada, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca ate 2 perguntas focadas em extrair contexto pra SUA AREA. Se o contexto ja e suficiente: CLARO`,
+q3:`Alan quer construir um PLANO ESTRATEGICO. Antes de cada rodada, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca ate 2 perguntas focadas em extrair contexto pra SUA AREA. Se o contexto ja e suficiente: CLARO`
+}};
+/* Planning-direct question instructions (different from debate) */
+const SPQI_DIRECT={obj:{
+q1:`Alan quer construir um PLANO ESTRATEGICO. Antes de comecar, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca 1 pergunta focada em informacao ESSENCIAL pra voce construir sua secao do plano com profundidade. Pergunte sobre dados, contexto, restricoes ou objetivos que impactam diretamente SUA AREA de expertise. Se o contexto ja e suficiente: CLARO`
+},det:{
+q1:`Alan quer construir um PLANO ESTRATEGICO. Antes de cada rodada, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca ate 2 perguntas focadas em extrair contexto pra SUA AREA. Exemplos do tipo de pergunta que agrega:
+- CVO: "Qual o horizonte do plano? Existe budget definido?"
+- CMO: "Ja tem base de clientes ou comeca do zero? Quais canais ja testou?"
+- CFO: "Qual o caixa disponivel pra investimento inicial? Tem receita entrando?"
+- CBO: "Existe algum posicionamento ja definido? Tem identidade visual?"
+- Social Media: "Ja tem perfis ativos? Qual a frequencia atual de postagem?"
+- Publico: "Quem e o cliente hoje? Tem feedback de clientes atuais?"
+Se o contexto ja e suficiente: CLARO`,
+q2:`Alan quer construir um PLANO ESTRATEGICO. Antes de cada rodada, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca ate 2 perguntas focadas em extrair contexto pra SUA AREA. Se o contexto ja e suficiente: CLARO`,
+q3:`Alan quer construir um PLANO ESTRATEGICO. Antes de cada rodada, leia as perguntas dos outros membros e as respostas de Alan. NAO repita pergunta que outro ja fez. Faca ate 2 perguntas focadas em extrair contexto pra SUA AREA. Se o contexto ja e suficiente: CLARO`
 }};
 
 const ERI={obj:{
@@ -1985,7 +2052,7 @@ r3:"Versao final. Nomes reais, datas reais, micro-acoes reais. Vote na DECISAO: 
 
 /* ===== TOKENS ===== */
 const TK={q:100,r1:250,r2:250,r3:150,med:600};
-const SPTK={q:100,p0:600,p1:500,p2:500,p3:600,med:3000};
+const SPTK={q:100,p0:600,p1:500,p2:500,p3:500,p4:500,p5:500,pFinal:600,med:3000};
 const ETK={obj:{r1:200,r2:200,r3:150,med:1000},det:{r1:400,r2:400,r3:300,med:1500}};
 
 /* ===== STATE ===== */
@@ -2001,8 +2068,13 @@ let debateHistory=[],debateNum=1,continueText="";
 /* question phase state */
 let qPhase="",qRound=0,qAnswers={},qCallback=null;
 /* strategic plan state */
-let sp0="",sp1={},sp2={},sp3={},spmt="",spQAnswers={};
+let sp0="",sp1={},sp2={},sp3={},sp4={},sp5={},sp6={},spmt="",spQAnswers={};
 let spFromExec=false;
+let directPlan=false; /* true when user clicked "Iniciar planejamento" */
+let spCurrentRound=0; /* current SP round number (1-6) */
+let spConsensus={}; /* {memberKey: "pronto"|"refinar"} per round */
+let spRefineReasons={}; /* {memberKey: "reason"} for those who said REFINAR */
+let spRoundData={}; /* spRoundData[3]={cvo:"...",cmo:"..."} for dynamic rounds */
 
 /* ===== API ===== */
 async function apiOnce(sharedCtx,agentPrompt,msg,tk,debateCtx){
@@ -2109,7 +2181,7 @@ let h="";
 keys.forEach(k=>{
 const cc=agColor(k);
 const txt=data[k];
-const isSP=rlabel&&(rlabel.startsWith("P0")||rlabel.startsWith("P1")||rlabel.startsWith("P2")||rlabel.startsWith("P3"));
+const isSP=rlabel&&(rlabel.startsWith("P0")||rlabel.startsWith("P1")||rlabel.startsWith("P2")||rlabel.startsWith("P3")||rlabel.startsWith("P4")||rlabel.startsWith("P5")||rlabel.startsWith("P6")||rlabel.startsWith("P-Final"));
 const hasConflict=isSP&&txt&&(txt.includes("\u26a0\ufe0f")||txt.includes("\ud83d\udd34 CONFLITO")||txt.includes("CONFLITO COM")||txt.includes("CONFLITO PENDENTE")||txt.includes("ALERTA:"));
 const borderColor=hasConflict?"#D45B5B":cc;
 h+=`<div class="bubble" style="border-left:3px solid ${borderColor}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div><span style="font-size:10px;color:var(--text-muted)">${rlabel||""}</span></div>`;
@@ -2268,8 +2340,8 @@ return;
 }
 if(btnContId==="spp2btns"){
 document.getElementById(btnContId).innerHTML=c?
-`<button class="btn-go" onclick="${fn}">Seguir para versao final</button>`:
-`<button class="btn-skip" onclick="${fn}">Pular para versao final</button>`;
+`<button class="btn-go" onclick="${fn}">Seguir (verificar consenso)</button>`:
+`<button class="btn-skip" onclick="${fn}">Verificar consenso</button>`;
 return;
 }
 document.getElementById(btnContId).innerHTML=c?
@@ -2295,11 +2367,38 @@ return h;
 }
 
 /* ===== QUESTION PHASE ===== */
+/* Build collective context block of all questions + Alan answers for shared visibility */
+function buildCollectiveQCtx(){
+let ctx="";
+// Debate questions (r0)
+const r0Keys=Object.keys(r0).filter(k=>{const v=r0[k];return v&&v!=="CLARO"&&!v.trim().replace(/[.\s]/g,"").toUpperCase().startsWith("CLARO")});
+if(r0Keys.length>0||Object.keys(r0).filter(k=>r0[k]==="CLARO").length>0){
+ctx+="\nESCLARECIMENTOS DA RODADA:\n";
+Object.keys(r0).forEach(k=>{
+const a=getAgDisplay(k);
+if(r0[k]==="CLARO") ctx+=`${a.tag}: CLARO\n`;
+else ctx+=`${a.tag} perguntou: ${r0[k]}\n`;
+});
+if(r0resp) ctx+=`\nRESPOSTAS DE ALAN:\n${r0resp}\n`;
+ctx+="\n";
+}
+// SP questions
+Object.keys(spQAnswers).forEach(rkey=>{
+const rnum=rkey.replace("r","");
+ctx+=`\nRESPOSTAS DE ALAN (P${rnum}):\n${spQAnswers[rkey]}\n`;
+});
+return ctx;
+}
+
 async function runQuestions(ag,round,qInstructions,contextMsg,cb){
 const questions={};
+// Build collective context of previous questions for shared visibility
+const collectiveCtx=buildCollectiveQCtx();
 await Promise.all(ag.map(async k=>{
 try{
-const msg=`${qInstructions}\n\nQUESTAO:\n${contextMsg}`;
+let msg=`${qInstructions}`;
+if(collectiveCtx) msg+=`\n\nPERGUNTAS E RESPOSTAS ANTERIORES DOS MEMBROS:\n${collectiveCtx}`;
+msg+=`\n\nQUESTAO:\n${contextMsg}`;
 const ans=await api(CTX,getAgPrompt(k),msg,TK.q);
 const clean=ans.trim().replace(/[.\s]/g,"").toUpperCase();
 if(clean!=="CLARO")questions[k]=ans;
@@ -2319,11 +2418,16 @@ return{hasQuestions:false};
 function showQuestionCards(containerId,respId,qKeys,questions,labelText){
 const container=document.getElementById(containerId);
 container.innerHTML="";
-qKeys.forEach(k=>{
+// Show ALL members: those who asked questions AND those who said CLARO
+const allKeys=Object.keys(questions);
+allKeys.forEach(k=>{
 const cc=agColor(k);
-container.innerHTML+=`<div class="bubble" style="border-left:3px solid ${cc}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div></div><div class="bub-text">${esc(questions[k])}</div></div>`;
+const isClear=questions[k]==="CLARO";
+const opacity=isClear?"opacity:0.5":"";
+container.innerHTML+=`<div class="bubble" style="border-left:3px solid ${cc};${opacity}"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:4px">${agLabel(k)}</div></div><div class="bub-text">${isClear?'<em style="color:var(--text-dim)">CLARO — sem duvidas</em>':esc(questions[k])}</div></div>`;
 });
-sh(respId);
+// Only show response area if there are actual questions
+if(qKeys.length>0) sh(respId);
 }
 
 async function finishQ(){
@@ -2345,11 +2449,11 @@ if(qCallback)await qCallback();
 async function go(cont){
 if(!cont){
 idea=document.getElementById("ii").value.trim();if(!idea)return;
-debateHistory=[];debateNum=1;continueText="";
+debateHistory=[];debateNum=1;continueText="";directPlan=false;
 showDebate();
 }else{debateNum++}
 r0={};r0resp="";r1={};r2={};r3={};mt="";qAnswers={};
-sp0="";sp1={};sp2={};sp3={};spmt="";spQAnswers={};
+sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};
 const ag=selAg;
 document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">${prof==="obj"?"Rapido":"Detalhado"} \u00b7 ${rod} rodada${rod>1?"s":""} \u00b7 ${ag.length} membros</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
 document.getElementById("dbnum").textContent=debateNum>1?`Debate ${debateNum}`:"";
@@ -2373,6 +2477,65 @@ return;
 }
 
 await runR1(ag,cont);
+}
+
+/* ===== DIRECT PLANNING FLOW (skips debate) ===== */
+async function goPlan(){
+idea=document.getElementById("ii").value.trim();if(!idea)return;
+debateHistory=[];debateNum=1;continueText="";
+directPlan=true;
+r0={};r0resp="";r1={};r2={};r3={};mt="";qAnswers={};
+sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};
+spCurrentRound=0;spConsensus={};spRefineReasons={};
+const ag=selAg;
+showDebate();
+document.getElementById("sessionHdr").innerHTML=`<div class="session-mode">Planejamento Direto \u00b7 ${prof==="obj"?"Rapido":"Detalhado"} \u00b7 ${ag.length} membros</div><div class="session-idea">"${idea.length>80?idea.slice(0,80)+"...":idea}"</div>`;
+document.getElementById("dbnum").textContent="";
+["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
+["vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd"].forEach(id=>hi(id));
+
+// Questions phase (enriched for planning)
+const qInstr=prof==="obj"?SPQI_DIRECT.obj.q1:SPQI_DIRECT.det.q1;
+const result=await runQuestions(ag,1,qInstr,idea,async()=>{
+// After questions answered, go to P0
+sh("vsp");
+await runSP0Direct();
+});
+if(result.hasQuestions){
+sh("vq");
+document.getElementById("vq_label").textContent="ESCLARECIMENTO — PLANEJAMENTO";
+showQuestionCards("vq_cards","vq_resp",result.qKeys,result.questions,"Esclarecimento Planejamento");
+r0=result.questions;
+sb();
+return;
+}
+// No questions, go directly to SP flow
+sh("vsp");
+await runSP0Direct();
+}
+
+async function runSP0Direct(){
+sh("vsp0");
+const cvoData={cvo:""};
+renderRound("sp0a",["cvo"],cvoData,"P0",false);rp("sp0p",0,1);sb();
+// For direct planning, no debate context — use idea directly
+const directCtx=`QUESTAO ORIGINAL DE ALAN:\n${idea}\n\n`;
+let qCtx="";
+const qKeys=Object.keys(r0).filter(k=>{const v=r0[k];return v&&v!=="CLARO"&&!v.trim().replace(/[.\s]/g,"").toUpperCase().startsWith("CLARO")});
+if(qKeys.length>0){
+qCtx+="PERGUNTAS DOS MEMBROS:\n";
+qKeys.forEach(k=>{const a=getAgDisplay(k);qCtx+=`${a.tag} (${a.n}): ${r0[k]}\n`});
+if(r0resp)qCtx+=`Alan respondeu: ${r0resp}\n`;
+qCtx+="\n";
+}
+try{
+const msg=SP_P0_INSTR.replace("{DEBATE_CTX}",directCtx+qCtx);
+sp0=await api(CTX,getAgPrompt("cvo"),msg,SPTK.p0,directCtx);
+cvoData.cvo=sp0;
+}catch(e){sp0=`Erro: ${e.message}`;cvoData.cvo=sp0}
+renderRound("sp0a",["cvo"],cvoData,"P0",false);
+document.getElementById("sp0p").innerHTML="";
+sh("vspp0");updatePauseBtn("spc0","spp0btns","construcao");sb();
 }
 
 async function runR1(ag,cont){
@@ -2531,7 +2694,6 @@ sh("vd");sb();
 /* ===== STRATEGIC PLAN FLOW ===== */
 function buildDebateCtxFull(){
 const ag=selAg;
-const ce1=document.getElementById("c1")?.value.trim()||"",ce2=document.getElementById("c2")?.value.trim()||"";
 let ctx=`QUESTAO ORIGINAL DE ALAN:\n${idea}\n\n`;
 // R0 questions
 const qKeys=Object.keys(r0).filter(k=>{const v=r0[k];return v&&v!=="CLARO"});
@@ -2541,6 +2703,9 @@ qKeys.forEach(k=>{const a=getAgDisplay(k);ctx+=`${a.tag} (${a.n}): ${r0[k]}\n`})
 if(r0resp)ctx+=`Alan respondeu: ${r0resp}\n`;
 ctx+="\n";
 }
+// If direct planning, no debate rounds
+if(directPlan) return ctx;
+const ce1=document.getElementById("c1")?.value.trim()||"",ce2=document.getElementById("c2")?.value.trim()||"";
 ctx+="= R1 - ANALISES =\n\n";
 ag.forEach(k=>{const a=getAgDisplay(k);ctx+=`${a.tag} (${a.n}):\n${r1[k]}\n\n`});
 if(ce1)ctx+=`Alan (pos R1): ${ce1}\n\n`;
@@ -2657,8 +2822,75 @@ SUA TAREFA:
 - Remova o que o CEO vetou ou o que nao teve consenso
 - CONECTE sua secao as dos outros membros -- cite como sua frente alimenta ou depende de outra
 - Se identificar CONFLITO real entre sua proposta e a de outro membro, sinalize com: "CONFLITO COM [MEMBRO]: [descricao do conflito e sua proposta de resolucao]"
-- Lembre: o melhor plano e simples, viavel e impactante`;
+- Lembre: o melhor plano e simples, viavel e impactante
 
+OBRIGATORIO NO FINAL DA SUA RESPOSTA — sinalize um dos dois:
+✅ PRONTO — minha secao esta integrada e completa.
+OU
+🔄 REFINAR — [motivo em 1 frase]. Exemplo: "Conflito com CFO sobre budget que precisa ser resolvido"`;
+
+/* Refinement round instruction (P3-P5) */
+function buildSPRefineInstr(roundNum,refineMembers,ceoIntervention,allSections){
+return `MODO: PLANO ESTRATEGICO — REFINAMENTO (Rodada ${roundNum} de maximo 6)
+
+Membros que pediram refinamento e seus motivos:
+${refineMembers}
+
+Intervencao/arbitragem do CEO:
+${ceoIntervention||"sem intervencao"}
+
+Secoes atuais de todos os membros:
+${allSections}
+
+SUA TAREFA:
+1. RESOLVA os pontos pendentes que motivaram esta rodada
+2. INTEGRE ajustes dos outros membros
+3. SIGA direcao do CEO se houve intervencao
+4. No final, sinalize:
+   ✅ PRONTO — se sua secao esta completa e integrada
+   🔄 REFINAR — [motivo] se ainda precisa de mais uma rodada
+
+Lembre: estamos na rodada ${roundNum} de 6. Se nao chegarmos a consenso ate a rodada 6, o plano sera finalizado com os pontos pendentes sinalizados. Priorize resolver o essencial AGORA.`;
+}
+
+/* P-Final instruction */
+function buildSPFinalInstr(isForced,allSections,lastCeoIntervention){
+const consensusNote=isForced?
+"Maximo de rodadas atingido. Entregue a melhor versao possivel. Sinalize pontos nao resolvidos se houver.":
+"Todos os membros sinalizaram ✅ PRONTO. Esta e a versao DEFINITIVA.";
+const pendingNote=isForced?
+"\n\nSe ainda resta algum ponto nao resolvido na sua secao, sinalize claramente: \"⚠️ PENDENTE: [descricao do que nao foi resolvido e por que]\"":"";
+return `MODO: PLANO ESTRATEGICO — VERSAO FINAL
+
+${consensusNote}
+
+Secoes atuais de todos + ultima intervencao do CEO:
+${allSections}
+${lastCeoIntervention?("Intervencao do CEO: "+lastCeoIntervention):""}
+
+SUA TAREFA:
+Entregue sua SECAO FINAL do plano. Ultra-detalhada, pratica, completa. Todos os conflitos resolvidos. Totalmente integrada com as secoes dos outros membros. Cite conexoes: "conforme o funil do CMO...", "dentro do budget do CFO...", "alinhado com o posicionamento do CBO...".${pendingNote}
+
+OBRIGATORIO NA VERSAO FINAL:
+- Cite pelo menos 1 CONEXAO explicita com outra area
+- Se algo da sua area DEPENDE de outra area entregar primeiro, sinalize a dependencia`;
+}
+
+/* Parse consensus signals from member response */
+function parseConsensus(txt){
+if(!txt)return{signal:"refinar",reason:"sem resposta"};
+const upper=txt.toUpperCase();
+if(upper.includes("✅ PRONTO")||upper.includes("✅PRONTO")||upper.includes("PRONTO —")||upper.includes("PRONTO—")||(upper.includes("✅")&&upper.includes("PRONTO")))
+return{signal:"pronto",reason:""};
+const refMatch=txt.match(/🔄\s*REFINAR\s*[—–-]\s*(.+?)(?:\n|$)/i);
+if(refMatch) return{signal:"refinar",reason:refMatch[1].trim()};
+if(upper.includes("🔄 REFINAR")||upper.includes("🔄REFINAR")||upper.includes("REFINAR —")||upper.includes("REFINAR—")||(upper.includes("🔄")&&upper.includes("REFINAR")))
+return{signal:"refinar",reason:"motivo nao especificado"};
+// Default: treat as refinar if no signal found (shouldn't happen ideally)
+return{signal:"refinar",reason:"sinal nao detectado"};
+}
+
+/* Old P3 instruction kept for compatibility but replaced by dynamic system */
 const SP_P3_INSTR=`MODO: CONSTRUCAO DE PLANO ESTRATEGICO -- RODADA 3 (Versao Final)
 
 Leia as contribuicoes refinadas de todos e a intervencao final do CEO.
@@ -2722,10 +2954,15 @@ PROXIMOS PASSOS ESTRATEGICOS
 async function startSP(){
 hi("vr3post");
 sh("vsp");
-sp0="";sp1={};sp2={};sp3={};spmt="";spQAnswers={};
-spFromExec=false;
-["sp0a","sp0p","sp1a","sp2a","sp3a","sp1p","sp2p","sp3p","spmc","sp_q1_cards","sp_q2_cards","sp_q3_cards"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
-["vsp0","vspp0","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_q3","vsp3","vspsy","vspd","sp_q1_resp","sp_q2_resp","sp_q3_resp"].forEach(id=>hi(id));
+sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};spRoundData={};
+spFromExec=false;spCurrentRound=0;spConsensus={};spRefineReasons={};
+["sp0a","sp0p","sp1a","sp2a","sp1p","sp2p","spmc","sp_q1_cards","sp_q2_cards"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
+["vsp0","vspp0","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_final","vspp_final","vspsy","vspd","sp_q1_resp","sp_q2_resp"].forEach(id=>hi(id));
+// Clear dynamic rounds
+const dynContainer=document.getElementById("vsp_dynamic");
+if(dynContainer) dynContainer.innerHTML="";
+// Clear P-Final
+["spfa","spfp"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
 if(document.getElementById("spc0"))document.getElementById("spc0").value="";
 if(document.getElementById("spc1"))document.getElementById("spc1").value="";
 if(document.getElementById("spc2"))document.getElementById("spc2").value="";
@@ -2854,59 +3091,269 @@ sh("vspp2");updatePauseBtn("spc2","spp2btns","versao final");sb();
 async function spfp2(){
 hi("vspp2");
 const ag=selAg;
-
-// Questions before P3 (Detalhado only)
-if(prof==="det"){
-const qInstr=SPQI.det.q3;
-const result=await runQuestions(ag,3,qInstr,idea+"\n\nContribuicoes P1 e P2 ja foram feitas.",async()=>{
-await runSP3();
-});
-if(result.hasQuestions){
-sh("vsp_q3");
-showQuestionCards("sp_q3_cards","sp_q3_resp",result.qKeys,result.questions,"Esclarecimento P3");
-sb();
-return;
-}
-}
-
-await runSP3();
-}
-
-async function runSP3(){
-const ag=selAg;
-sh("vsp3");
-const ce1=document.getElementById("spc1").value.trim();
 const ce2=document.getElementById("spc2").value.trim();
 // Show CEO intervention after P2
 if(ce2){
 const sp2el=document.getElementById("sp2a");
 sp2el.innerHTML+=`<div class="ceo-bubble" style="border-left-color:#48484A"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:6px"><span class="bub-name">Alan</span><span class="bub-tag">(CEO)</span></div></div><div class="bub-text">${esc(ce2)}</div></div>`;
 }
-renderRound("sp3a",ag,sp3,"P3",false);rp("sp3p",0,ag.length);sb();
-let dn=0;
-let p2ctx="CONTRIBUICOES P2 REFINADAS:\n\n";
-ag.forEach(k=>{const a=getAgDisplay(k);p2ctx+=`${a.tag} (${a.n}):\n${sp2[k]}\n\n`});
-if(ce2)p2ctx+=`INTERVENCAO DO CEO: ${ce2}\n\n`;
-let qCtx="";
-if(spQAnswers.r3)qCtx+="\n\nRespostas de Alan antes da P3: "+spQAnswers.r3;
 
+// Parse consensus from P2 responses
+spConsensus={};spRefineReasons={};
+let allReady=true;
+ag.forEach(k=>{
+const c=parseConsensus(sp2[k]);
+spConsensus[k]=c.signal;
+if(c.signal==="refinar"){allReady=false;spRefineReasons[k]=c.reason}
+});
+spCurrentRound=2;
+
+// Update P2 cards with badges
+updateConsensusBadges("sp2a",ag,spConsensus);
+
+if(allReady){
+// All PRONTO -> go to P-Final
+await runSPFinal(false);
+}else{
+// Some REFINAR -> go to P3 (refinement)
+await runSPDynamicRound(3);
+}
+}
+
+/* Get latest sections from whichever round was last completed */
+function getLatestSPSections(){
+const ag=selAg;
+const roundMap={1:sp1,2:sp2};
+// Also check dynamic round data
+for(let r=6;r>=3;r--){
+if(spRoundData[r]&&Object.keys(spRoundData[r]).length>0) return spRoundData[r];
+}
+if(Object.keys(sp2).length>0) return sp2;
+if(Object.keys(sp1).length>0) return sp1;
+return {};
+}
+
+function buildAllSectionsCtx(data){
+const ag=selAg;
+let ctx="";
+ag.forEach(k=>{const a=getAgDisplay(k);ctx+=`${a.tag} (${a.n}):\n${data[k]||""}\n\n`});
+return ctx;
+}
+
+function buildRefineMembers(){
+let txt="";
+Object.keys(spRefineReasons).forEach(k=>{
+const a=getAgDisplay(k);
+txt+=`${a.tag} (${a.n}): ${spRefineReasons[k]}\n`;
+});
+return txt||"nenhum";
+}
+
+/* Create dynamic round HTML section */
+function createDynamicRoundHTML(roundNum){
+const roundLabel=roundNum===6?"Final":("Refinamento");
+const sepLabel=`PLANO ESTRATEGICO — RODADA ${roundNum} · ${roundLabel}`;
+const containerId=`vsp_dyn_r${roundNum}`;
+const areaId=`sp_dyn_r${roundNum}_a`;
+const progId=`sp_dyn_r${roundNum}_p`;
+const progressInfoId=`sp_dyn_r${roundNum}_info`;
+const pauseId=`vspp_dyn_r${roundNum}`;
+const pauseTextId=`spc_dyn_r${roundNum}`;
+const pauseBtnId=`spp_dyn_r${roundNum}_btns`;
+
+let html=`<div id="${containerId}" class="hid">
+<div class="rd-sep rd-sep-gold"><div class="line"></div><span>${sepLabel}</span><div class="line"></div></div>
+<div id="${progressInfoId}" style="text-align:center;font-size:11px;color:var(--text-dim);margin-bottom:10px"></div>
+<div id="${progId}"></div><div id="${areaId}"></div>
+</div>
+<div id="${pauseId}" class="hid">
+<div class="ceo-pause">
+<div class="ceo-label">Intervencao do CEO</div>
+<textarea id="${pauseTextId}" rows="3" placeholder="Redirecione, arbitre conflitos, ajuste..."></textarea>
+<div class="ceo-btn-row" id="${pauseBtnId}"></div>
+</div>
+</div>`;
+return html;
+}
+
+function ensureDynamicRoundExists(roundNum){
+const containerId=`vsp_dyn_r${roundNum}`;
+if(document.getElementById(containerId)) return;
+const container=document.getElementById("vsp_dynamic");
+container.insertAdjacentHTML("beforeend",createDynamicRoundHTML(roundNum));
+// Add event listener for the new textarea
+const textareaId=`spc_dyn_r${roundNum}`;
+const btnContId=`spp_dyn_r${roundNum}_btns`;
+document.getElementById(textareaId).addEventListener("input",()=>{
+const c=document.getElementById(textareaId).value.trim();
+document.getElementById(btnContId).innerHTML=c?
+`<button class="btn-go" onclick="spfpDynamic(${roundNum})">Seguir com ajuste</button>`:
+`<button class="btn-skip" onclick="spfpDynamic(${roundNum})">Pular</button>`;
+});
+}
+
+/* Run a dynamic refinement round (P3-P5, or P6 forced final) */
+async function runSPDynamicRound(roundNum){
+const ag=selAg;
+spCurrentRound=roundNum;
+if(!spRoundData[roundNum]) spRoundData[roundNum]={};
+ensureDynamicRoundExists(roundNum);
+const containerId=`vsp_dyn_r${roundNum}`;
+const areaId=`sp_dyn_r${roundNum}_a`;
+const progId=`sp_dyn_r${roundNum}_p`;
+const progressInfoId=`sp_dyn_r${roundNum}_info`;
+
+sh(containerId);
+const data=spRoundData[roundNum];
+renderRound(areaId,ag,data,`P${roundNum}`,false);rp(progId,0,ag.length);
+
+// Show progress info
+const readyCount=Object.values(spConsensus).filter(v=>v==="pronto").length;
+document.getElementById(progressInfoId).textContent=`Rodada ${roundNum} de 6 · ${readyCount} de ${ag.length} membros prontos`;
+sb();
+
+// Build context
+const latestSections=getLatestSPSections();
+const allSectionsCtx=buildAllSectionsCtx(latestSections);
+const refineMembers=buildRefineMembers();
+const prevPauseId=roundNum===3?"spc2":`spc_dyn_r${roundNum-1}`;
+const ceoIntervention=document.getElementById(prevPauseId)?.value.trim()||"";
 const debCtxFull=buildDebateCtxFull();
-const ce0_p3=document.getElementById("spc0")?.value.trim()||"";
-let p0ctx_p3=sp0;
-if(ce0_p3)p0ctx_p3+="\n\nAJUSTE DO CEO: "+ce0_p3;
-let p1ctx="CONTRIBUICOES P1:\n\n";
-ag.forEach(k=>{const a=getAgDisplay(k);p1ctx+=`${a.tag} (${a.n}):\n${sp1[k]}\n\n`});
-if(ce1)p1ctx+=`INTERVENCAO DO CEO: ${ce1}\n\n`;
+
+const isP6=roundNum===6;
+let dn=0;
 
 await Promise.all(ag.map(async k=>{
 try{
-const msg=SP_P3_INSTR.replace("{P2_CTX}",p2ctx).replace("{P0_CTX}",p0ctx_p3)+qCtx;
-sp3[k]=await api(CTX,getAgPrompt(k),msg,SPTK.p3,debCtxFull+"\n\n"+p0ctx_p3+"\n\n"+p1ctx+"\n\n"+p2ctx);
-}catch(e){sp3[k]=`Erro: ${e.message}`}
-dn++;renderRound("sp3a",ag,sp3,"P3",false);rp("sp3p",dn,ag.length);sb();
+let msg;
+if(isP6){
+// P6 = forced final
+msg=buildSPFinalInstr(true,allSectionsCtx,ceoIntervention);
+}else{
+msg=buildSPRefineInstr(roundNum,refineMembers,ceoIntervention,allSectionsCtx);
+}
+const tk=isP6?SPTK.pFinal:(SPTK["p"+roundNum]||500);
+spRoundData[roundNum][k]=await api(CTX,getAgPrompt(k),msg,tk,debCtxFull+"\n\n"+allSectionsCtx);
+}catch(e){spRoundData[roundNum][k]=`Erro: ${e.message}`}
+dn++;renderRound(areaId,ag,spRoundData[roundNum],`P${roundNum}`,false);rp(progId,dn,ag.length);sb();
 }));
-document.getElementById("sp3p").innerHTML="";
-await spSyn();
+document.getElementById(progId).innerHTML="";
+
+if(isP6){
+// P6 is forced final — go to synthesis
+sp3=spRoundData[roundNum]; // backwards compat
+await spSyn(true);
+return;
+}
+
+// Parse consensus
+spConsensus={};spRefineReasons={};
+let allReady=true;
+ag.forEach(k=>{
+const c=parseConsensus(spRoundData[roundNum][k]);
+spConsensus[k]=c.signal;
+if(c.signal==="refinar"){allReady=false;spRefineReasons[k]=c.reason}
+});
+
+// Update badges
+updateConsensusBadges(areaId,ag,spConsensus);
+
+// Update progress
+const newReadyCount=Object.values(spConsensus).filter(v=>v==="pronto").length;
+document.getElementById(progressInfoId).textContent=`Rodada ${roundNum} de 6 · ${newReadyCount} de ${ag.length} membros prontos`;
+
+// Show CEO pause
+const pauseId=`vspp_dyn_r${roundNum}`;
+const btnContId=`spp_dyn_r${roundNum}_btns`;
+sh(pauseId);
+document.getElementById(btnContId).innerHTML=allReady?
+`<button class="btn-skip" onclick="spfpDynamic(${roundNum})">Aprovar e finalizar</button>`:
+`<button class="btn-skip" onclick="spfpDynamic(${roundNum})">Pular</button>`;
+sb();
+}
+
+/* CEO pause handler for dynamic rounds */
+async function spfpDynamic(roundNum){
+const pauseId=`vspp_dyn_r${roundNum}`;
+hi(pauseId);
+const textareaId=`spc_dyn_r${roundNum}`;
+const ceoText=document.getElementById(textareaId)?.value.trim()||"";
+
+// Show CEO bubble if intervention
+if(ceoText){
+const areaId=`sp_dyn_r${roundNum}_a`;
+document.getElementById(areaId).innerHTML+=`<div class="ceo-bubble" style="border-left-color:#48484A"><div class="bub-hdr"><div style="display:flex;align-items:baseline;gap:6px"><span class="bub-name">Alan</span><span class="bub-tag">(CEO)</span></div></div><div class="bub-text">${esc(ceoText)}</div></div>`;
+}
+
+// Check consensus
+let allReady=true;
+Object.values(spConsensus).forEach(v=>{if(v!=="pronto")allReady=false});
+
+if(allReady){
+await runSPFinal(false);
+}else if(roundNum>=5){
+// Next would be P6 = forced final
+await runSPDynamicRound(6);
+}else{
+await runSPDynamicRound(roundNum+1);
+}
+}
+
+/* Run P-Final (consensus achieved or forced) */
+async function runSPFinal(isForced){
+const ag=selAg;
+sh("vsp_final");
+const spFinalData={};
+const labelEl=document.getElementById("vsp_final_label");
+if(isForced){
+labelEl.textContent="PLANO ESTRATEGICO — RODADA 6 · Final";
+}else{
+labelEl.textContent="PLANO ESTRATEGICO · Versao Final";
+}
+renderRound("spfa",ag,spFinalData,"P-Final",false);rp("spfp",0,ag.length);sb();
+
+const latestSections=getLatestSPSections();
+const allSectionsCtx=buildAllSectionsCtx(latestSections);
+// Get last CEO intervention
+let lastCeo="";
+for(let r=6;r>=2;r--){
+const tid=r<=2?"spc2":`spc_dyn_r${r}`;
+const el=document.getElementById(tid);
+if(el&&el.value.trim()){lastCeo=el.value.trim();break}
+}
+const debCtxFull=buildDebateCtxFull();
+let dn=0;
+
+await Promise.all(ag.map(async k=>{
+try{
+const msg=buildSPFinalInstr(isForced,allSectionsCtx,lastCeo);
+spFinalData[k]=await api(CTX,getAgPrompt(k),msg,SPTK.pFinal,debCtxFull+"\n\n"+allSectionsCtx);
+}catch(e){spFinalData[k]=`Erro: ${e.message}`}
+dn++;renderRound("spfa",ag,spFinalData,"P-Final",false);rp("spfp",dn,ag.length);sb();
+}));
+document.getElementById("spfp").innerHTML="";
+// Store in sp3 for backwards compat with spSyn
+sp3=spFinalData;
+await spSyn(isForced);
+}
+
+/* Add consensus badges (check/refine) to bubble cards */
+function updateConsensusBadges(containerId,keys,consensus){
+const container=document.getElementById(containerId);
+if(!container) return;
+const bubbles=container.querySelectorAll(".bubble");
+keys.forEach((k,i)=>{
+if(i<bubbles.length&&consensus[k]){
+const badge=consensus[k]==="pronto"?
+'<span style="position:absolute;top:8px;right:12px;font-size:14px" title="Pronto">✅</span>':
+'<span style="position:absolute;top:8px;right:12px;font-size:14px" title="Refinar">🔄</span>';
+bubbles[i].style.position="relative";
+// Remove old badge if any
+const oldBadge=bubbles[i].querySelector(".consensus-badge");
+if(oldBadge) oldBadge.remove();
+bubbles[i].insertAdjacentHTML("beforeend",`<span class="consensus-badge" style="position:absolute;top:8px;right:12px;font-size:14px">${consensus[k]==="pronto"?"✅":"🔄"}</span>`);
+}
+});
 }
 
 function parseSPlan(txt){
@@ -2997,13 +3444,27 @@ h+=`<div class="syn-tomorrow" style="margin-bottom:10px"><div class="syn-tomorro
 el.innerHTML=h;
 }
 
-async function spSyn(){
+async function spSyn(isForced){
 sh("vspsy");renderSPlan("spmc","",true);sb();
 const ag=selAg;
 const ce0=document.getElementById("spc0")?.value.trim()||"";
 const ce1=document.getElementById("spc1")?.value.trim()||"";
 const ce2=document.getElementById("spc2")?.value.trim()||"";
-const msP=buildSPMediatorPrompt();
+let msP=buildSPMediatorPrompt();
+
+// Add consensus info to mediator prompt
+const totalRounds=spCurrentRound||3;
+const consensusInfo=isForced?
+`\nINFORMACAO DE CONSENSO:\nPlano finalizado na rodada maxima (6). Pontos pendentes sinalizados abaixo.\n`:
+`\nINFORMACAO DE CONSENSO:\nPlano aprovado por consenso em ${totalRounds} rodadas.\n`;
+msP+=consensusInfo;
+
+// Check for pending items
+const hasPending=Object.values(sp3).some(v=>v&&(v.includes("⚠️ PENDENTE")||v.includes("PENDENTE:")));
+if(hasPending||isForced){
+msP+=`\nSe houver ⚠️ PENDENTE de algum membro, adicione secao:\n\n⚠️ PONTOS PENDENTES (nao resolvidos):\n- [ponto 1: descricao + entre quais membros]\n- [ponto 2 se houver]\n\nEstes pontos devem ser resolvidos pelo CEO antes de seguir pra execucao.\n`;
+}
+
 const debCtxFull=buildDebateCtxFull();
 
 let m=debCtxFull+"\n\n";
@@ -3015,7 +3476,19 @@ if(ce1)m+=`Alan (pos P1): ${ce1}\n\n`;
 m+="= P2 - INTEGRACAO =\n\n";
 ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${sp2[k]}\n\n`});
 if(ce2)m+=`Alan (pos P2): ${ce2}\n\n`;
-m+="= P3 - VERSAO FINAL =\n\n";
+// Add dynamic rounds if any
+for(let r=3;r<=6;r++){
+if(spRoundData[r]&&Object.keys(spRoundData[r]).length>0){
+const rLabel=r===6?"FINAL FORCADA":`REFINAMENTO ${r}`;
+m+=`= P${r} - ${rLabel} =\n\n`;
+ag.forEach(k=>{if(spRoundData[r][k]){const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${spRoundData[r][k]}\n\n`}});
+const ceTid=`spc_dyn_r${r}`;
+const ceT=document.getElementById(ceTid)?.value.trim()||"";
+if(ceT) m+=`Alan (pos P${r}): ${ceT}\n\n`;
+}
+}
+// Final round
+m+="= VERSAO FINAL =\n\n";
 ag.forEach(k=>{const a=getAgDisplay(k);m+=`${a.tag} (${a.n}):\n${sp3[k]}\n\n`});
 m+="Organize o plano estrategico no formato especificado.";
 
@@ -3187,19 +3660,248 @@ sh("ved");sb();
 
 function copyPlan(){
 doCopy(emt);
-const btns=document.querySelectorAll("#ved .btn-dark");
-const b=btns[btns.length-1];
-if(b){const o=b.textContent;b.textContent="Copiado!";setTimeout(()=>{b.textContent=o},2000)}
+}
+
+/* ===== START SP FROM RESULTADO ===== */
+function startSPFromResultado(){
+hi("vd");
+startSP();
+}
+
+/* ===== CONTINUE PLANNING ===== */
+function continuePlanning(){
+hi("vspd");
+// Show a text field for Alan to add direction
+const cpHTML=`<div class="ceo-pause" id="vcp">
+<div class="ceo-label">O que quer ajustar ou expandir no plano?</div>
+<textarea id="cpi" rows="3" placeholder="Descreva o que quer aprofundar, ajustar ou expandir..."></textarea>
+<div style="display:flex;gap:8px;margin-top:8px">
+<button class="btn-dark" style="flex:1" onclick="doContinuePlanning()">Continuar planejamento</button>
+<button class="btn-light" style="flex:1" onclick="cancelContinuePlanning()">Cancelar</button>
+</div>
+</div>`;
+// Insert after vspd
+document.getElementById("vspd").insertAdjacentHTML("afterend",cpHTML);
+document.getElementById("cpi").focus();sb();
+}
+function cancelContinuePlanning(){
+const el=document.getElementById("vcp");if(el)el.remove();
+sh("vspd");sb();
+}
+function doContinuePlanning(){
+const txt=document.getElementById("cpi").value.trim();if(!txt)return;
+const el=document.getElementById("vcp");if(el)el.remove();
+// Add the continuation text to idea context and run another round
+continueText=txt;
+idea=idea+"\n\nAJUSTE ADICIONAL DE ALAN: "+txt;
+// Reset round data and re-run from current state
+spCurrentRound=Math.max(spCurrentRound,2);
+runSPDynamicRound(spCurrentRound+1<=6?spCurrentRound+1:6);
+}
+
+/* ===== EXPORT SYSTEM ===== */
+function toggleExportDD(id){
+const dd=document.getElementById(id);
+if(!dd)return;
+// Close all other dropdowns first
+document.querySelectorAll(".export-dd.show").forEach(d=>{if(d.id!==id)d.classList.remove("show")});
+dd.classList.toggle("show");
+}
+// Close dropdown on click outside
+document.addEventListener("click",e=>{
+if(!e.target.closest(".export-wrap")){
+document.querySelectorAll(".export-dd.show").forEach(d=>d.classList.remove("show"));
+}
+});
+
+function getDateStr(){
+const d=new Date();
+return `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,"0")}-${d.getDate().toString().padStart(2,"0")}`;
+}
+function getDateDisplay(){
+const d=new Date();
+return `${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")}/${d.getFullYear()}`;
+}
+
+function buildResultadoText(){
+return mt||"";
+}
+
+function buildTudoResultadoText(){
+const ag=selAg;const ce1=document.getElementById("c1")?.value.trim()||"";const ce2=document.getElementById("c2")?.value.trim()||"";
+const ds=getDateDisplay();
+let t=`CONSELHO — ${ds} — ${prof==="obj"?"Rapido":"Detalhado"} — ${rod} rodada${rod>1?"s":""}\n`;
+t+=`Membros: ${ag.map(k=>{const a=getAgDisplay(k);return(k==="sm"||k==="pub")?a.n:a.tag+" ("+a.n+")"}).join(", ")}\n`;
+t+=`Questao: ${idea}\n\n`;
+const qKeys=Object.keys(r0).filter(k=>{const v=r0[k];return v&&v!=="CLARO"&&!v.trim().replace(/[.\s]/g,"").toUpperCase().startsWith("CLARO")});
+if(qKeys.length>0){
+t+=`=== ESCLARECIMENTO ===\n\n`;
+qKeys.forEach(k=>{const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}: ${r0[k]}\n\n`});
+if(r0resp)t+=`Alan: ${r0resp}\n\n`;
+}
+t+=`=== RODADA 1 — ANALISES ===\n\n`;
+ag.forEach(k=>{const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}:\n${r1[k]||""}\n\n`});
+t+=`=== INTERVENCAO CEO ===\n${ce1||"sem intervencao"}\n\n`;
+if(Object.keys(r2).length){
+t+=`=== RODADA 2 — DEBATE ===\n\n`;ag.forEach(k=>{if(r2[k]){const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}:\n${r2[k]}\n\n`}});
+t+=`=== INTERVENCAO CEO ===\n${ce2||"sem intervencao"}\n\n`;
+}
+if(Object.keys(r3).length){
+t+=`=== RODADA 3 — VOTO FINAL ===\n\n`;ag.forEach(k=>{if(r3[k]){const a=getAgDisplay(k);const lbl=(k==="sm"||k==="pub")?a.n:`${a.tag} (${a.n})`;t+=`${lbl}:\n${r3[k]}\n\n`}});
+}
+t+=`=== SINTESE DO MEDIADOR ===\n${mt}\n`;
+return t;
+}
+
+function buildPlanoText(){
+return spmt||"";
+}
+
+function buildTudoPlanoText(){
+let t=directPlan?"":buildTudoResultadoText();
+if(directPlan){
+const ds=getDateDisplay();
+const ag=selAg;
+t=`CONSELHO — PLANEJAMENTO DIRETO — ${ds}\n`;
+t+=`Membros: ${ag.map(k=>{const a=getAgDisplay(k);return(k==="sm"||k==="pub")?a.n:a.tag+" ("+a.n+")"}).join(", ")}\n`;
+t+=`Questao: ${idea}\n\n`;
+const qKeys=Object.keys(r0).filter(k=>{const v=r0[k];return v&&v!=="CLARO"});
+if(qKeys.length>0){
+t+=`=== ESCLARECIMENTO ===\n\n`;
+qKeys.forEach(k=>{const a=getAgDisplay(k);t+=`${a.tag}: ${r0[k]}\n\n`});
+if(r0resp)t+=`Alan: ${r0resp}\n\n`;
+}
+}
+t+=`\n=== PLANO ESTRATEGICO ===\n\n`;
+t+=`P0 — Esqueleto (CVO):\n${sp0}\n\n`;
+const ag=selAg;
+t+=`P1 — Construcao:\n`;ag.forEach(k=>{const a=getAgDisplay(k);t+=`${a.tag} (${a.n}):\n${sp1[k]||""}\n\n`});
+t+=`P2 — Integracao:\n`;ag.forEach(k=>{const a=getAgDisplay(k);t+=`${a.tag} (${a.n}):\n${sp2[k]||""}\n\n`});
+for(let r=3;r<=6;r++){
+if(spRoundData[r]&&Object.keys(spRoundData[r]).length>0){
+t+=`P${r} — Refinamento:\n`;ag.forEach(k=>{if(spRoundData[r][k]){const a=getAgDisplay(k);t+=`${a.tag} (${a.n}):\n${spRoundData[r][k]}\n\n`}});
+}
+}
+if(Object.keys(sp3).length>0){
+t+=`Versao Final:\n`;ag.forEach(k=>{if(sp3[k]){const a=getAgDisplay(k);t+=`${a.tag} (${a.n}):\n${sp3[k]}\n\n`}});
+}
+t+=`=== PLANO ORGANIZADO ===\n${spmt}\n`;
+return t;
+}
+
+function buildExecText(){
+return emt||"";
+}
+
+function buildTudoExecText(){
+let t=buildTudoPlanoText()||buildTudoResultadoText();
+t+=`\n=== PLANO DE EXECUCAO ===\n\n`;
+EKS.forEach(k=>{t+=`${EAG[k].tag} (${EAG[k].n}) R1:\n${er1[k]||""}\n\n`});
+if(Object.keys(er2).length){
+EKS.forEach(k=>{if(er2[k])t+=`${EAG[k].tag} (${EAG[k].n}) R2:\n${er2[k]}\n\n`});
+}
+if(Object.keys(er3).length){
+EKS.forEach(k=>{if(er3[k])t+=`${EAG[k].tag} (${EAG[k].n}) Final:\n${er3[k]}\n\n`});
+}
+t+=`=== PLANO DE ACAO FINAL ===\n${emt}\n`;
+return t;
+}
+
+function getExportText(type){
+switch(type){
+case "resultado": return buildResultadoText();
+case "tudo_resultado": return buildTudoResultadoText();
+case "plano": return buildPlanoText();
+case "tudo_plano": return buildTudoPlanoText();
+case "execucao": return buildExecText();
+case "tudo_exec": return buildTudoExecText();
+default: return "";
+}
+}
+
+function getExportFilename(type){
+const ds=getDateStr();
+const typeMap={
+resultado:"resultado",tudo_resultado:"completo",
+plano:"plano",tudo_plano:"completo-plano",
+execucao:"execucao",tudo_exec:"completo-execucao"
+};
+return `conselho-${typeMap[type]||type}-${ds}`;
+}
+
+function clipCopy(txt){
+try{navigator.clipboard.writeText(txt)}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta)}
+}
+
+function downloadFile(filename,content,ext){
+const blob=new Blob([content],{type:ext==="md"?"text/markdown":"text/plain"});
+const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+a.download=filename+"."+ext;document.body.appendChild(a);a.click();document.body.removeChild(a);
+URL.revokeObjectURL(a.href);
+}
+
+function generatePDF(filename,content){
+try{
+const{jsPDF}=window.jspdf;
+const doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+const margin=15;const pageW=210-2*margin;
+doc.setFont("helvetica","bold");doc.setFontSize(16);
+doc.text("Conselho",margin,20);
+doc.setFont("helvetica","normal");doc.setFontSize(9);
+doc.text(getDateDisplay(),margin,27);
+doc.setDrawColor(184,148,60);doc.setLineWidth(0.5);
+doc.line(margin,30,210-margin,30);
+// Content
+doc.setFontSize(10);
+const lines=doc.splitTextToSize(content,pageW);
+let y=36;
+lines.forEach(line=>{
+if(y>280){doc.addPage();y=20}
+// Bold for headers (lines starting with === or all caps short lines)
+if(line.match(/^===/)|| (line.length<60&&line===line.toUpperCase()&&line.length>3)){
+doc.setFont("helvetica","bold");
+doc.text(line.replace(/^=+\s*/,"").replace(/\s*=+$/,""),margin,y);
+doc.setFont("helvetica","normal");
+}else{
+doc.text(line,margin,y);
+}
+y+=4.5;
+});
+doc.save(filename+".pdf");
+}catch(e){
+console.error("PDF generation error:",e);
+alert("Erro ao gerar PDF. Tente copiar ou baixar .md.");
+}
+}
+
+function exportAction(format,type){
+document.querySelectorAll(".export-dd.show").forEach(d=>d.classList.remove("show"));
+const txt=getExportText(type);
+const fname=getExportFilename(type);
+if(format==="copy"){
+clipCopy(txt);
+// Brief feedback
+const btn=event?.target?.closest(".export-wrap")?.querySelector(".export-btn");
+if(btn){const o=btn.innerHTML;btn.innerHTML="Copiado!";setTimeout(()=>{btn.innerHTML=o},2000)}
+}else if(format==="md"){
+downloadFile(fname,txt,"md");
+}else if(format==="pdf"){
+generatePDF(fname,txt);
+}
 }
 
 function rst(){
 r0={};r0resp="";r1={};r2={};r3={};mt="";er1={};er2={};er3={};emt="";
-sp0="";sp1={};sp2={};sp3={};spmt="";spQAnswers={};qAnswers={};spFromExec=false;
+sp0="";sp1={};sp2={};sp3={};sp4={};sp5={};sp6={};spmt="";spQAnswers={};qAnswers={};spFromExec=false;
+spRoundData={};spCurrentRound=0;spConsensus={};spRefineReasons={};directPlan=false;
 idea="";debateHistory=[];debateNum=1;continueText="";
 selAg=["cvo","cmo","cfo","cbo"];prof="obj";rod=3;eprof="obj";erod=3;pubFilter=null;
-["ii","c1","c2","cdi","vq_input","ec1","ec2","spc0","spc1","spc2","sp_q1_input","sp_q2_input","sp_q3_input"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
-["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc","sp0a","sp0p","sp1a","sp2a","sp3a","sp1p","sp2p","sp3p","spmc","sp_q1_cards","sp_q2_cards","sp_q3_cards"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
-["va","vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd","vexCfg","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved","vsp","vsp0","vspp0","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_q3","vsp3","vspsy","vspd"].forEach(id=>hi(id));
+["ii","c1","c2","cdi","vq_input","ec1","ec2","spc0","spc1","spc2","sp_q1_input","sp_q2_input"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+["vq_cards","r1a","r2a","r3a","r1p","r2p","r3p","c1d","c2d","mc","er1a","er2a","er3a","er1p","er2p","er3p","ec1d","ec2d","emc","sp0a","sp0p","sp1a","sp2a","sp1p","sp2p","spmc","sp_q1_cards","sp_q2_cards","spfa","spfp"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML=""});
+// Clear dynamic rounds
+const dynContainer=document.getElementById("vsp_dynamic");
+if(dynContainer) dynContainer.innerHTML="";
+["va","vq","vr1","vp1","vr2","vp2","vr3","vr3post","vsy","vd","vcd","vexCfg","vex","ver1","vep1","ver2","vep2","ver3","vesy","ved","vsp","vsp0","vspp0","vsp_q1","vsp1","vspp1","vsp_q2","vsp2","vspp2","vsp_final","vspp_final","vspsy","vspd"].forEach(id=>hi(id));
 renderAgToggles();setProf("obj");setRod(3);
 showConfig();
 window.scrollTo(0,0);
