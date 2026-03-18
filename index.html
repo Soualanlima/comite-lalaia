@@ -278,9 +278,9 @@ textarea::placeholder{color:var(--text-dim)}
 <!-- CONFIG SCREEN -->
 <div id="vs">
 <div style="margin-bottom:28px">
-<div class="cfg-label">Membros <span>&middot; max. 5</span></div>
+<div class="cfg-label">Membros <span>&middot; max. 6</span></div>
 <div id="agToggles" class="ag-grid"></div>
-<div id="maxMsg" class="hid max-msg">Maximo 5 membros — desselecione um primeiro</div>
+<div id="maxMsg" class="hid max-msg">Maximo 6 membros — desselecione um primeiro</div>
 </div>
 
 <div class="controls-row">
@@ -1855,7 +1855,7 @@ if(selAg.includes(k)){
 if(selAg.length<=2)return;
 selAg=selAg.filter(x=>x!==k);
 }else{
-if(selAg.length>=5){
+if(selAg.length>=6){
 const m=document.getElementById("maxMsg");m.classList.remove("hid");
 setTimeout(()=>m.classList.add("hid"),2000);return;
 }
